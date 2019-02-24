@@ -1,0 +1,151 @@
+//
+// Created by Olcay Taner Yıldız on 24.02.2019.
+//
+
+#include "InflectionalGroup.h"
+
+/**
+ * The getMorphologicalTag method takes a String tag as an input and if the input matches with one of the elements of
+ * tags array, it then gets the morphoTags of this tag and returns it.
+ *
+ * @param tag String to get morphoTags from.
+ * @return morphoTags if found, null otherwise.
+ */
+MorphologicalTag InflectionalGroup::getMorphologicalTag(string tag) {
+    for (int j = 0; j < TAG_SIZE; j++) {
+        if (tag == tags[j]) {
+            return morphoTags[j];
+        }
+    }
+}
+
+/**
+ * The getTag method takes a MorphologicalTag type tag as an input and returns its corresponding tag from tags array.
+ *
+ * @param tag MorphologicalTag type input to find tag from.
+ * @return tag if found, null otherwise.
+ */
+string InflectionalGroup::getTag(MorphologicalTag tag) {
+    for (int j = 0; j < TAG_SIZE; j++) {
+        if (tag == morphoTags[j]) {
+            string result = tags[j];
+            std::transform(result.begin(), result.end(), result.begin(), ::toupper);
+            return result;
+        }
+    }
+    return "";
+}
+
+/**
+ * A constructor of {@link InflectionalGroup} class which initializes the IG {@link vector} by parsing given input
+ * String IG by + and calling the getMorphologicalTag method with these substrings. If getMorphologicalTag method returns
+ * a tag, it adds this tag to the IG {@link vector}.
+ *
+ * @param IG String input.
+ */
+InflectionalGroup::InflectionalGroup(string IG) {
+    MorphologicalTag tag;
+    string morphologicalTag;
+    string st = move(IG);
+    while (st.find_first_of('+') != -1) {
+        morphologicalTag = st.substr(0, st.find_first_of('+'));
+        tag = getMorphologicalTag(morphologicalTag);
+        this->IG.emplace_back(tag);
+        st = st.substr(st.find_first_of('+') + 1);
+    }
+    morphologicalTag = st;
+    tag = getMorphologicalTag(morphologicalTag);
+    this->IG.emplace_back(tag);
+}
+
+/**
+ * Another getTag method which takes index as an input and returns the corresponding tag from IG {@link vector}.
+ *
+ * @param index to get tag.
+ * @return tag at input index.
+ */
+MorphologicalTag InflectionalGroup::getTag(int index) {
+    return IG.at(index);
+}
+
+/**
+ * The size method returns the size of the G {@link vector}.
+ *
+ * @return the size of the G {@link vector}.
+ */
+int InflectionalGroup::size() {
+    return IG.size();
+}
+
+/**
+ * Overridden toString method to return resulting tags in IG {@link vector}.
+ *
+ * @return String result.
+ */
+string InflectionalGroup::to_String() {
+    string result = getTag(IG.at(0));
+    for (int i = 1; i < IG.size(); i++) {
+        result = result + "+" + getTag(IG.at(i));
+    }
+    return result;
+}
+
+/**
+ * The containsCase method loops through the tags in IG {@link ArrayList} and finds out the tags of the NOMINATIVE,
+ * ACCUSATIVE, DATIVE, LOCATIVE or ABLATIVE cases.
+ *
+ * @return tag which holds the condition.
+ */
+MorphologicalTag InflectionalGroup::containsCase() {
+    for (MorphologicalTag tag : IG) {
+        if (tag == MorphologicalTag::NOMINATIVE || tag == MorphologicalTag::ACCUSATIVE || tag == MorphologicalTag::DATIVE || tag == MorphologicalTag::LOCATIVE || tag == MorphologicalTag::ABLATIVE) {
+            return tag;
+        }
+    }
+}
+
+/**
+ * The containsPlural method loops through the tags in IG {@link vector} and checks whether the tags are from
+ * the agreement plural or possessive plural, i.e A1PL, A2PL, A3PL, P1PL, P2PL and P3PL.
+ *
+ * @return true if the tag is plural, false otherwise.
+ */
+bool InflectionalGroup::containsPlural() {
+    for (MorphologicalTag tag : IG) {
+        if (tag == MorphologicalTag::A1PL || tag == MorphologicalTag::A2PL || tag == MorphologicalTag::A3PL || tag == MorphologicalTag::P1PL || tag == MorphologicalTag::P2PL || tag == MorphologicalTag::P3PL) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
+ * The containsTag method takes a MorphologicalTag type tag as an input and loops through the tags in
+ * IG {@link vector} and returns true if the input matches with on of the tags in the IG.
+ *
+ * @param tag MorphologicalTag type input to search for.
+ * @return true if tag matches with the tag in IG, false otherwise.
+ */
+bool InflectionalGroup::containsTag(MorphologicalTag tag) {
+    for (MorphologicalTag currentTag : IG) {
+        if (currentTag == tag) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
+ * The containsPossessive method loops through the tags in IG {@link ArrayList} and returns true if the tag in IG is
+ * one of the possessives: P1PL, P1SG, P2PL, P2SG, P3PL AND P3SG.
+ *
+ * @return true if it contains possessive tag, false otherwise.
+ */
+bool InflectionalGroup::containsPossessive() {
+    for (MorphologicalTag tag : IG) {
+        if (tag == MorphologicalTag::P1PL || tag == MorphologicalTag::P1SG || tag == MorphologicalTag::P2PL || tag == MorphologicalTag::P2SG || tag == MorphologicalTag::P3PL || tag == MorphologicalTag::P3SG) {
+            return true;
+        }
+    }
+    return false;
+}
