@@ -17,6 +17,7 @@ MorphologicalTag InflectionalGroup::getMorphologicalTag(string tag) {
             return morphoTags[j];
         }
     }
+    return MorphologicalTag::NOTAG;
 }
 
 /**

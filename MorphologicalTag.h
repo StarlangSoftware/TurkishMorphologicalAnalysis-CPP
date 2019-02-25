@@ -514,7 +514,8 @@ enum class MorphologicalTag {
     /**
      * Date : 11/06/2018
      */
-            DATE
+            DATE,
+            NOTAG
 };
 
 
