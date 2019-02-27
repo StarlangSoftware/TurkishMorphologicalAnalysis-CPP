@@ -3,6 +3,7 @@
 //
 
 #include "MorphologicalParse.h"
+#include "TurkishLanguage.h"
 
 /**
  * An empty constructor of {@link MorphologicalParse} class.
@@ -51,7 +52,7 @@ MorphologicalParse::MorphologicalParse(string parse) {
     string st = move(parse);
     while (st.find("^DB+") != string::npos) {
         iGs.emplace_back(st.substr(0, st.find("^DB+")));
-        st = st.substr(st.find("^DB+") + 4, st.size());
+        st = st.substr(st.find("^DB+") + 4, Word::size(st));
     }
     iGs.emplace_back(st);
     if (iGs.at(0) == "++Punc") {
@@ -278,7 +279,7 @@ bool MorphologicalParse::lastIGContainsPossessive() {
  * @return true if the character at first index o f root is an uppercase letter, false otherwise.
  */
 bool MorphologicalParse::isCapitalWord() {
-    return isupper(root->getName()[0]) != 0;
+    return TurkishLanguage::isUppercase(Word::charAt(root->getName(), 0));
 }
 
 /**

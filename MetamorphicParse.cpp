@@ -14,13 +14,33 @@
  */
 vector<MorphologicalTag> MetamorphicParse::getMetaMorphemeTag(string tag) {
     vector<MorphologicalTag> result;
-    string s;
-    s += tag[0];
+    string s = Word::charAt(tag, 0);
     if (Word::isPunctuation(s)) {
         tag = tag.substr(1, tag.length() - 1);
     }
     for (int j = 0; j < META_MORPHEME_SIZE; j++) {
         if (tag == MetamorphicParse::metaMorphemes[j]) {
+            result.emplace_back(morphotacticTags[j]);
+        }
+    }
+    return result;
+}
+
+/**
+ * Another getMetaMorphemeTag method which also takes parse as an input. It also checks the morphotactic tags.
+ *
+ * @param parse MorphologicalParse type input.
+ * @param tag   String to get meta morphemes from.
+ * @return ArrayList type result which holds meta morphemes.
+ */
+vector<MorphologicalTag> MetamorphicParse::getMetaMorphemeTag(MorphologicalParse parse, string tag){
+    vector<MorphologicalTag> result;
+    string s = Word::charAt(tag, 0);
+    if (Word::isPunctuation(s)) {
+        tag = tag.substr(1, tag.length());
+    }
+    for (int j = 0; j < META_MORPHEME_SIZE; j++) {
+        if (tag == MetamorphicParse::metaMorphemes[j] && parse.containsTag(morphotacticTags[j])) {
             result.emplace_back(morphotacticTags[j]);
         }
     }

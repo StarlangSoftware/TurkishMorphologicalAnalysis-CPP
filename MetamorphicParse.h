@@ -9,6 +9,7 @@
 #include <vector>
 #include "MorphologicalTag.h"
 #include "Word.h"
+#include "MorphologicalParse.h"
 
 using namespace std;
 
@@ -22,6 +23,7 @@ public:
     static const MorphologicalTag morphotacticTags[META_MORPHEME_SIZE];
     MetamorphicParse();
     static vector<MorphologicalTag> getMetaMorphemeTag(string tag);
+    static vector<MorphologicalTag> getMetaMorphemeTag(MorphologicalParse parse, string tag);
     Word getWord();
     explicit MetamorphicParse(string parse);
     int size();

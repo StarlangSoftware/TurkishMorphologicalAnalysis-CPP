@@ -103,6 +103,7 @@ MorphologicalTag InflectionalGroup::containsCase() {
             return tag;
         }
     }
+    return MorphologicalTag::NOTAG;
 }
 
 /**

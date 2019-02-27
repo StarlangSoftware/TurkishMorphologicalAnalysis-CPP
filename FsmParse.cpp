@@ -106,7 +106,7 @@ void FsmParse::constructInflectionalGroups() {
     vector<string> iGs;
     while (parse.find("^DB+") != string::npos) {
         iGs.emplace_back(parse.substr(0, parse.find("^DB+")));
-        parse = parse.substr(parse.find("^DB+") + 4, parse.size());
+        parse = parse.substr(parse.find("^DB+") + 4, Word::size(parse));
     }
     iGs.emplace_back(parse);
     inflectionalGroups.emplace_back(InflectionalGroup(iGs.at(0).substr(iGs.at(0).find('+') + 1)));
@@ -491,7 +491,7 @@ string FsmParse::getTransitionList() {
     if (suffixList.at(0).getName() == "NominalRoot" || suffixList.at(0).getName() == "NominalRootNoPossesive" || suffixList.at(0).getName() == "CompoundNounRoot" || suffixList.at(0).getName() == "NominalRootPlural") {
         result = formList.at(0) + "+NOUN";
     } else {
-        if (suffixList.at(0).getName().rfind("VerbalRoot") == 0 || suffixList.at(0).getName() == "PassiveHn") {
+        if (Word::startsWith(suffixList.at(0).getName(), "VerbalRoot") || suffixList.at(0).getName() == "PassiveHn") {
             result = formList.at(0) + "+VERB";
         } else {
             if (suffixList.at(0).getName() == "CardinalRoot") {
@@ -571,13 +571,13 @@ string FsmParse::getTransitionList() {
                                                                                             }
                                                                                         }
                                                                                     } else {
-                                                                                        if (suffixList.at(0).getName().rfind("PronounRoot", 0) == 0) {
+                                                                                        if (Word::startsWith(suffixList.at(0).getName(), "PronounRoot")) {
                                                                                             result = pronounTransition();
                                                                                         } else {
                                                                                             if (suffixList.at(0).getName() == "OrdinalRoot") {
                                                                                                 result = formList.at(0) + "+NUM+ORD";
                                                                                             } else {
-                                                                                                if (suffixList.at(0).getName().rfind("Adjective", 0) == 0) {
+                                                                                                if (Word::startsWith(suffixList.at(0).getName(), "Adjective")) {
                                                                                                     result = formList.at(0) + "+ADJ";
                                                                                                 }
                                                                                             }
@@ -605,7 +605,7 @@ string FsmParse::getTransitionList() {
     }
     for (const string &transition : transitionList) {
         if (!transition.empty()) {
-            if (transition.rfind('^', 0) != 0) {
+            if (Word::startsWith(transition, "^")) {
                 result.append("+");
                 result.append(transition);
             } else {
