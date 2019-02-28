@@ -22,6 +22,7 @@ private:
     string possesiveAgreement = "";
 public:
     explicit FsmParse(Word* root);
+    FsmParse() = default;
     FsmParse(int number, State startState);
     FsmParse(double number, State startState);
     FsmParse(string punctuation, State startState);
