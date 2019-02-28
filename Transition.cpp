@@ -219,8 +219,8 @@ string Transition::lastPhoneme(string stem) {
     if (stem.empty()) {
         return " ";
     }
-    if (Word::charAt(stem, Word::size(stem) - 1) != "'") {
-        return Word::charAt(stem, Word::size(stem) - 1);
+    if (Word::lastChar(stem) != "'") {
+        return Word::lastChar(stem);
     } else {
         return Word::charAt(stem, Word::size(stem) - 2);
     }
@@ -322,14 +322,14 @@ string Transition::makeTransition(TxtWord *root, string stem, State startState) 
     //---vowelEChangesToIDuringYSuffixation---
     //de->d(i)yor, ye->y(i)yor
     if (rootWord && withFirstChar() == "y" && root->vowelEChangesToIDuringYSuffixation() && Word::charAt(with, 1) != "H") {
-        formation = stem.substr(0, Word::size(stem) - 1) + 'i';
+        formation = Word::substringExceptLastChar(stem) + 'i';
         formationToCheck = formation;
     } else {
         //---lastIdropsDuringPassiveSuffixation---
         // yoğur->yoğrul, ayır->ayrıl, buyur->buyrul, çağır->çağrıl, çevir->çevril, devir->devril,
         // kavur->kavrul, kayır->kayrıl, kıvır->kıvrıl, savur->savrul, sıyır->sıyrıl, yoğur->yoğrul
         if (rootWord && (with == "Hl" || with == "Hn") && root->lastIdropsDuringPassiveSuffixation()) {
-            formation = stem.substr(0, Word::size(stem) - 2) + Word::charAt(stem, Word::size(stem) - 1);
+            formation = Word::substringExceptLastTwoChars(stem) + Word::lastChar(stem);
             formationToCheck = stem;
         } else {
             //---showsSuRegularities---
@@ -344,17 +344,17 @@ string Transition::makeTransition(TxtWord *root, string stem, State startState) 
                         //--extra softenDuringSuffixation
                         if (lastPhoneme(stem) == "p"){
                             //tıp->tıbbı
-                            formation = stem.substr(0, Word::size(stem) - 1) + "bb";
+                            formation = Word::substringExceptLastChar(stem) + "bb";
                         } else {
                             if (lastPhoneme(stem) == "t"){
                                 //cet->ceddi, met->meddi, ret->reddi, serhat->serhaddi, zıt->zıddı, şet->şeddi
-                                formation = stem.substr(0, Word::size(stem) - 1) + "dd";
+                                formation = Word::substringExceptLastChar(stem) + "dd";
                             }
                         }
                     } else {
                         //cer->cerri, emrihak->emrihakkı, fek->fekki, fen->fenni, had->haddi, hat->hattı,
                         // haz->hazzı, his->hissi
-                        formation = stem + Word::charAt(stem, Word::size(stem) - 1);
+                        formation = stem + Word::lastChar(stem);
                     }
                     formationToCheck = formation;
                 } else {
@@ -364,22 +364,22 @@ string Transition::makeTransition(TxtWord *root, string stem, State startState) 
                             //---softenDuringSuffixation---
                             if (lastPhoneme(stem) == "p"){
                                 //hizip->hizbi, kayıp->kaybı, kayıt->kaydı, kutup->kutbu
-                                formation = stem.substr(0, Word::size(stem) - 2) + 'b';
+                                formation = Word::substringExceptLastTwoChars(stem) + 'b';
                             } else {
                                 if (lastPhoneme(stem) == "t"){
                                     //akit->akdi, ahit->ahdi, lahit->lahdi, nakit->nakdi, vecit->vecdi
-                                    formation = stem.substr(0, Word::size(stem) - 2) + 'd';
+                                    formation = Word::substringExceptLastTwoChars(stem) + 'd';
                                 } else {
                                     if (lastPhoneme(stem) == "ç"){
                                         //eviç->evci, nesiç->nesci
-                                        formation = stem.substr(0, Word::size(stem) - 2) + 'c';
+                                        formation = Word::substringExceptLastTwoChars(stem) + 'c';
                                     }
                                 }
                             }
                         } else {
                             //sarıağız->sarıağzı, zehir->zehri, zikir->zikri, nutuk->nutku, omuz->omzu, ömür->ömrü
                             //lütuf->lütfu, metin->metni, kavim->kavmi, kasıt->kastı
-                            formation = stem.substr(0, Word::size(stem) - 2) + Word::charAt(stem, Word::size(stem) - 1);
+                            formation = Word::substringExceptLastTwoChars(stem) + Word::lastChar(stem);
                         }
                         formationToCheck = stem;
                     } else {
@@ -387,36 +387,36 @@ string Transition::makeTransition(TxtWord *root, string stem, State startState) 
                         if (lastPhoneme(stem) == "p"){
                             //adap->adabı, amip->amibi, azap->azabı, gazap->gazabı
                             if (startWithVowelorConsonantDrops() && rootWord && softenDuringSuffixation(root)) {
-                                formation = stem.substr(0, Word::size(stem) - 1) + 'b';
+                                formation = Word::substringExceptLastChar(stem) + 'b';
                             }
                         } else {
                             if (lastPhoneme(stem) == "t"){
                                 //abat->abadı, adet->adedi, akort->akordu, armut->armudu
                                 //affet->affedi, yoket->yokedi, sabret->sabredi, rakset->raksedi
                                 if (startWithVowelorConsonantDrops() && rootWord && softenDuringSuffixation(root)) {
-                                    formation = stem.substr(0, Word::size(stem) - 1) + 'd';
+                                    formation = Word::substringExceptLastChar(stem) + 'd';
                                 }
                             } else {
                                 if (lastPhoneme(stem) == "ç"){
                                     //ağaç->ağacı, almaç->almacı, akaç->akacı, avuç->avucu
                                     if (startWithVowelorConsonantDrops() && rootWord && softenDuringSuffixation(root)) {
-                                        formation = stem.substr(0, Word::size(stem) - 1) + 'c';
+                                        formation = Word::substringExceptLastChar(stem) + 'c';
                                     }
                                 } else {
                                     if (lastPhoneme(stem) == "g"){
                                         //arkeolog->arkeoloğu, filolog->filoloğu, minerolog->mineroloğu
                                         if (startWithVowelorConsonantDrops() && rootWord && softenDuringSuffixation(root)) {
-                                            formation = stem.substr(0, Word::size(stem) - 1) + "ğ";
+                                            formation = Word::substringExceptLastChar(stem) + "ğ";
                                         }
                                     } else {
                                         if (lastPhoneme(stem) == "k"){
                                             //ahenk->ahengi, künk->küngü, renk->rengi, pelesenk->pelesengi
                                             if (startWithVowelorConsonantDrops() && rootWord && root->endingKChangesIntoG() && !root->isProperNoun()) {
-                                                formation = stem.substr(0, Word::size(stem) - 1) + 'g';
+                                                formation = Word::substringExceptLastChar(stem) + 'g';
                                             } else {
                                                 //ablak->ablağı, küllük->küllüğü, kitaplık->kitaplığı, evcilik->evciliği
                                                 if (startWithVowelorConsonantDrops() && (!rootWord || (softenDuringSuffixation(root) && (!root->isProperNoun() || startState.to_String() != "ProperRoot")))) {
-                                                    formation = stem.substr(0, Word::size(stem) - 1) + "ğ";
+                                                    formation = Word::substringExceptLastChar(stem) + "ğ";
                                                 }
                                             }
                                         }
@@ -430,7 +430,7 @@ string Transition::makeTransition(TxtWord *root, string stem, State startState) 
             }
         }
     }
-    if (TurkishLanguage::isConsonantDrop(withFirstChar()) && !TurkishLanguage::isVowel(Word::charAt(stem, Word::size(stem) - 1)) && (root->isNumeral() || root->isReal() || root->isFraction() || root->isTime() || root->isDate() || root->isPercent() || root->isRange()) && (Word::endsWith(root->getName(), "1") || Word::endsWith(root->getName(), "3") || Word::endsWith(root->getName(), "4") || Word::endsWith(root->getName(), "5") || Word::endsWith(root->getName(), "8") || Word::endsWith(root->getName(), "9") || Word::endsWith(root->getName(), "10") || Word::endsWith(root->getName(), "30") || Word::endsWith(root->getName(), "40") || Word::endsWith(root->getName(), "60") || Word::endsWith(root->getName(), "70") || Word::endsWith(root->getName(), "80") || Word::endsWith(root->getName(), "90") || Word::endsWith(root->getName(), "00"))) {
+    if (TurkishLanguage::isConsonantDrop(withFirstChar()) && !TurkishLanguage::isVowel(Word::lastChar(stem)) && (root->isNumeral() || root->isReal() || root->isFraction() || root->isTime() || root->isDate() || root->isPercent() || root->isRange()) && (Word::endsWith(root->getName(), "1") || Word::endsWith(root->getName(), "3") || Word::endsWith(root->getName(), "4") || Word::endsWith(root->getName(), "5") || Word::endsWith(root->getName(), "8") || Word::endsWith(root->getName(), "9") || Word::endsWith(root->getName(), "10") || Word::endsWith(root->getName(), "30") || Word::endsWith(root->getName(), "40") || Word::endsWith(root->getName(), "60") || Word::endsWith(root->getName(), "70") || Word::endsWith(root->getName(), "80") || Word::endsWith(root->getName(), "90") || Word::endsWith(root->getName(), "00"))) {
         if (Word::charAt(with, 0) == "'") {
             formation = formation + '\'';
             i = 2;
@@ -583,34 +583,34 @@ string Transition::resolveH(TxtWord *root, string formation, bool beginningOfSuf
             if (root->vowelAChangesToIDuringYSuffixation()) {
                 if (TurkishLanguage::isFrontRoundedVowel(beforeLastVowel(formationToCheck))) {
                     //büyülüyor, bölümlüyor, çözümlüyor, döşüyor
-                    return formation.substr(0, Word::size(formation) - 1) + "ü";
+                    return Word::substringExceptLastChar(formation) + "ü";
                 }
                 if (TurkishLanguage::isFrontUnroundedVowel(beforeLastVowel(formationToCheck))) {
                     //adresliyor, alevliyor, ateşliyor, bekliyor
-                    return formation.substr(0, Word::size(formation) - 1) + 'i';
+                    return Word::substringExceptLastChar(formation) + 'i';
                 }
                 if (TurkishLanguage::isBackRoundedVowel(beforeLastVowel(formationToCheck))) {
                     //buğuluyor, bulguluyor, çamurluyor, aforozluyor
-                    return formation.substr(0, Word::size(formation) - 1) + 'u';
+                    return Word::substringExceptLastChar(formation) + 'u';
                 }
                 if (TurkishLanguage::isBackUnroundedVowel(beforeLastVowel(formationToCheck))) {
                     //açıklıyor, çalkalıyor, gazlıyor, gıcırdıyor
-                    return formation.substr(0, Word::size(formation) - 1) + "ı";
+                    return Word::substringExceptLastChar(formation) + "ı";
                 }
             }
         }
         if (TurkishLanguage::isVowel(lastPhoneme(formationToCheck))) {
             if (TurkishLanguage::isFrontRoundedVowel(beforeLastVowel(formationToCheck))) {
-                return formation.substr(0, Word::size(formation) - 1) + "ü";
+                return Word::substringExceptLastChar(formation) + "ü";
             }
             if (TurkishLanguage::isFrontUnroundedVowel(beforeLastVowel(formationToCheck))) {
-                return formation.substr(0, Word::size(formation) - 1) + 'i';
+                return Word::substringExceptLastChar(formation) + 'i';
             }
             if (TurkishLanguage::isBackRoundedVowel(beforeLastVowel(formationToCheck))) {
-                return formation.substr(0, Word::size(formation) - 1) + 'u';
+                return Word::substringExceptLastChar(formation) + 'u';
             }
             if (TurkishLanguage::isBackUnroundedVowel(beforeLastVowel(formationToCheck))) {
-                return formation.substr(0, Word::size(formation) - 1) + "ı";
+                return Word::substringExceptLastChar(formation) + "ı";
             }
         }
     }
@@ -682,13 +682,13 @@ string Transition::resolveS(string formation) {
  * @return resolved String.
  */
 string Transition::resolveSh(string formation) {
-    if (TurkishLanguage::isVowel(Word::charAt(formation, Word::size(formation) - 1))) {
+    if (TurkishLanguage::isVowel(Word::lastChar(formation))) {
         return formation + "ş";
     } else {
-        if (Word::charAt(formation, Word::size(formation) - 1) != "t")
+        if (Word::lastChar(formation) != "t")
             return formation;
         else
-            return formation.substr(0, Word::size(formation) - 1) + 'd';
+            return Word::substringExceptLastChar(formation) + 'd';
     }
 }
 

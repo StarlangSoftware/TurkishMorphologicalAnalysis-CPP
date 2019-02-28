@@ -52,7 +52,7 @@ MorphologicalParse::MorphologicalParse(string parse) {
     string st = move(parse);
     while (st.find("^DB+") != string::npos) {
         iGs.emplace_back(st.substr(0, st.find("^DB+")));
-        st = st.substr(st.find("^DB+") + 4, Word::size(st));
+        st = st.substr(st.find("^DB+") + 4, st.size());
     }
     iGs.emplace_back(st);
     if (iGs.at(0) == "++Punc") {

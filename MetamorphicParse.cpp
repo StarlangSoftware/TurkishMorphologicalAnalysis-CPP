@@ -16,7 +16,7 @@ vector<MorphologicalTag> MetamorphicParse::getMetaMorphemeTag(string tag) {
     vector<MorphologicalTag> result;
     string s = Word::charAt(tag, 0);
     if (Word::isPunctuation(s)) {
-        tag = tag.substr(1, tag.length() - 1);
+        tag = tag.substr(1, tag.size());
     }
     for (int j = 0; j < META_MORPHEME_SIZE; j++) {
         if (tag == MetamorphicParse::metaMorphemes[j]) {
@@ -37,7 +37,7 @@ vector<MorphologicalTag> MetamorphicParse::getMetaMorphemeTag(MorphologicalParse
     vector<MorphologicalTag> result;
     string s = Word::charAt(tag, 0);
     if (Word::isPunctuation(s)) {
-        tag = tag.substr(1, tag.length());
+        tag = tag.substr(1, tag.size());
     }
     for (int j = 0; j < META_MORPHEME_SIZE; j++) {
         if (tag == MetamorphicParse::metaMorphemes[j] && parse.containsTag(morphotacticTags[j])) {

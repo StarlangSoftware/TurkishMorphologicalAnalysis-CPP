@@ -106,7 +106,7 @@ void FsmParse::constructInflectionalGroups() {
     vector<string> iGs;
     while (parse.find("^DB+") != string::npos) {
         iGs.emplace_back(parse.substr(0, parse.find("^DB+")));
-        parse = parse.substr(parse.find("^DB+") + 4, Word::size(parse));
+        parse = parse.substr(parse.find("^DB+") + 4, parse.size());
     }
     iGs.emplace_back(parse);
     inflectionalGroups.emplace_back(InflectionalGroup(iGs.at(0).substr(iGs.at(0).find('+') + 1)));
