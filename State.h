@@ -22,6 +22,12 @@ public:
     string getPos();
     bool isEndState();
     string to_String();
+    bool operator==(const State &anotherState) const{
+        return (name == anotherState.name);
+    }
+    bool operator<(const State &anotherState) const{
+        return (name < anotherState.name);
+    }
 };
 
 
