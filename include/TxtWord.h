@@ -19,7 +19,7 @@ public:
     TxtWord(string name);
     TxtWord(string name, string flag);
     void addFlag(string flag);
-    TxtWord clone();
+    TxtWord* clone();
     void removeFlag(string flag);
     string verbType();
     bool containsFlag(string flag);

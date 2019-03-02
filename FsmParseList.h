@@ -11,6 +11,7 @@ private:
     vector<FsmParse> fsmParses;
     string defaultCaseForParseString(string rootForm, string parseString, string partOfSpeech);
 public:
+    FsmParseList() = default;
     explicit FsmParseList(vector<FsmParse> fsmParses);
     int size();
     FsmParse getFsmParse(int index);

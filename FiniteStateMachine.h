@@ -17,6 +17,7 @@ private:
     vector<State> states;
     map<State, vector<Transition>> transitions;
 public:
+    FiniteStateMachine() = default;
     explicit FiniteStateMachine(string fileName);
     bool isValidTransition(string transition);
     State getState(string name);

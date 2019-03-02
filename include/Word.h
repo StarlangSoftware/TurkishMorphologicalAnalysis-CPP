@@ -30,6 +30,7 @@ public:
     static vector<string> split(string line, string separator);
     static vector<string> split(string line);
     static int size(string surfaceForm);
+    static string toLowerCase(string surfaceForm);
     static string lastChar(string surfaceForm);
     static string charAt(string surfaceForm, int index);
     static string substring(string surfaceForm, int index, int length);
