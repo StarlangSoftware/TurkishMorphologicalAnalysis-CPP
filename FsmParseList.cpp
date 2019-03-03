@@ -18,11 +18,13 @@ struct fsmParseComparator{
  * @param fsmParses {@link FsmParse} type{@link vector} input.
  */
 FsmParseList::FsmParseList(vector<FsmParse> fsmParses) {
-    stable_sort(fsmParses.begin(), fsmParses.end(), fsmParseComparator());
-    for (int i = 0; i < fsmParses.size() - 1; i++) {
-        if (fsmParses.at(i).getTransitionList() == fsmParses.at(i + 1).getTransitionList()) {
-            fsmParses.erase(fsmParses.begin() + i + 1);
-            i--;
+    if (!fsmParses.empty()){
+        stable_sort(fsmParses.begin(), fsmParses.end(), fsmParseComparator());
+        for (int i = 0; i < fsmParses.size() - 1; i++) {
+            if (fsmParses.at(i).getTransitionList() == fsmParses.at(i + 1).getTransitionList()) {
+                fsmParses.erase(fsmParses.begin() + i + 1);
+                i--;
+            }
         }
     }
     this->fsmParses = fsmParses;

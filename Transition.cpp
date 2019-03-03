@@ -87,7 +87,7 @@ bool Transition::transitionPossible(string currentSurfaceForm, string realSurfac
     if (Word::size(currentSurfaceForm) == 0 || Word::size(currentSurfaceForm) >= Word::size(realSurfaceForm)) {
         return true;
     }
-    string searchString = realSurfaceForm.substr(0, Word::size(currentSurfaceForm));
+    string searchString = realSurfaceForm.substr(Word::size(currentSurfaceForm), Word::size(realSurfaceForm));
     for (int i = 0; i < Word::size(with); i++) {
         if (Word::charAt(with, i) == "C"){
             return searchString.find('c') != string::npos || searchString.find("ç") != string::npos;

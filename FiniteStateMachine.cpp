@@ -4,6 +4,7 @@
 
 #include <XmlDocument.h>
 #include "FiniteStateMachine.h"
+#include <iostream>
 
 /**
  * Constructor reads the finite state machine in the given input file. It has a NodeList which holds the states
@@ -115,6 +116,7 @@ State FiniteStateMachine::getState(string name) {
             return state;
         }
     }
+    return State();
 }
 
 /**

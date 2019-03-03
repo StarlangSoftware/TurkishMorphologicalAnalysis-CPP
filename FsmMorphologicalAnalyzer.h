@@ -25,7 +25,7 @@ private:
     vector<FsmParse> initializeRootList(string surfaceForm, bool isProper);
     void addNewParsesFromCurrentParse(FsmParse currentFsmParse, vector<FsmParse>& fsmParse, string surfaceForm, TxtWord* root);
     bool parseExists(vector<FsmParse>& fsmParse, string surfaceForm);
-    vector<FsmParse> parseWord(vector<FsmParse>& fsmParse, string surfaceForm);
+    vector<FsmParse> parseWord(vector<FsmParse> fsmParse, string surfaceForm);
     bool analysisExists(TxtWord* rootWord, string surfaceForm, bool isProper);
     vector<FsmParse> analysis(string surfaceForm, bool isProper);
     bool isInteger(string surfaceForm);
