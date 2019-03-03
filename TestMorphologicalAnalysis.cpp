@@ -8,7 +8,7 @@
 void testWord(FsmMorphologicalAnalyzer fsm, string word){
     FsmParseList fsmParses = fsm.morphologicalAnalysis(move(word));
     for (int i = 0; i < fsmParses.size(); i++){
-        cout << fsmParses.getFsmParse(i).getTransitionList();
+        cout << fsmParses.getFsmParse(i).getTransitionList() << "\n";
     }
 }
 

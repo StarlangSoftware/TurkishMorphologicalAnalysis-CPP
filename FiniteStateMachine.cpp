@@ -58,7 +58,6 @@ FiniteStateMachine::FiniteStateMachine(string fileName) {
                     string rootToPos = transitionNode->getAttributeValue("topos");
                     withNode = transitionNode->getFirstChild();
                     while (withNode != nullptr){
-                        withNode = withNode->getNextSibling();
                         string toPos;
                         if (withNode->hasAttributes()){
                             withName = withNode->getAttributeValue("name");
@@ -68,13 +67,14 @@ FiniteStateMachine::FiniteStateMachine(string fileName) {
                         }
                         if (toPos.empty()){
                             if (rootToPos.empty()){
-                                addTransition(state, toState, withNode->getFirstChild()->getPcData(), withName);
+                                addTransition(state, toState, withNode->getPcData(), withName);
                             } else {
-                                addTransition(state, toState, withNode->getFirstChild()->getPcData(), withName, rootToPos);
+                                addTransition(state, toState, withNode->getPcData(), withName, rootToPos);
                             }
                         } else {
-                            addTransition(state, toState, withNode->getFirstChild()->getPcData(), withName, toPos);
+                            addTransition(state, toState, withNode->getPcData(), withName, toPos);
                         }
+                        withNode = withNode->getNextSibling();
                     }
                 }
                 transitionNode = transitionNode->getNextSibling();

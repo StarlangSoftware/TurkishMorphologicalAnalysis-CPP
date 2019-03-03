@@ -605,7 +605,7 @@ string FsmParse::getTransitionList() {
     }
     for (const string &transition : transitionList) {
         if (!transition.empty()) {
-            if (Word::startsWith(transition, "^")) {
+            if (!Word::startsWith(transition, "^")) {
                 result.append("+");
                 result.append(transition);
             } else {

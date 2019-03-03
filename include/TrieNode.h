@@ -12,13 +12,18 @@ using namespace std;
 
 class TrieNode {
 private:
-    map<string, TrieNode> children;
+    map<string, TrieNode*> children;
     unordered_set<Word*> words;
     void addWord(string word, unsigned long index, Word* root);
 public:
     TrieNode();
+    ~TrieNode(){
+        for (auto& child : children){
+            delete child.second;
+        }
+    }
     void addWord(string word, Word* root);
-    TrieNode getChild(string ch);
+    TrieNode* getChild(string ch);
     bool childExists(string ch);
     unordered_set<Word*> getWords();
 };

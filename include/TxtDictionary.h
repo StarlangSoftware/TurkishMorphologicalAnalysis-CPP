@@ -11,7 +11,7 @@
 class TxtDictionary : public Dictionary {
 private:
     void loadFromText(string filename);
-    void addWordWhenRootSoften(Trie trie, string last, string root, TxtWord* word);
+    void addWordWhenRootSoften(Trie* trie, string last, string root, TxtWord* word);
 public:
     explicit TxtDictionary(string filename = "turkish_dictionary.txt", Comparator comparator = Comparator::TURKISH);
     TxtDictionary clone();
@@ -28,7 +28,7 @@ public:
     bool addPronoun(string name);
     void mergeDictionary(string secondFilename, string mergedFilename);
     void saveAsTxt(string filename);
-    Trie prepareTrie();
+    Trie* prepareTrie();
 };
 
 

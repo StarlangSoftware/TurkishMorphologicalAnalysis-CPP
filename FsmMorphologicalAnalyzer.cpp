@@ -16,7 +16,7 @@
 FsmMorphologicalAnalyzer::FsmMorphologicalAnalyzer(string fileName, TxtDictionary dictionary, int cacheSize) {
     finiteStateMachine = FiniteStateMachine(move(fileName));
     dictionaryTrie = dictionary.prepareTrie();
-    this->dictionary = move(dictionary);
+    dictionary = move(dictionary);
     cache = LRUCache<string, FsmParseList>(cacheSize);
 }
 
@@ -78,7 +78,7 @@ FsmMorphologicalAnalyzer::getPossibleWords(MorphologicalParse morphologicalParse
     }
     string verbWord, pluralWord, currentWord = parse.getWord().getName();
     int pluralIndex = -1;
-    compoundWord = dictionaryTrie.getCompoundWordStartingWith(currentWord);
+    compoundWord = dictionaryTrie->getCompoundWordStartingWith(currentWord);
     if (!isRootVerb) {
         if (Word::size(compoundWord->getName()) - Word::size(currentWord) < 3) {
             result.emplace(compoundWord->getName());
@@ -283,7 +283,7 @@ bool FsmMorphologicalAnalyzer::isPossibleSubstring(string shortString, string lo
  * @param root     word to check properties and add to fsmParse according to them.
  * @param isProper is used to check a word is proper or not.
  */
-void FsmMorphologicalAnalyzer::initializeParseList(vector<FsmParse> fsmParse, TxtWord *root, bool isProper) {
+void FsmMorphologicalAnalyzer::initializeParseList(vector<FsmParse>& fsmParse, TxtWord *root, bool isProper) {
     FsmParse currentFsmParse;
     if (root->isPlural()) {
         currentFsmParse = FsmParse(root, finiteStateMachine.getState("NominalRootPlural"));
@@ -467,7 +467,7 @@ vector<FsmParse> FsmMorphologicalAnalyzer::initializeRootList(string surfaceForm
     if (surfaceForm.empty()) {
         return initialFsmParse;
     }
-    unordered_set<Word*> words = dictionaryTrie.getWordsWithPrefix(surfaceForm);
+    unordered_set<Word*> words = dictionaryTrie->getWordsWithPrefix(surfaceForm);
     for (Word* word : words) {
         root = (TxtWord*) word;
         initializeParseList(initialFsmParse, root, isProper);
@@ -514,7 +514,7 @@ vector<FsmParse> FsmMorphologicalAnalyzer::initializeRootList(string surfaceForm
  * @param surfaceForm     String to use during transition.
  * @param root            TxtWord used to make transition.
  */
-void FsmMorphologicalAnalyzer::addNewParsesFromCurrentParse(FsmParse currentFsmParse, vector<FsmParse> fsmParse,
+void FsmMorphologicalAnalyzer::addNewParsesFromCurrentParse(FsmParse currentFsmParse, vector<FsmParse>& fsmParse,
                                                             string surfaceForm, TxtWord *root) {
     State currentState = currentFsmParse.getFinalSuffix();
     string currentSurfaceForm = currentFsmParse.getSurfaceForm();
@@ -538,7 +538,7 @@ void FsmMorphologicalAnalyzer::addNewParsesFromCurrentParse(FsmParse currentFsmP
  * @param surfaceForm String to use during transition.
  * @return true when the currentState is end state and input surfaceForm id equal to currentSurfaceForm, otherwise false.
  */
-bool FsmMorphologicalAnalyzer::parseExists(vector<FsmParse> fsmParse, string surfaceForm) {
+bool FsmMorphologicalAnalyzer::parseExists(vector<FsmParse>& fsmParse, string surfaceForm) {
     FsmParse currentFsmParse;
     TxtWord* root;
     State currentState;
@@ -565,7 +565,7 @@ bool FsmMorphologicalAnalyzer::parseExists(vector<FsmParse> fsmParse, string sur
  * @param surfaceForm String to use during transition.
  * @return result {@link ArrayList} which has the currentFsmParse.
  */
-vector<FsmParse> FsmMorphologicalAnalyzer::parseWord(vector<FsmParse> fsmParse, string surfaceForm) {
+vector<FsmParse> FsmMorphologicalAnalyzer::parseWord(vector<FsmParse>& fsmParse, string surfaceForm) {
     vector<FsmParse> result;
     FsmParse currentFsmParse;
     TxtWord* root;
@@ -935,7 +935,7 @@ FsmParseList FsmMorphologicalAnalyzer::morphologicalAnalysis(string surfaceForm)
         return cache.get(surfaceForm);
     }
     if (regex_match(surfaceForm, regex("(\\w|Ç|Ş|İ|Ü|Ö)\\."))) {
-        dictionaryTrie.addWord(Word::toLowerCase(surfaceForm), new TxtWord(Word::toLowerCase(surfaceForm), "IS_OA"));
+        dictionaryTrie->addWord(Word::toLowerCase(surfaceForm), new TxtWord(Word::toLowerCase(surfaceForm), "IS_OA"));
     }
     vector<FsmParse> defaultFsmParse = analysis(Word::toLowerCase(surfaceForm), isProperNoun(surfaceForm));
     if (!defaultFsmParse.empty()) {
@@ -948,35 +948,35 @@ FsmParseList FsmMorphologicalAnalyzer::morphologicalAnalysis(string surfaceForm)
         string possibleRoot = surfaceForm.substr(0, surfaceForm.find('\''));
         if (!possibleRoot.empty()) {
             if (possibleRoot.find('/') != string::npos || possibleRoot.find("\\/") != string::npos) {
-                dictionaryTrie.addWord(possibleRoot, new TxtWord(possibleRoot, "IS_KESIR"));
+                dictionaryTrie->addWord(possibleRoot, new TxtWord(possibleRoot, "IS_KESIR"));
                 fsmParse = analysis(Word::toLowerCase(surfaceForm), isProperNoun(surfaceForm));
             } else {
                 if (regex_match(possibleRoot, regex(R"((\d\d|\d)/(\d\d|\d)/\d+)")) || regex_match(possibleRoot, regex(R"((\d\d|\d)\.(\d\d|\d)\.\d+)"))) {
-                    dictionaryTrie.addWord(possibleRoot, new TxtWord(possibleRoot, "IS_DATE"));
+                    dictionaryTrie->addWord(possibleRoot, new TxtWord(possibleRoot, "IS_DATE"));
                     fsmParse = analysis(Word::toLowerCase(surfaceForm), isProperNoun(surfaceForm));
                 } else {
                     if (regex_match(possibleRoot, regex("\\d+/\\d+"))) {
-                        dictionaryTrie.addWord(possibleRoot, new TxtWord(possibleRoot, "IS_KESIR"));
+                        dictionaryTrie->addWord(possibleRoot, new TxtWord(possibleRoot, "IS_KESIR"));
                         fsmParse = analysis(Word::toLowerCase(surfaceForm), isProperNoun(surfaceForm));
                     } else {
                         if (regex_match(possibleRoot, regex(R"(%(\d\d|\d))")) || regex_match(possibleRoot, regex(R"(%(\d\d|\d)\.\d+)"))) {
-                            dictionaryTrie.addWord(possibleRoot, new TxtWord(possibleRoot, "IS_PERCENT"));
+                            dictionaryTrie->addWord(possibleRoot, new TxtWord(possibleRoot, "IS_PERCENT"));
                             fsmParse = analysis(Word::toLowerCase(surfaceForm), isProperNoun(surfaceForm));
                         } else {
                             if (regex_match(possibleRoot, regex(R"((\d\d|\d):(\d\d|\d):(\d\d|\d))")) || regex_match(possibleRoot, regex(R"((\d\d|\d):(\d\d|\d))"))) {
-                                dictionaryTrie.addWord(possibleRoot, new TxtWord(possibleRoot, "IS_ZAMAN"));
+                                dictionaryTrie->addWord(possibleRoot, new TxtWord(possibleRoot, "IS_ZAMAN"));
                                 fsmParse = analysis(Word::toLowerCase(surfaceForm), isProperNoun(surfaceForm));
                             } else {
                                 if (regex_match(possibleRoot, regex("\\d+-\\d+")) || regex_match(possibleRoot, regex(R"((\d\d|\d):(\d\d|\d)-(\d\d|\d):(\d\d|\d))")) || regex_match(possibleRoot, regex(R"((\d\d|\d)\.(\d\d|\d)-(\d\d|\d)\.(\d\d|\d))"))) {
-                                    dictionaryTrie.addWord(possibleRoot, new TxtWord(possibleRoot, "IS_RANGE"));
+                                    dictionaryTrie->addWord(possibleRoot, new TxtWord(possibleRoot, "IS_RANGE"));
                                     fsmParse = analysis(Word::toLowerCase(surfaceForm), isProperNoun(surfaceForm));
                                 } else {
                                     if (isInteger(possibleRoot)) {
-                                        dictionaryTrie.addWord(possibleRoot, new TxtWord(possibleRoot, "IS_SAYI"));
+                                        dictionaryTrie->addWord(possibleRoot, new TxtWord(possibleRoot, "IS_SAYI"));
                                         fsmParse = analysis(Word::toLowerCase(surfaceForm), isProperNoun(surfaceForm));
                                     } else {
                                         if (isDouble(possibleRoot)) {
-                                            dictionaryTrie.addWord(possibleRoot, new TxtWord(possibleRoot, "IS_REELSAYI"));
+                                            dictionaryTrie->addWord(possibleRoot, new TxtWord(possibleRoot, "IS_REELSAYI"));
                                             fsmParse = analysis(Word::toLowerCase(surfaceForm), isProperNoun(surfaceForm));
                                         } else {
                                             if (Word::isCapital(possibleRoot)) {
@@ -985,7 +985,7 @@ FsmParseList FsmMorphologicalAnalyzer::morphologicalAnalysis(string surfaceForm)
                                                     ((TxtWord*) dictionary.getWord(Word::toLowerCase(surfaceForm)))->addFlag("IS_OA");
                                                 } else {
                                                     newWord = new TxtWord(Word::toLowerCase(surfaceForm), "IS_OA");
-                                                    dictionaryTrie.addWord(Word::toLowerCase(surfaceForm), newWord);
+                                                    dictionaryTrie->addWord(Word::toLowerCase(surfaceForm), newWord);
                                                 }
                                                 fsmParse = analysis(Word::toLowerCase(surfaceForm), isProperNoun(surfaceForm));
                                                 if (fsmParse.empty() && newWord != nullptr) {

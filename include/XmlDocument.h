@@ -15,7 +15,7 @@ class XmlDocument {
 private:
     string fileName;
     ifstream inputStream;
-    XmlTokenType lastReadTokenType;
+    XmlTokenType lastReadTokenType = XmlTokenType::XML_END;
     XmlElement* root;
     string readToken(char previousChar, char* nextChar, bool extraAllowed);
     string parseTag();
@@ -23,7 +23,7 @@ private:
     string parseEmptyTag();
     string getNextToken();
 public:
-    XmlDocument(string fileName);
+    explicit XmlDocument(string fileName);
     ~XmlDocument();
     void print(string fileName);
     void parse();
