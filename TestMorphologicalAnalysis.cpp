@@ -14,7 +14,7 @@ void testWord(FsmMorphologicalAnalyzer fsm, string word){
 
 void analyze(){
     FsmMorphologicalAnalyzer fsm = FsmMorphologicalAnalyzer();
-    string word = "ali topu at";
+    string word = "Kerem topu Aysu'ya at";
     while (Word::size(word) > 1){
         cout << "->";
         cin >> word;
