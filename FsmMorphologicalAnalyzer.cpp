@@ -890,7 +890,7 @@ bool FsmMorphologicalAnalyzer::isNumber(string surfaceForm) {
             if (Word::startsWith(word, number)) {
                 found = true;
                 count++;
-                word = Word::substring(word, 0, Word::size(number));
+                word = Word::substring(word, Word::size(number), Word::size(word));
                 break;
             }
         }

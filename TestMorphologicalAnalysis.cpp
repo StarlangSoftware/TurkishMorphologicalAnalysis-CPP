@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <fstream>
 #include "FsmMorphologicalAnalyzer.h"
 
 void testWord(FsmMorphologicalAnalyzer fsm, string word){
@@ -10,6 +11,26 @@ void testWord(FsmMorphologicalAnalyzer fsm, string word){
     for (int i = 0; i < fsmParses.size(); i++){
         cout << fsmParses.getFsmParse(i).getTransitionList() << "\n";
     }
+}
+
+void checkSpeed(){
+    int k = 0;
+    FsmMorphologicalAnalyzer fsm = FsmMorphologicalAnalyzer("turkish_finite_state_machine.xml", TxtDictionary(), 1000000);
+    string line;
+    ifstream inputFile;
+    inputFile.open("gazete.txt", ifstream :: in);
+    while (inputFile.good()) {
+        getline(inputFile, line);
+        Sentence sentence = Sentence(line);
+        for (int j = 0; j < sentence.wordCount(); j++){
+            fsm.morphologicalAnalysis(sentence.getWord(j)->getName());
+            k++;
+            if (k % 1000 == 0){
+                cout << k << "\n";
+            }
+        }
+    }
+    inputFile.close();
 }
 
 void analyze(){
@@ -23,5 +44,6 @@ void analyze(){
 }
 
 int main(){
-    analyze();
+    //analyze();
+    checkSpeed();
 }
