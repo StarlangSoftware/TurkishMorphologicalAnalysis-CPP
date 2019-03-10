@@ -932,7 +932,7 @@ bool FsmMorphologicalAnalyzer::morphologicalAnalysisExists(TxtWord *rootWord, st
  */
 FsmParseList FsmMorphologicalAnalyzer::morphologicalAnalysis(string surfaceForm) {
     FsmParseList fsmParseList;
-    if (cache.contains(surfaceForm)) {
+    if (cache.getCacheSize() > 0 && cache.contains(surfaceForm)) {
         return cache.get(surfaceForm);
     }
     if (regex_match(surfaceForm, regex("(\\w|Ç|Ş|İ|Ü|Ö)\\."))) {
@@ -941,7 +941,9 @@ FsmParseList FsmMorphologicalAnalyzer::morphologicalAnalysis(string surfaceForm)
     vector<FsmParse> defaultFsmParse = analysis(Word::toLowerCase(surfaceForm), isProperNoun(surfaceForm));
     if (!defaultFsmParse.empty()) {
         fsmParseList = FsmParseList(defaultFsmParse);
-        cache.add(surfaceForm, fsmParseList);
+        if (cache.getCacheSize() > 0){
+            cache.add(surfaceForm, fsmParseList);
+        }
         return fsmParseList;
     }
     vector<FsmParse> fsmParse;
@@ -1005,6 +1007,8 @@ FsmParseList FsmMorphologicalAnalyzer::morphologicalAnalysis(string surfaceForm)
         }
     }
     fsmParseList = FsmParseList(fsmParse);
-    cache.add(surfaceForm, fsmParseList);
+    if (cache.getCacheSize() > 0){
+        cache.add(surfaceForm, fsmParseList);
+    }
     return fsmParseList;
 }

@@ -15,7 +15,7 @@ void testWord(FsmMorphologicalAnalyzer fsm, string word){
 
 void checkSpeed(){
     int k = 0;
-    FsmMorphologicalAnalyzer fsm = FsmMorphologicalAnalyzer("turkish_finite_state_machine.xml", TxtDictionary(), 1000000);
+    FsmMorphologicalAnalyzer fsm = FsmMorphologicalAnalyzer("turkish_finite_state_machine.xml", TxtDictionary(), 0);
     string line;
     ifstream inputFile;
     inputFile.open("gazete.txt", ifstream :: in);
