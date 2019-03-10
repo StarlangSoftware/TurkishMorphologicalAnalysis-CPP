@@ -33,6 +33,7 @@ public:
     static string toLowerCase(string surfaceForm);
     static string lastChar(string surfaceForm);
     static string charAt(string surfaceForm, int index);
+    static string* allCharacters(string surfaceForm);
     static string substring(string surfaceForm, int index, int length);
     static string substringExceptLastChar(string surfaceForm);
     static string substringExceptLastTwoChars(string surfaceForm);

@@ -88,22 +88,23 @@ bool Transition::transitionPossible(string currentSurfaceForm, string realSurfac
         return true;
     }
     string searchString = realSurfaceForm.substr(Word::size(currentSurfaceForm), Word::size(realSurfaceForm));
+    string* withChars = Word::allCharacters(with);
     for (int i = 0; i < Word::size(with); i++) {
-        if (Word::charAt(with, i) == "C"){
+        string ch = withChars[i];
+        if (ch == "C"){
             return searchString.find('c') != string::npos || searchString.find("ç") != string::npos;
         } else {
-            if (Word::charAt(with, i) == "D"){
+            if (ch == "D"){
                 return searchString.find('d') != string::npos || searchString.find('t') != string::npos;
             } else {
-                if (Word::charAt(with, i) == "c" || Word::charAt(with, i) == "e" || Word::charAt(with, i) == "r" || Word::charAt(with, i) == "p" ||
-                    Word::charAt(with, i) == "l" || Word::charAt(with, i) == "b" || Word::charAt(with, i) == "g" || Word::charAt(with, i) == "o" || 
-                    Word::charAt(with, i) == "m" || Word::charAt(with, i) == "v" || Word::charAt(with, i) == "i" || Word::charAt(with, i) == "ü" || Word::charAt(with, i) == "z"){
-                    return searchString.find(Word::charAt(with, i)) != string::npos;
+                if (ch == "c" || ch == "e" || ch == "r" || ch == "p" || ch == "l" || ch == "b" || ch == "g" || ch == "o" ||
+                    ch == "m" || ch == "v" || ch == "i" || ch == "ü" || ch == "z"){
+                    return searchString.find(ch) != string::npos;
                 } else {
-                    if (Word::charAt(with, i) == "A"){
+                    if (ch == "A"){
                         return searchString.find('a') != string::npos || searchString.find('e') != string::npos;
                     } else {
-                        if (Word::charAt(with, i) == "k"){
+                        if (ch == "k"){
                             return searchString.find('k') != string::npos || searchString.find('g') != string::npos || searchString.find("ğ") != string::npos;
                         }
                     }
@@ -111,6 +112,7 @@ bool Transition::transitionPossible(string currentSurfaceForm, string realSurfac
             }
         }
     }
+    delete[] withChars;
     return true;
 }
 
@@ -172,18 +174,22 @@ bool Transition::transitionPossible(TxtWord* root, State fromState) {
  * @return the last vowel.
  */
 string Transition::beforeLastVowel(string stem) {
-    int i, before = 1;
-    string last = "0";
-    for (i = Word::size(stem) - 1; i >= 0; i--) {
-        if (TurkishLanguage::isVowel(Word::charAt(stem, i))) {
+    int before = 1;
+    string ch, last = "0";
+    string* stemChars = Word::allCharacters(stem);
+    for (int i = Word::size(stem) - 1; i >= 0; i--) {
+        ch = stemChars[i];
+        if (TurkishLanguage::isVowel(ch)) {
             if (before == 1) {
-                last = Word::charAt(stem, i);
+                last = ch;
                 before--;
                 continue;
             }
-            return Word::charAt(stem, i);
+            delete[] stemChars;
+            return ch;
         }
     }
+    delete[] stemChars;
     return last;
 }
 
@@ -195,17 +201,23 @@ string Transition::beforeLastVowel(string stem) {
  * @return the last vowel.
  */
 string Transition::lastVowel(string stem) {
-    int i;
-    for (i = Word::size(stem) - 1; i >= 0; i--) {
-        if (TurkishLanguage::isVowel(Word::charAt(stem, i))) {
-            return Word::charAt(stem, i);
+    string ch;
+    string* stemChars = Word::allCharacters(stem);
+    for (int i = Word::size(stem) - 1; i >= 0; i--) {
+        ch = stemChars[i];
+        if (TurkishLanguage::isVowel(ch)) {
+            delete[] stemChars;
+            return ch;
         }
     }
-    for (i = Word::size(stem) - 1; i >= 0; i--) {
-        if (Word::charAt(stem, i) >= "0" && Word::charAt(stem, i) <= "9") {
-            return Word::charAt(stem, i);
+    for (int i = Word::size(stem) - 1; i >= 0; i--) {
+        ch = stemChars[i];
+        if (ch >= "0" && ch <= "9") {
+            delete[] stemChars;
+            return ch;
         }
     }
+    delete[] stemChars;
     return "0";
 }
 
@@ -430,8 +442,9 @@ string Transition::makeTransition(TxtWord *root, string stem, State startState) 
             }
         }
     }
+    string* withChars = Word::allCharacters(with);
     if (TurkishLanguage::isConsonantDrop(withFirstChar()) && !TurkishLanguage::isVowel(Word::lastChar(stem)) && (root->isNumeral() || root->isReal() || root->isFraction() || root->isTime() || root->isDate() || root->isPercent() || root->isRange()) && (Word::endsWith(root->getName(), "1") || Word::endsWith(root->getName(), "3") || Word::endsWith(root->getName(), "4") || Word::endsWith(root->getName(), "5") || Word::endsWith(root->getName(), "8") || Word::endsWith(root->getName(), "9") || Word::endsWith(root->getName(), "10") || Word::endsWith(root->getName(), "30") || Word::endsWith(root->getName(), "40") || Word::endsWith(root->getName(), "60") || Word::endsWith(root->getName(), "70") || Word::endsWith(root->getName(), "80") || Word::endsWith(root->getName(), "90") || Word::endsWith(root->getName(), "00"))) {
-        if (Word::charAt(with, 0) == "'") {
+        if (withChars[0] == "'") {
             formation = formation + '\'';
             i = 2;
         } else {
@@ -439,7 +452,7 @@ string Transition::makeTransition(TxtWord *root, string stem, State startState) 
         }
     } else {
         if ((TurkishLanguage::isConsonantDrop(withFirstChar()) && TurkishLanguage::isConsonant(lastPhoneme(stem))) || (rootWord && root->consonantSMayInsertedDuringPossesiveSuffixation())) {
-            if (Word::charAt(with, 0) == "'") {
+            if (withChars[0] == "'") {
                 formation = formation + '\'';
                 if (root->isAbbreviation())
                     i = 1;
@@ -451,32 +464,32 @@ string Transition::makeTransition(TxtWord *root, string stem, State startState) 
         }
     }
     for (; i < Word::size(with); i++) {
-        if (Word::charAt(with, i) == "D"){
+        if (withChars[i] == "D"){
             formation = resolveD(root, formation);
         } else {
-            if (Word::charAt(with, i) == "A"){
+            if (withChars[i] == "A"){
                 formation = resolveA(root, formation, rootWord);
             } else {
-                if (Word::charAt(with, i) == "H"){
-                    if (Word::charAt(with, 0) != "'") {
+                if (withChars[i] == "H"){
+                    if (withChars[0] != "'") {
                         formation = resolveH(root, formation, i == 0, Word::startsWith(with, "Hyor"), rootWord);
                     } else {
                         formation = resolveH(root, formation, i == 1, false, rootWord);
                     }
                 } else {
-                    if (Word::charAt(with, i) == "C"){
+                    if (withChars[i] == "C"){
                         formation = resolveC(formation);
                     } else {
-                        if (Word::charAt(with, i) == "S"){
+                        if (withChars[i] == "S"){
                             formation = resolveS(formation);
                         } else {
-                            if (Word::charAt(with, i) == "Ş"){
+                            if (withChars[i] == "Ş"){
                                 formation = resolveSh(formation);
                             } else {
-                                if (i == Word::size(with) - 1 && Word::charAt(with, i) == "s") {
+                                if (i == Word::size(with) - 1 && withChars[i] == "s") {
                                     formation += "ş";
                                 } else {
-                                    formation += Word::charAt(with, i);
+                                    formation += withChars[i];
                                 }
                             }
                         }
@@ -486,6 +499,7 @@ string Transition::makeTransition(TxtWord *root, string stem, State startState) 
         }
         formationToCheck = formation;
     }
+    delete[] withChars;
     return formation;
 }
 
