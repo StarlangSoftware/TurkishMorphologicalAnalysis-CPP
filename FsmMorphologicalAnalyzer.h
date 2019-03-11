@@ -5,6 +5,7 @@
 #ifndef MORPHOLOGICALANALYSIS_FSMMORPHOLOGICALANALYZER_H
 #define MORPHOLOGICALANALYSIS_FSMMORPHOLOGICALANALYZER_H
 
+#include <regex>
 #include "Trie.h"
 #include "Sentence.h"
 #include "FiniteStateMachine.h"
@@ -20,6 +21,7 @@ private:
     int MAX_DISTANCE = 2;
     TxtDictionary dictionary;
     LRUCache<string, FsmParseList> cache;
+    map<string, regex> mostUsedPatterns;
     bool isPossibleSubstring(string shortString, string longString, TxtWord* root);
     void initializeParseList(vector<FsmParse>& fsmParse, TxtWord* root, bool isProper);
     vector<FsmParse> initializeRootList(string surfaceForm, bool isProper);
@@ -31,6 +33,7 @@ private:
     bool isInteger(string surfaceForm);
     bool isDouble(string surfaceForm);
     bool isNumber(string surfaceForm);
+    bool patternMatches(string expr, string value);
 public:
     explicit FsmMorphologicalAnalyzer(string fileName = "turkish_finite_state_machine.xml", TxtDictionary dictionary = TxtDictionary(), int cacheSize = 10000);
     explicit FsmMorphologicalAnalyzer(string dictionaryFileName, string fileName = "turkish_finite_state_machine.xml");
