@@ -18,7 +18,7 @@ void checkSpeed(){
     FsmMorphologicalAnalyzer fsm = FsmMorphologicalAnalyzer("turkish_finite_state_machine.xml", TxtDictionary(), 0);
     string line;
     ifstream inputFile;
-    inputFile.open("gazete.txt", ifstream :: in);
+    inputFile.open("deneme.txt", ifstream :: in);
     while (inputFile.good()) {
         getline(inputFile, line);
         Sentence sentence = Sentence(line);
@@ -44,6 +44,6 @@ void analyze(){
 }
 
 int main(){
-    //analyze();
-    checkSpeed();
+    analyze();
+    //checkSpeed();
 }
