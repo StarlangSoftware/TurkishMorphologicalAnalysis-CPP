@@ -18,7 +18,7 @@ void checkSpeed(){
     FsmMorphologicalAnalyzer fsm = FsmMorphologicalAnalyzer("turkish_finite_state_machine.xml", TxtDictionary(), 0);
     string line;
     ifstream inputFile;
-    inputFile.open("deneme.txt", ifstream :: in);
+    inputFile.open("gazete.txt", ifstream :: in);
     while (inputFile.good()) {
         getline(inputFile, line);
         Sentence sentence = Sentence(line);
@@ -33,6 +33,19 @@ void checkSpeed(){
     inputFile.close();
 }
 
+void checkSpeedSameWord(){
+    string word;
+    FsmMorphologicalAnalyzer fsm = FsmMorphologicalAnalyzer("turkish_finite_state_machine.xml", TxtDictionary(), 0);
+    cout << "->";
+    cin >> word;
+    for (int i = 0; i < 100000; i++){
+        if (i % 1000 == 0){
+            cout << i << "\n";
+        }
+        FsmParseList fsmParses = fsm.morphologicalAnalysis(word);
+    }
+}
+
 void analyze(){
     FsmMorphologicalAnalyzer fsm = FsmMorphologicalAnalyzer();
     string word = "Kerem topu Aysu'ya at";
@@ -44,6 +57,7 @@ void analyze(){
 }
 
 int main(){
-    analyze();
+    //analyze();
     //checkSpeed();
+    checkSpeedSameWord();
 }
