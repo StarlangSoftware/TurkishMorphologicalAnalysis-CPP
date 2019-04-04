@@ -24,10 +24,10 @@ public:
     bool containsTag(MorphologicalTag tag);
     bool containsPossessive();
     static const int TAG_SIZE = 129;
+    static const MorphologicalTag morphoTags[TAG_SIZE];
 private:
     vector<MorphologicalTag> IG;
     static const string tags[TAG_SIZE];
-    static const MorphologicalTag morphoTags[TAG_SIZE];
 };
 
 #endif //MORPHOLOGICALANALYSIS_INFLECTIONALGROUP_H
