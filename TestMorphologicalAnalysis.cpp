@@ -57,7 +57,7 @@ void analyze(){
 }
 
 int main(){
-    //analyze();
+    analyze();
     //checkSpeed();
-    checkSpeedSameWord();
+    //checkSpeedSameWord();
 }
