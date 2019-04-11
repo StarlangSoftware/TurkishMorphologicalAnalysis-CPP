@@ -6,6 +6,25 @@
 #include <fstream>
 #include "FsmMorphologicalAnalyzer.h"
 
+void generateAllParses(FsmMorphologicalAnalyzer fsm, TxtWord* txtWord){
+    vector<FsmParse> fsmParses = fsm.generateAllParses(txtWord, txtWord->charCount() + 7);
+    for (FsmParse fsmParse : fsmParses){
+        cout << fsmParse.getSurfaceForm() << "\n";
+    }
+}
+
+void allParses(){
+    TxtDictionary dictionary = TxtDictionary();
+    FsmMorphologicalAnalyzer fsm = FsmMorphologicalAnalyzer();
+    string word = "ali topu at";
+    while (Word::size(word) > 1){
+        cout << "->";
+        cin >> word;
+        TxtWord* txtWord = (TxtWord*) dictionary.getWord(word);
+        generateAllParses(fsm, txtWord);
+    }
+}
+
 void testWord(FsmMorphologicalAnalyzer fsm, string word){
     FsmParseList fsmParses = fsm.morphologicalAnalysis(move(word));
     for (int i = 0; i < fsmParses.size(); i++){
@@ -57,7 +76,8 @@ void analyze(){
 }
 
 int main(){
-    analyze();
+    allParses();
+    //analyze();
     //checkSpeed();
     //checkSpeedSameWord();
 }

@@ -24,9 +24,12 @@ private:
     map<string, regex> mostUsedPatterns;
     bool isPossibleSubstring(string shortString, string longString, TxtWord* root);
     void initializeParseList(vector<FsmParse>& fsmParse, TxtWord* root, bool isProper);
-    vector<FsmParse> initializeRootList(string surfaceForm, bool isProper);
+    void initializeParseListFromRoot(vector<FsmParse>& fsmParse, TxtWord* root, bool isProper);
+    vector<FsmParse> initializeParseListFromSurfaceForm(string surfaceForm, bool isProper);
+    void addNewParsesFromCurrentParse(FsmParse currentFsmParse, vector<FsmParse>& fsmParse, int maxLength, TxtWord* root);
     void addNewParsesFromCurrentParse(FsmParse currentFsmParse, vector<FsmParse>& fsmParse, string surfaceForm, TxtWord* root);
     bool parseExists(vector<FsmParse>& fsmParse, string surfaceForm);
+    vector<FsmParse> parseWord(vector<FsmParse> fsmParse, int maxLength);
     vector<FsmParse> parseWord(vector<FsmParse> fsmParse, string surfaceForm);
     bool analysisExists(TxtWord* rootWord, string surfaceForm, bool isProper);
     vector<FsmParse> analysis(string surfaceForm, bool isProper);
@@ -41,6 +44,7 @@ public:
     FiniteStateMachine getFiniteStateMachine();
     unordered_set<string> getPossibleWords(MorphologicalParse morphologicalParse, MetamorphicParse parse);
     vector<FsmParse> morphologicalAnalysis(TxtWord* root, string surfaceForm, string state);
+    vector<FsmParse> generateAllParses(TxtWord* root, int maxLength);
     vector<FsmParse> morphologicalAnalysis(TxtWord* root, string surfaceForm);
     bool isProperNoun(string surfaceForm);
     FsmParseList robustMorphologicalAnalysis(string surfaceForm);
