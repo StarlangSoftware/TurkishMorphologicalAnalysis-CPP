@@ -480,7 +480,7 @@ bool MorphologicalParse::containsTag(MorphologicalTag tag) {
  *
  * @return result {@link String}.
  */
-string MorphologicalParse::to_String() {
+string MorphologicalParse::to_string() {
     string result = root->getName() + "+" + inflectionalGroups.at(0).to_String();
     for (int i = 1; i < inflectionalGroups.size(); i++)
         result = result + "^DB+" + inflectionalGroups.at(i).to_String();

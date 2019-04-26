@@ -5,6 +5,7 @@
 #include "FsmParse.h"
 #include "TxtWord.h"
 
+using namespace std;
 /**
  * A constructor of {@link FsmParse} class which takes a {@link Word} as an input and assigns it to root variable.
  *
@@ -25,7 +26,7 @@ FsmParse::FsmParse(Word* root){
  * @param startState {@link State} input.
  */
 FsmParse::FsmParse(int number, State startState) {
-    TxtWord* num = new TxtWord(to_string(number));
+    TxtWord* num = new TxtWord(std::to_string(number));
     num->addFlag("IS_SAYI");
     this->root = num;
     this->form = root->getName();
@@ -46,7 +47,7 @@ FsmParse::FsmParse(int number, State startState) {
  * @param startState {@link State} input.
  */
 FsmParse::FsmParse(double number, State startState) {
-    TxtWord* num = new TxtWord(to_string(number));
+    TxtWord* num = new TxtWord(std::to_string(number));
     num->addFlag("IS_SAYI");
     this->root = num;
     this->form = root->getName();
