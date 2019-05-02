@@ -201,25 +201,25 @@ string FsmParseList::defaultCaseForParseString(string rootForm, string parseStri
  *
  * @return FsmParse if it contains defaultCase, null otherwise.
  */
-FsmParse FsmParseList::caseDisambiguator() {
+FsmParse* FsmParseList::caseDisambiguator() {
     string defaultCase;
     string parseString = parsesWithoutPrefixAndSuffix();
     if (fsmParses.size() == 1) {
-        return fsmParses.at(0);
+        return &(fsmParses.at(0));
     }
-    if (fsmParses.size() == 0) {
-        return FsmParse();
+    if (fsmParses.empty()) {
+        return nullptr;
     }
     defaultCase = defaultCaseForParseString(fsmParses.at(0).getWord()->getName(), parseString, fsmParses.at(0).getFinalPos());
-    if (defaultCase != "") {
+    if (!defaultCase.empty()) {
         for (int i = 0; i < fsmParses.size(); i++) {
             FsmParse fsmParse = fsmParses.at(i);
             if (fsmParse.getTransitionList().find(defaultCase) != string::npos) {
-                return fsmParse;
+                return &(fsmParses.at(i));
             }
         }
     }
-    return FsmParse();
+    return nullptr;
 }
 
 /**

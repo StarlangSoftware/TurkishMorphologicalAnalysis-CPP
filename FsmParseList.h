@@ -18,7 +18,7 @@ public:
     string rootWords();
     void reduceToParsesWithSameRootAndPos(Word* currentWithPos);
     void reduceToParsesWithSameRoot(string currentRoot);
-    FsmParse caseDisambiguator();
+    FsmParse* caseDisambiguator();
     vector<FsmParseList> constructParseListForDifferentRootWithPos();
     string parsesWithoutPrefixAndSuffix();
     string to_String();
