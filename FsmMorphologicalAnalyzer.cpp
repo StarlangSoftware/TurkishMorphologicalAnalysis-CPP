@@ -143,7 +143,7 @@ FsmMorphologicalAnalyzer::getPossibleWords(MorphologicalParse morphologicalParse
  * @param root        the root of the long string.
  * @return true if given substring is the actual substring of the longString, false otherwise.
  */
-bool FsmMorphologicalAnalyzer::isPossibleSubstring(string shortString, string longString, TxtWord *root) {
+bool FsmMorphologicalAnalyzer::isPossibleSubstring(const string& shortString, const string& longString, TxtWord *root) {
     bool rootWord = (shortString == root->getName() || longString == root->getName());
     int distance = 0, j, last = 1;
     for (j = 0; j < Word::size(shortString); j++) {
@@ -503,7 +503,7 @@ void FsmMorphologicalAnalyzer::initializeParseListFromRoot(vector<FsmParse>& par
  * @param isProper    is used to check a word is proper or not.
  * @return initialFsmParse ArrayList.
  */
-vector<FsmParse> FsmMorphologicalAnalyzer::initializeParseListFromSurfaceForm(string surfaceForm, bool isProper) {
+vector<FsmParse> FsmMorphologicalAnalyzer::initializeParseListFromSurfaceForm(const string& surfaceForm, bool isProper) {
     TxtWord* root;
     vector<FsmParse> initialFsmParse;
     if (surfaceForm.empty()) {
@@ -555,7 +555,7 @@ void FsmMorphologicalAnalyzer::addNewParsesFromCurrentParse(FsmParse currentFsmP
  * @param root            TxtWord used to make transition.
  */
 void FsmMorphologicalAnalyzer::addNewParsesFromCurrentParse(FsmParse currentFsmParse, vector<FsmParse>& fsmParse,
-                                                            string surfaceForm, TxtWord *root) {
+                                                            const string& surfaceForm, TxtWord *root) {
     State currentState = currentFsmParse.getFinalSuffix();
     string currentSurfaceForm = currentFsmParse.getSurfaceForm();
     for (Transition currentTransition : finiteStateMachine.getTransitions(currentState)) {
@@ -578,7 +578,7 @@ void FsmMorphologicalAnalyzer::addNewParsesFromCurrentParse(FsmParse currentFsmP
  * @param surfaceForm String to use during transition.
  * @return true when the currentState is end state and input surfaceForm id equal to currentSurfaceForm, otherwise false.
  */
-bool FsmMorphologicalAnalyzer::parseExists(vector<FsmParse>& fsmParse, string surfaceForm) {
+bool FsmMorphologicalAnalyzer::parseExists(vector<FsmParse>& fsmParse, const string& surfaceForm) {
     FsmParse currentFsmParse;
     TxtWord* root;
     State currentState;
@@ -645,7 +645,7 @@ vector<FsmParse> FsmMorphologicalAnalyzer::parseWord(vector<FsmParse> fsmParse, 
  * @param surfaceForm String to use during transition.
  * @return result {@link ArrayList} which has the currentFsmParse.
  */
-vector<FsmParse> FsmMorphologicalAnalyzer::parseWord(vector<FsmParse> fsmParse, string surfaceForm) {
+vector<FsmParse> FsmMorphologicalAnalyzer::parseWord(vector<FsmParse> fsmParse, const string& surfaceForm) {
     vector<FsmParse> result;
     FsmParse currentFsmParse;
     TxtWord* root;
@@ -686,7 +686,7 @@ vector<FsmParse> FsmMorphologicalAnalyzer::parseWord(vector<FsmParse> fsmParse, 
  * @param state       String input.
  * @return parseWord method with newly populated FsmParse ArrayList and input surfaceForm.
  */
-vector<FsmParse> FsmMorphologicalAnalyzer::morphologicalAnalysis(TxtWord *root, string surfaceForm, string state) {
+vector<FsmParse> FsmMorphologicalAnalyzer::morphologicalAnalysis(TxtWord *root, const string& surfaceForm, string state) {
     vector<FsmParse> initialFsmParse;
     initialFsmParse.emplace_back(FsmParse(root, finiteStateMachine.getState(move(state))));
     return parseWord(initialFsmParse, move(surfaceForm));
@@ -715,7 +715,7 @@ vector<FsmParse> FsmMorphologicalAnalyzer::generateAllParses(TxtWord *root, int 
  * @param surfaceForm String input to use for parsing.
  * @return parseWord method with newly populated FsmParse ArrayList and input surfaceForm.
  */
-vector<FsmParse> FsmMorphologicalAnalyzer::morphologicalAnalysis(TxtWord *root, string surfaceForm) {
+vector<FsmParse> FsmMorphologicalAnalyzer::morphologicalAnalysis(TxtWord *root, const string& surfaceForm) {
     vector<FsmParse> initialFsmParse;
     initializeParseListFromRoot(initialFsmParse, root, isProperNoun(surfaceForm));
     return parseWord(initialFsmParse, surfaceForm);
@@ -731,7 +731,7 @@ vector<FsmParse> FsmMorphologicalAnalyzer::morphologicalAnalysis(TxtWord *root, 
  * @param isProper    boolean variable indicates a word is proper or not.
  * @return true if surfaceForm is punctuation or double, otherwise returns parseExist method with given surfaceForm.
  */
-bool FsmMorphologicalAnalyzer::analysisExists(TxtWord *rootWord, string surfaceForm, bool isProper) {
+bool FsmMorphologicalAnalyzer::analysisExists(TxtWord *rootWord, const string& surfaceForm, bool isProper) {
     vector<FsmParse> initialFsmParse;
     if (Word::isPunctuation(surfaceForm)) {
         return true;
@@ -757,7 +757,7 @@ bool FsmMorphologicalAnalyzer::analysisExists(TxtWord *rootWord, string surfaceF
  * @param isProper    is used to indicate the proper words.
  * @return ArrayList type initialFsmParse which holds the analyses.
  */
-vector<FsmParse> FsmMorphologicalAnalyzer::analysis(string surfaceForm, bool isProper) {
+vector<FsmParse> FsmMorphologicalAnalyzer::analysis(const string& surfaceForm, bool isProper) {
     vector<FsmParse> initialFsmParse;
     FsmParse fsmParse;
     if (Word::isPunctuation(surfaceForm) && surfaceForm != "%") {
@@ -846,7 +846,7 @@ vector<FsmParse> FsmMorphologicalAnalyzer::analysis(string surfaceForm, bool isP
     return resultFsmParse;
 }
 
-bool FsmMorphologicalAnalyzer::patternMatches(string expr, string value){
+bool FsmMorphologicalAnalyzer::patternMatches(string expr, const string& value){
     regex r;
     if (mostUsedPatterns.find(expr) == mostUsedPatterns.end()){
         r = regex(expr);
@@ -864,7 +864,7 @@ bool FsmMorphologicalAnalyzer::patternMatches(string expr, string value){
  * @param surfaceForm String to check for proper noun.
  * @return false if surfaceForm is null or length of 0, return true if it is a letter.
  */
-bool FsmMorphologicalAnalyzer::isProperNoun(string surfaceForm) {
+bool FsmMorphologicalAnalyzer::isProperNoun(const string& surfaceForm) {
     if (surfaceForm.empty()) {
         return false;
     }
@@ -880,7 +880,7 @@ bool FsmMorphologicalAnalyzer::isProperNoun(string surfaceForm) {
  * @param surfaceForm String to analyse.
  * @return FsmParseList type currentParse which holds morphological analysis of the surfaceForm.
  */
-FsmParseList FsmMorphologicalAnalyzer::robustMorphologicalAnalysis(string surfaceForm) {
+FsmParseList FsmMorphologicalAnalyzer::robustMorphologicalAnalysis(const string& surfaceForm) {
     vector<FsmParse> fsmParse;
     FsmParseList currentParse;
     if (surfaceForm.empty()) {
@@ -944,7 +944,7 @@ FsmParseList *FsmMorphologicalAnalyzer::robustMorphologicalAnalysis(Sentence sen
  * @param surfaceForm String to check.
  * @return true if surfaceForm matches with the regex.
  */
-bool FsmMorphologicalAnalyzer::isInteger(string surfaceForm) {
+bool FsmMorphologicalAnalyzer::isInteger(const string& surfaceForm) {
     if (!patternMatches("\\+?\\d+", surfaceForm)){
         return false;
     }
@@ -972,7 +972,7 @@ bool FsmMorphologicalAnalyzer::isInteger(string surfaceForm) {
  * @param surfaceForm String to check.
  * @return true if surfaceForm matches with the regex.
  */
-bool FsmMorphologicalAnalyzer::isDouble(string surfaceForm) {
+bool FsmMorphologicalAnalyzer::isDouble(const string& surfaceForm) {
     return patternMatches("\\+?(\\d+)?\\.\\d*", surfaceForm);
 }
 
@@ -1015,7 +1015,7 @@ bool FsmMorphologicalAnalyzer::isNumber(string surfaceForm) {
  * @return true an analysis exists, otherwise return false.
  */
 bool FsmMorphologicalAnalyzer::morphologicalAnalysisExists(TxtWord *rootWord, string surfaceForm) {
-    return analysisExists(rootWord, Word::toLowerCase(surfaceForm), true);
+    return analysisExists(rootWord, Word::toLowerCase(move(surfaceForm)), true);
 }
 
 /**
@@ -1035,7 +1035,7 @@ bool FsmMorphologicalAnalyzer::morphologicalAnalysisExists(TxtWord *rootWord, st
  * @param surfaceForm String to analyse.
  * @return fsmParseList which holds the analysis.
  */
-FsmParseList FsmMorphologicalAnalyzer::morphologicalAnalysis(string surfaceForm) {
+FsmParseList FsmMorphologicalAnalyzer::morphologicalAnalysis(const string& surfaceForm) {
     FsmParseList fsmParseList;
     if (cache.getCacheSize() > 0 && cache.contains(surfaceForm)) {
         return cache.get(surfaceForm);
