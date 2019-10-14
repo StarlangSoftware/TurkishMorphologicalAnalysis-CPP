@@ -422,6 +422,10 @@ void FsmMorphologicalAnalyzer::initializeParseList(vector<FsmParse>& fsmParse, T
                     currentFsmParse = FsmParse(root, finiteStateMachine.getState("NominalRoot"));
                     fsmParse.push_back(currentFsmParse);
                 }
+                if (root->isAbbreviation()) {
+                    currentFsmParse = FsmParse(root, finiteStateMachine.getState("NominalRoot"));
+                    fsmParse.push_back(currentFsmParse);
+                }
                 if (root->isProperNoun() && isProper) {
                     currentFsmParse = FsmParse(root, finiteStateMachine.getState("ProperRoot"));
                     fsmParse.push_back(currentFsmParse);
