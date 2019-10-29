@@ -56,6 +56,7 @@ public:
     bool isPlural();
     bool isAuxiliary();
     bool containsTag(MorphologicalTag tag);
+    string getTreePos();
     string to_string();
 };
 
