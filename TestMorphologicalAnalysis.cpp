@@ -76,8 +76,8 @@ void analyze(){
 }
 
 int main(){
-    allParses();
-    //analyze();
+    //allParses();
+    analyze();
     //checkSpeed();
     //checkSpeedSameWord();
 }

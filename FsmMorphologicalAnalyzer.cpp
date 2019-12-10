@@ -908,17 +908,18 @@ FsmParseList FsmMorphologicalAnalyzer::robustMorphologicalAnalysis(const string&
  * The morphologicalAnalysis is used for debug purposes.
  *
  * @param sentence  to get word from.
- * @param debugMode states whether in the debug mode.
  * @return FsmParseList type result.
  */
-FsmParseList *FsmMorphologicalAnalyzer::morphologicalAnalysis(Sentence sentence, bool debugMode) {
+FsmParseList *FsmMorphologicalAnalyzer::morphologicalAnalysis(Sentence sentence) {
     FsmParseList wordFsmParseList;
     auto* result = new FsmParseList[sentence.wordCount()];
     for (int i = 0; i < sentence.wordCount(); i++) {
-        wordFsmParseList = morphologicalAnalysis(sentence.getWord(i)->getName());
-        if (wordFsmParseList.size() == 0 && debugMode) {
-            cout << "Word " + sentence.getWord(i)->getName() + " can not be parsed\n";
+        string originalForm = sentence.getWord(i)->getName();
+        string spellCorrectedForm = dictionary.getCorrectForm(originalForm);
+        if (spellCorrectedForm.empty()){
+            spellCorrectedForm = originalForm;
         }
+        wordFsmParseList = morphologicalAnalysis(spellCorrectedForm);
         result[i] = wordFsmParseList;
     }
     return result;
@@ -935,7 +936,12 @@ FsmParseList *FsmMorphologicalAnalyzer::robustMorphologicalAnalysis(Sentence sen
     FsmParseList fsmParseList;
     auto* result = new FsmParseList[sentence.wordCount()];
     for (int i = 0; i < sentence.wordCount(); i++) {
-        fsmParseList = robustMorphologicalAnalysis(sentence.getWord(i)->getName());
+        string originalForm = sentence.getWord(i)->getName();
+        string spellCorrectedForm = dictionary.getCorrectForm(originalForm);
+        if (spellCorrectedForm.empty()){
+            spellCorrectedForm = originalForm;
+        }
+        fsmParseList = robustMorphologicalAnalysis(spellCorrectedForm);
         result[i] = fsmParseList;
     }
     return result;

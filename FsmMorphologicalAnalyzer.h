@@ -48,7 +48,7 @@ public:
     vector<FsmParse> morphologicalAnalysis(TxtWord* root, const string& surfaceForm);
     bool isProperNoun(const string& surfaceForm);
     FsmParseList robustMorphologicalAnalysis(const string& surfaceForm);
-    FsmParseList* morphologicalAnalysis(Sentence sentence, bool debugMode);
+    FsmParseList* morphologicalAnalysis(Sentence sentence);
     FsmParseList* robustMorphologicalAnalysis(Sentence sentence);
     FsmParseList morphologicalAnalysis(const string& surfaceForm);
     bool morphologicalAnalysisExists(TxtWord* rootWord, string surfaceForm);
