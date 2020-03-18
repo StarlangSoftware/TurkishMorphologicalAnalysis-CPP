@@ -15,8 +15,8 @@ private:
     void loadMisspelledWords(const string& filename);
     void addWordWhenRootSoften(Trie* trie, string last, string root, TxtWord* word);
 public:
-    explicit TxtDictionary(string filename = "turkish_dictionary.txt", Comparator comparator = Comparator::TURKISH);
-    explicit TxtDictionary(string filename, Comparator comparator, string misspelledFileName);
+    explicit TxtDictionary(string filename, Comparator comparator);
+    explicit TxtDictionary(string filename = "turkish_dictionary.txt", Comparator comparator = Comparator::TURKISH, string misspelledFileName = "turkish_misspellings.txt");
     TxtDictionary clone();
     bool addWithFlag(string name, string flag);
     void addNumber(string name);

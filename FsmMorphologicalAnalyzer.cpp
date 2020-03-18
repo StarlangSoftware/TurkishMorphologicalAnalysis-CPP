@@ -27,7 +27,7 @@ FsmMorphologicalAnalyzer::FsmMorphologicalAnalyzer(string fileName, TxtDictionar
  * @param fileName           the file to read the finite state machine.
  * @param dictionaryFileName the file to read the dictionary.
  */
-FsmMorphologicalAnalyzer::FsmMorphologicalAnalyzer(string dictionaryFileName, string fileName) : FsmMorphologicalAnalyzer(move(fileName), TxtDictionary(move(dictionaryFileName), Comparator::TURKISH)){
+FsmMorphologicalAnalyzer::FsmMorphologicalAnalyzer(string dictionaryFileName, string fileName) : FsmMorphologicalAnalyzer(move(fileName), TxtDictionary(move(dictionaryFileName), Comparator::TURKISH, "turkish_misspellings.txt")){
 }
 
 /**
