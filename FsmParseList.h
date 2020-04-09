@@ -17,6 +17,7 @@ public:
     FsmParse getFsmParse(int index);
     string rootWords();
     void reduceToParsesWithSameRootAndPos(Word* currentWithPos);
+    FsmParse getParseWithLongestRootWord();
     void reduceToParsesWithSameRoot(string currentRoot);
     FsmParse* caseDisambiguator();
     vector<FsmParseList> constructParseListForDifferentRootWithPos();

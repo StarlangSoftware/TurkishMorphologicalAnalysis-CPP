@@ -86,6 +86,24 @@ void FsmParseList::reduceToParsesWithSameRootAndPos(Word* currentWithPos) {
 }
 
 /**
+ * The getParseWithLongestRootWord method returns the parse with the longest root word. If more than one parse has the
+ * longest root word, the first parse with that root is returned.
+ *
+ * @return FsmParse Parse with the longest root word.
+ */
+FsmParse FsmParseList::getParseWithLongestRootWord() {
+    FsmParse bestParse;
+    int maxLength = -1;
+    for (auto & fsmParse : fsmParses){
+        if (fsmParse.getWord()->getName().length() > maxLength){
+            maxLength = fsmParse.getWord()->getName().length();
+            bestParse = fsmParse;
+        }
+    }
+    return bestParse;
+}
+
+/**
  * The reduceToParsesWithSameRoot method takes a {@link String} currentWithPos as an input and loops i times till
  * i equals to the size of the fsmParses {@link vector}. If the given currentRoot does not equal to the root of ith item of
  * fsmParses, it removes the ith item from the {@link vector}.
