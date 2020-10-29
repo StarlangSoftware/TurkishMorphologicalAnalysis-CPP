@@ -1122,7 +1122,7 @@ FsmParseList FsmMorphologicalAnalyzer::morphologicalAnalysis(const string& surfa
         }
     }
     fsmParseList = FsmParseList(fsmParse);
-    if (cache.getCacheSize() > 0){
+    if (cache.getCacheSize() > 0 && fsmParseList.size() > 0){
         cache.add(surfaceForm, fsmParseList);
     }
     return fsmParseList;
