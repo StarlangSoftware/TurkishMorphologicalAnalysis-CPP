@@ -6,6 +6,7 @@
 #define MORPHOLOGICALANALYSIS_FSMMORPHOLOGICALANALYZER_H
 
 #include <regex>
+#include <set>
 #include "Trie.h"
 #include "Sentence.h"
 #include "FiniteStateMachine.h"
@@ -22,6 +23,7 @@ private:
     TxtDictionary dictionary;
     LRUCache<string, FsmParseList> cache;
     map<string, regex> mostUsedPatterns;
+    set<string> parsedSurfaceForms;
     bool isPossibleSubstring(const string& shortString, const string& longString, TxtWord* root);
     void initializeParseList(vector<FsmParse>& fsmParse, TxtWord* root, bool isProper);
     void initializeParseListFromRoot(vector<FsmParse>& fsmParse, TxtWord* root, bool isProper);
@@ -40,6 +42,7 @@ private:
 public:
     explicit FsmMorphologicalAnalyzer(string fileName = "turkish_finite_state_machine.xml", TxtDictionary dictionary = TxtDictionary(), int cacheSize = 10000);
     explicit FsmMorphologicalAnalyzer(string dictionaryFileName, string fileName = "turkish_finite_state_machine.xml");
+    void addSurfaceForms(string fileName);
     TxtDictionary getDictionary();
     FiniteStateMachine getFiniteStateMachine();
     unordered_set<string> getPossibleWords(MorphologicalParse morphologicalParse, MetamorphicParse parse);

@@ -530,6 +530,344 @@ string MorphologicalParse::getTreePos() {
     return "-XXX-";
 }
 
+string MorphologicalParse::getPronType(){
+    string lemma = root->getName();
+    if (containsTag(MorphologicalTag::PERSONALPRONOUN)){
+        return "Prs";
+    }
+    if (lemma == "birbiri" || lemma == "birbirleri"){
+        return "Rcp";
+    }
+    if (lemma == "kim" || lemma == "nere" || lemma == "ne"
+        || lemma == "hangi" || lemma == "nasıl" || lemma == "kaç"
+        || lemma == "mi" || lemma == "mı" || lemma == "mu" || lemma == "mü"){
+        return "Int";
+    }
+    if (containsTag(MorphologicalTag::DEMONSTRATIVEPRONOUN)){
+        return "Dem";
+    }
+    return "";
+}
+
+string MorphologicalParse::getNumType(){
+    string lemma = root->getName();
+    if (containsTag(MorphologicalTag::CARDINAL) || containsTag(MorphologicalTag::NUMBER) || lemma == "kaç"){
+        return "Card";
+    }
+    if (containsTag(MorphologicalTag::ORDINAL) || lemma == "kaçıncı"){
+        return "Ord";
+    }
+    if (containsTag(MorphologicalTag::DISTRIBUTIVE)){
+        return "Dist";
+    }
+    return "";
+}
+
+string MorphologicalParse::getReflex(){
+    string lemma = root->getName();
+    if (lemma == "kendi"){
+        return "Yes";
+    }
+    return "";
+}
+
+string MorphologicalParse::getNumber(){
+    if (containsTag(MorphologicalTag::A1SG) || containsTag(MorphologicalTag::A2SG) || containsTag(MorphologicalTag::A3SG)
+        || containsTag(MorphologicalTag::P1SG) || containsTag(MorphologicalTag::P2SG) || containsTag(MorphologicalTag::P3SG)){
+        return "Sing";
+    }
+    if (containsTag(MorphologicalTag::A1PL) || containsTag(MorphologicalTag::A2PL) || containsTag(MorphologicalTag::A3PL)
+        || containsTag(MorphologicalTag::P1PL) || containsTag(MorphologicalTag::P2PL) || containsTag(MorphologicalTag::P3PL)){
+        return "Plur";
+    }
+    return "";
+}
+
+string MorphologicalParse::getCase(){
+    if (containsTag(MorphologicalTag::ACCUSATIVE) || containsTag(MorphologicalTag::PCACCUSATIVE)){
+        return "Acc";
+    }
+    if (containsTag(MorphologicalTag::DATIVE) || containsTag(MorphologicalTag::PCDATIVE)){
+        return "Dat";
+    }
+    if (containsTag(MorphologicalTag::GENITIVE) || containsTag(MorphologicalTag::PCGENITIVE)){
+        return "Gen";
+    }
+    if (containsTag(MorphologicalTag::LOCATIVE)){
+        return "Loc";
+    }
+    if (containsTag(MorphologicalTag::INSTRUMENTAL) || containsTag(MorphologicalTag::PCINSTRUMENTAL)){
+        return "Ins";
+    }
+    if (containsTag(MorphologicalTag::ABLATIVE) || containsTag(MorphologicalTag::PCABLATIVE)){
+        return "Abl";
+    }
+    if (containsTag(MorphologicalTag::NOMINATIVE) || containsTag(MorphologicalTag::PCNOMINATIVE)){
+        return "Nom";
+    }
+    return "";
+}
+
+string MorphologicalParse::getDefinite(){
+    string lemma = root->getName();
+    if (containsTag(MorphologicalTag::DETERMINER)){
+        if (lemma == "bir" || lemma == "bazı" || lemma == "birkaç"){
+            return "Ind";
+        }
+        if (lemma == "her" || lemma == "bu" || lemma == "şu" || lemma == "o" || lemma == "bütün"){
+            return "Def";
+        }
+    }
+    return "";
+}
+
+string MorphologicalParse::getDegree(){
+    string lemma = root->getName();
+    if (lemma == "daha"){
+        return "Cmp";
+    }
+    if (lemma == "en" && !isNoun()){
+        return "Sup";
+    }
+    return "";
+}
+
+string MorphologicalParse::getPolarity(){
+    if (containsTag(MorphologicalTag::POSITIVE)){
+        return "Pos";
+    }
+    if (containsTag(MorphologicalTag::NEGATIVE)){
+        return "Neg";
+    }
+    return "";
+}
+
+string MorphologicalParse::getPerson(){
+    if (containsTag(MorphologicalTag::A1SG) || containsTag(MorphologicalTag::A1PL)
+        || containsTag(MorphologicalTag::P1SG) || containsTag(MorphologicalTag::P1PL)){
+        return "1";
+    }
+    if (containsTag(MorphologicalTag::A2SG) || containsTag(MorphologicalTag::A2PL)
+        || containsTag(MorphologicalTag::P2SG) || containsTag(MorphologicalTag::P2PL)){
+        return "2";
+    }
+    if (containsTag(MorphologicalTag::A3SG) || containsTag(MorphologicalTag::A3PL)
+        || containsTag(MorphologicalTag::P3SG) || containsTag(MorphologicalTag::P3PL)){
+        return "3";
+    }
+    return "";
+}
+
+string MorphologicalParse::getVoice(){
+    if (containsTag(MorphologicalTag::PASSIVE)){
+        return "Pass";
+    }
+    if (containsTag(MorphologicalTag::RECIPROCAL)){
+        return "Rcp";
+    }
+    if (containsTag(MorphologicalTag::CAUSATIVE)){
+        return "Cau";
+    }
+    if (containsTag(MorphologicalTag::REFLEXIVE)){
+        return "Rfl";
+    }
+    return "";
+}
+
+string MorphologicalParse::getAspect(){
+    if (containsTag(MorphologicalTag::PASTTENSE) || containsTag(MorphologicalTag::NARRATIVE) || containsTag(MorphologicalTag::FUTURE)){
+        return "Perf";
+    }
+    if (containsTag(MorphologicalTag::PROGRESSIVE1) || containsTag(MorphologicalTag::PROGRESSIVE2)){
+        return "Prog";
+    }
+    if (containsTag(MorphologicalTag::AORIST)){
+        return "Hab";
+    }
+    if (containsTag(MorphologicalTag::HASTILY)){
+        return "Rapid";
+    }
+    if (containsTag(MorphologicalTag::START) || containsTag(MorphologicalTag::STAY) || containsTag(MorphologicalTag::REPEAT)){
+        return "Dur";
+    }
+    return "";
+}
+
+string MorphologicalParse::getTense(){
+    if (containsTag(MorphologicalTag::PASTTENSE)){
+        return "Past";
+    }
+    if (containsTag(MorphologicalTag::FUTURE)){
+        return "Fut";
+    }
+    if (containsTag(MorphologicalTag::NARRATIVE) && containsTag(MorphologicalTag::PASTTENSE)){
+        return "Pqp";
+    }
+    if (!containsTag(MorphologicalTag::PASTTENSE) && !containsTag(MorphologicalTag::FUTURE)){
+        return "Pres";
+    }
+    return "";
+}
+
+string MorphologicalParse::getMood(){
+    if (containsTag(MorphologicalTag::IMPERATIVE)){
+        return "Imp";
+    }
+    if (containsTag(MorphologicalTag::CONDITIONAL)){
+        return "Cnd";
+    }
+    if (containsTag(MorphologicalTag::DESIRE)){
+        return "Des";
+    }
+    if (containsTag(MorphologicalTag::OPTATIVE)){
+        return "Opt";
+    }
+    if (containsTag(MorphologicalTag::NECESSITY)){
+        return "Nec";
+    }
+    if (containsTag(MorphologicalTag::PASTTENSE) || containsTag(MorphologicalTag::PROGRESSIVE1) || containsTag(MorphologicalTag::FUTURE)){
+        return "Ind";
+    }
+    return "";
+}
+
+string MorphologicalParse::getVerbForm(){
+    if (containsTag(MorphologicalTag::PASTPARTICIPLE) || containsTag(MorphologicalTag::FUTUREPARTICIPLE) || containsTag(MorphologicalTag::PRESENTPARTICIPLE)){
+        return "Part";
+    }
+    if (containsTag(MorphologicalTag::INFINITIVE) || containsTag(MorphologicalTag::INFINITIVE2)){
+        return "Vnoun";
+    }
+    if (containsTag(MorphologicalTag::SINCEDOINGSO) || containsTag(MorphologicalTag::WITHOUTHAVINGDONESO) || containsTag(MorphologicalTag::WITHOUTBEINGABLETOHAVEDONESO) || containsTag(MorphologicalTag::BYDOINGSO) || containsTag(MorphologicalTag::AFTERDOINGSO) || containsTag(MorphologicalTag::INFINITIVE3)){
+        return "Conv";
+    }
+    if (containsTag(MorphologicalTag::AORIST) || containsTag(MorphologicalTag::PASTTENSE) || containsTag(MorphologicalTag::PROGRESSIVE1) || containsTag(MorphologicalTag::FUTURE)){
+        return "Fin";
+    }
+    return "";
+}
+
+vector<string> MorphologicalParse::getUniversalDependencyFeatures(){
+    vector<string> featureList;
+    string pronType = getPronType();
+    if (!pronType.empty()){
+        featureList.emplace_back("PronType=" + pronType);
+    }
+    string numType = getNumType();
+    if (!numType.empty()){
+        featureList.emplace_back("NumType=" + numType);
+    }
+    string reflex = getReflex();
+    if (!reflex.empty()){
+        featureList.emplace_back("Reflex=" + reflex);
+    }
+    string degree = getDegree();
+    if (!degree.empty()){
+        featureList.emplace_back("Degree=" + degree);
+    }
+    if (isNoun() || isVerb()){
+        string number = getNumber();
+        if (!number.empty()){
+            featureList.emplace_back("Number=" + number);
+        }
+    }
+    if (isNoun()) {
+        string case_ = getCase();
+        if (!case_.empty()){
+            featureList.emplace_back("Case=" + case_);
+        }
+    }
+    if (containsTag(MorphologicalTag::DETERMINER)){
+        string definite = getDefinite();
+        if (!definite.empty()){
+            featureList.emplace_back("Definite=" + definite);
+        }
+    }
+    if (isVerb()){
+        string polarity = getPolarity();
+        if (!polarity.empty()){
+            featureList.emplace_back("Polarity=" + polarity);
+        }
+        string person = getPerson();
+        if (!person.empty()){
+            featureList.emplace_back("Person=" + person);
+        }
+        string voice = getVoice();
+        if (!voice.empty()){
+            featureList.emplace_back("Voice=" + voice);
+        }
+        string aspect = getAspect();
+        if (!aspect.empty()){
+            featureList.emplace_back("Aspect=" + aspect);
+        }
+        string tense = getTense();
+        if (!tense.empty()){
+            featureList.emplace_back("Tense=" + tense);
+        }
+        string mood = getMood();
+        if (!mood.empty()){
+            featureList.emplace_back("Mood=" + mood);
+        }
+        string verbForm = getVerbForm();
+        if (!verbForm.empty()){
+            featureList.emplace_back("VerbForm=" + verbForm);
+        }
+    }
+    sort(featureList.begin(), featureList.end());
+    return featureList;
+}
+
+string MorphologicalParse::getUniversalDependencyPos(){
+    string lemma = root->getName();
+    if (lemma == "değil"){
+        return "AUX";
+    }
+    if (isProperNoun()){
+        return "PROPN";
+    }
+    if (isNoun()){
+        return "NOUN";
+    }
+    if (isAdjective()){
+        return "ADJ";
+    }
+    if (getPos() == "ADV"){
+        return "ADV";
+    }
+    if (containsTag(MorphologicalTag::INTERJECTION)){
+        return "INTJ";
+    }
+    if (isVerb()){
+        return "VERB";
+    }
+    if (isPunctuation()){
+        return "PUNCT";
+    }
+    if (containsTag(MorphologicalTag::DETERMINER)){
+        return "DET";
+    }
+    if (isNumber() || isDate() || isTime() || isOrdinal() || isFraction() || lemma == "%"){
+        return "NUM";
+    }
+    if (getPos() == "PRON"){
+        return "PRON";
+    }
+    if (getPos() == "POSTP"){
+        return "ADP";
+    }
+    if (getPos() == "QUES"){
+        return "AUX";
+    }
+    if (getPos() == "CONJ"){
+        if (lemma == "ki" || lemma == "eğer" || lemma == "diye"){
+            return "SCONJ";
+        } else {
+            return "CCONJ";
+        }
+    }
+    return "X";
+}
+
 /**
  * The overridden toString method gets the root and the first inflectional group as a result {@link String} then concatenates
  * with ^DB+ and the following inflectional groups.

@@ -2,8 +2,12 @@
 // Created by Olcay Taner Yıldız on 2.03.2019.
 //
 #include <regex>
+#include <set>
 #include <iostream>
+#include <fstream>
 #include "FsmMorphologicalAnalyzer.h"
+
+using namespace std;
 
 /**
  * Another constructor of FsmMorphologicalAnalyzer class. It generates a new TxtDictionary type dictionary from
@@ -28,6 +32,17 @@ FsmMorphologicalAnalyzer::FsmMorphologicalAnalyzer(string fileName, TxtDictionar
  * @param dictionaryFileName the file to read the dictionary.
  */
 FsmMorphologicalAnalyzer::FsmMorphologicalAnalyzer(string dictionaryFileName, string fileName) : FsmMorphologicalAnalyzer(move(fileName), TxtDictionary(move(dictionaryFileName), Comparator::TURKISH, "turkish_misspellings.txt")){
+}
+
+void FsmMorphologicalAnalyzer::addSurfaceForms(string fileName) {
+    ifstream inputFile;
+    string line;
+    inputFile.open(fileName, ifstream :: in);
+    while (inputFile.good()) {
+        getline(inputFile, line);
+        parsedSurfaceForms.insert(line);
+    }
+    inputFile.close();
 }
 
 /**
@@ -1047,6 +1062,9 @@ bool FsmMorphologicalAnalyzer::morphologicalAnalysisExists(TxtWord *rootWord, st
  */
 FsmParseList FsmMorphologicalAnalyzer::morphologicalAnalysis(const string& surfaceForm) {
     FsmParseList fsmParseList;
+    if (!parsedSurfaceForms.empty() && parsedSurfaceForms.find(Word::toLowerCase(surfaceForm)) != parsedSurfaceForms.end()){
+        return FsmParseList(vector<FsmParse>());
+    }
     if (cache.getCacheSize() > 0 && cache.contains(surfaceForm)) {
         return cache.get(surfaceForm);
     }
