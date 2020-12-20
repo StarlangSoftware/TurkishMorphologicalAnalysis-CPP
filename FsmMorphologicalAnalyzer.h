@@ -38,6 +38,10 @@ private:
     bool isInteger(const string& surfaceForm);
     bool isDouble(const string& surfaceForm);
     bool isNumber(string surfaceForm);
+    bool isPercent(string surfaceForm);
+    bool isTime(string surfaceForm);
+    bool isRange(string surfaceForm);
+    bool isDate(string surfaceForm);
     bool patternMatches(string expr, const string& value);
 public:
     explicit FsmMorphologicalAnalyzer(string fileName = "turkish_finite_state_machine.xml", TxtDictionary dictionary = TxtDictionary(), int cacheSize = 10000);

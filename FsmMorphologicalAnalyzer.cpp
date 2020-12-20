@@ -791,16 +791,16 @@ vector<FsmParse> FsmMorphologicalAnalyzer::analysis(const string& surfaceForm, b
         initialFsmParse.push_back(fsmParse);
         return initialFsmParse;
     }
-    if (patternMatches("(\\d\\d|\\d)/(\\d\\d|\\d)/\\d+", surfaceForm) || patternMatches("(\\d\\d|\\d)\\.(\\d\\d|\\d)\\.\\d+", surfaceForm)) {
+    if (patternMatches("\\d+/\\d+", surfaceForm)) {
+        fsmParse = FsmParse(surfaceForm, State(("FractionRoot"), true, true));
+        fsmParse.constructInflectionalGroups();
+        initialFsmParse.push_back(fsmParse);
         fsmParse = FsmParse(surfaceForm, State(("DateRoot"), true, true));
         fsmParse.constructInflectionalGroups();
         initialFsmParse.push_back(fsmParse);
         return initialFsmParse;
     }
-    if (patternMatches("\\d+/\\d+", surfaceForm)) {
-        fsmParse = FsmParse(surfaceForm, State(("FractionRoot"), true, true));
-        fsmParse.constructInflectionalGroups();
-        initialFsmParse.push_back(fsmParse);
+    if (isDate(surfaceForm)) {
         fsmParse = FsmParse(surfaceForm, State(("DateRoot"), true, true));
         fsmParse.constructInflectionalGroups();
         initialFsmParse.push_back(fsmParse);
@@ -812,19 +812,19 @@ vector<FsmParse> FsmMorphologicalAnalyzer::analysis(const string& surfaceForm, b
         initialFsmParse.push_back(fsmParse);
         return initialFsmParse;
     }
-    if (surfaceForm == "%" || patternMatches("%(\\d\\d|\\d)", surfaceForm) || patternMatches("%(\\d\\d|\\d)\\.\\d+", surfaceForm)) {
+    if (surfaceForm == "%" || isPercent(surfaceForm)) {
         fsmParse = FsmParse(surfaceForm, State(("PercentRoot"), true, true));
         fsmParse.constructInflectionalGroups();
         initialFsmParse.push_back(fsmParse);
         return initialFsmParse;
     }
-    if (patternMatches("(\\d\\d|\\d):(\\d\\d|\\d):(\\d\\d|\\d)", surfaceForm) || patternMatches("(\\d\\d|\\d):(\\d\\d|\\d)", surfaceForm)) {
+    if (isTime(surfaceForm)) {
         fsmParse = FsmParse(surfaceForm, State(("TimeRoot"), true, true));
         fsmParse.constructInflectionalGroups();
         initialFsmParse.push_back(fsmParse);
         return initialFsmParse;
     }
-    if (patternMatches("\\d+-\\d+", surfaceForm) || patternMatches("(\\d\\d|\\d):(\\d\\d|\\d)-(\\d\\d|\\d):(\\d\\d|\\d)", surfaceForm) || patternMatches("(\\d\\d|\\d)\\.(\\d\\d|\\d)-(\\d\\d|\\d)\\.(\\d\\d|\\d)", surfaceForm)) {
+    if (isRange(surfaceForm)) {
         fsmParse = FsmParse(surfaceForm, State(("RangeRoot"), true, true));
         fsmParse.constructInflectionalGroups();
         initialFsmParse.push_back(fsmParse);
@@ -1031,6 +1031,22 @@ bool FsmMorphologicalAnalyzer::isNumber(string surfaceForm) {
     return word.empty() && count > 1;
 }
 
+bool FsmMorphologicalAnalyzer::isPercent(string surfaceForm){
+    return patternMatches("%(\\d\\d|\\d)", surfaceForm) || patternMatches("%(\\d\\d|\\d)\\.\\d+", surfaceForm);
+}
+
+bool FsmMorphologicalAnalyzer::isTime(string surfaceForm) {
+    return patternMatches("(\\d\\d|\\d):(\\d\\d|\\d):(\\d\\d|\\d)", surfaceForm) || patternMatches("(\\d\\d|\\d):(\\d\\d|\\d)", surfaceForm);
+}
+
+bool FsmMorphologicalAnalyzer::isRange(string surfaceForm) {
+    return patternMatches("\\d+-\\d+", surfaceForm) || patternMatches("(\\d\\d|\\d):(\\d\\d|\\d)-(\\d\\d|\\d):(\\d\\d|\\d)", surfaceForm) || patternMatches("(\\d\\d|\\d)\\.(\\d\\d|\\d)-(\\d\\d|\\d)\\.(\\d\\d|\\d)", surfaceForm);
+}
+
+bool FsmMorphologicalAnalyzer::isDate(string surfaceForm) {
+    return patternMatches("(\\d\\d|\\d)/(\\d\\d|\\d)/\\d+", surfaceForm) || patternMatches("(\\d\\d|\\d)\\.(\\d\\d|\\d)\\.\\d+", surfaceForm);
+}
+
 /**
  * The morphologicalAnalysisExists method calls analysisExists to check the existence of the analysis with given
  * root and surfaceForm.
@@ -1062,7 +1078,7 @@ bool FsmMorphologicalAnalyzer::morphologicalAnalysisExists(TxtWord *rootWord, st
  */
 FsmParseList FsmMorphologicalAnalyzer::morphologicalAnalysis(const string& surfaceForm) {
     FsmParseList fsmParseList;
-    if (!parsedSurfaceForms.empty() && parsedSurfaceForms.find(Word::toLowerCase(surfaceForm)) != parsedSurfaceForms.end()){
+    if (!parsedSurfaceForms.empty() && parsedSurfaceForms.find(Word::toLowerCase(surfaceForm)) != parsedSurfaceForms.end() && !isInteger(surfaceForm) && !isDouble(surfaceForm) && !isPercent(surfaceForm) && !isTime(surfaceForm) && !isRange(surfaceForm) && !isDate(surfaceForm)){
         return FsmParseList(vector<FsmParse>());
     }
     if (cache.getCacheSize() > 0 && cache.contains(surfaceForm)) {
@@ -1087,7 +1103,7 @@ FsmParseList FsmMorphologicalAnalyzer::morphologicalAnalysis(const string& surfa
                 dictionaryTrie->addWord(possibleRoot, new TxtWord(possibleRoot, "IS_KESIR"));
                 fsmParse = analysis(Word::toLowerCase(surfaceForm), isProperNoun(surfaceForm));
             } else {
-                if (patternMatches("(\\d\\d|\\d)/(\\d\\d|\\d)/\\d+", possibleRoot) || patternMatches("(\\d\\d|\\d)\\.(\\d\\d|\\d)\\.\\d+", possibleRoot)) {
+                if (isDate(possibleRoot)) {
                     dictionaryTrie->addWord(possibleRoot, new TxtWord(possibleRoot, "IS_DATE"));
                     fsmParse = analysis(Word::toLowerCase(surfaceForm), isProperNoun(surfaceForm));
                 } else {
@@ -1095,15 +1111,15 @@ FsmParseList FsmMorphologicalAnalyzer::morphologicalAnalysis(const string& surfa
                         dictionaryTrie->addWord(possibleRoot, new TxtWord(possibleRoot, "IS_KESIR"));
                         fsmParse = analysis(Word::toLowerCase(surfaceForm), isProperNoun(surfaceForm));
                     } else {
-                        if (patternMatches("%(\\d\\d|\\d)", possibleRoot) || patternMatches("%(\\d\\d|\\d)\\.\\d+", possibleRoot)) {
+                        if (isPercent(possibleRoot)) {
                             dictionaryTrie->addWord(possibleRoot, new TxtWord(possibleRoot, "IS_PERCENT"));
                             fsmParse = analysis(Word::toLowerCase(surfaceForm), isProperNoun(surfaceForm));
                         } else {
-                            if (patternMatches("(\\d\\d|\\d):(\\d\\d|\\d):(\\d\\d|\\d)", possibleRoot) || patternMatches("(\\d\\d|\\d):(\\d\\d|\\d)", possibleRoot)) {
+                            if (isTime(possibleRoot)) {
                                 dictionaryTrie->addWord(possibleRoot, new TxtWord(possibleRoot, "IS_ZAMAN"));
                                 fsmParse = analysis(Word::toLowerCase(surfaceForm), isProperNoun(surfaceForm));
                             } else {
-                                if (patternMatches("\\d+-\\d+", possibleRoot) || patternMatches("(\\d\\d|\\d):(\\d\\d|\\d)-(\\d\\d|\\d):(\\d\\d|\\d)", possibleRoot) || patternMatches("(\\d\\d|\\d)\\.(\\d\\d|\\d)-(\\d\\d|\\d)\\.(\\d\\d|\\d)", possibleRoot)) {
+                                if (isRange(possibleRoot)) {
                                     dictionaryTrie->addWord(possibleRoot, new TxtWord(possibleRoot, "IS_RANGE"));
                                     fsmParse = analysis(Word::toLowerCase(surfaceForm), isProperNoun(surfaceForm));
                                 } else {
