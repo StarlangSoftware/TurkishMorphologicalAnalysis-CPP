@@ -36,7 +36,7 @@ FiniteStateMachine::FiniteStateMachine(string fileName) {
             string startState = stateNode->getAttributeValue("start");
             string endState = stateNode->getAttributeValue("end");
             if (startState == "yes") {
-                string originalPos = stateNode->getAttributeValue("originalPos");
+                string originalPos = stateNode->getAttributeValue("originalpos");
                 state = State(stateName, true, endState == "yes", originalPos);
             } else {
                 state = State(stateName, false, endState == "yes");
@@ -169,4 +169,8 @@ vector<Transition> FiniteStateMachine::getTransitions(State state) {
     } else {
         return transitionList;
     }
+}
+
+vector<State> FiniteStateMachine::getStates() {
+    return states;
 }

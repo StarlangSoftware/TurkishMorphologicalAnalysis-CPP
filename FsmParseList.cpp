@@ -95,8 +95,9 @@ FsmParse FsmParseList::getParseWithLongestRootWord() {
     FsmParse bestParse;
     int maxLength = -1;
     for (auto & fsmParse : fsmParses){
-        if (fsmParse.getWord()->getName().length() > maxLength){
-            maxLength = fsmParse.getWord()->getName().length();
+        int length = Word::size(fsmParse.getWord()->getName());
+        if (length > maxLength){
+            maxLength = length;
             bestParse = fsmParse;
         }
     }
@@ -141,7 +142,7 @@ vector<FsmParseList> FsmParseList::constructParseListForDifferentRootWithPos() {
             initial.emplace_back(fsmParses.at(i));
             result.emplace_back(FsmParseList(initial));
         } else {
-            if (fsmParses.at(i).getWordWithPos() == fsmParses.at(i - 1).getWordWithPos()) {
+            if (*(fsmParses.at(i).getWordWithPos()) == *(fsmParses.at(i - 1).getWordWithPos())) {
                 result.at(result.size() - 1).fsmParses.emplace_back(fsmParses.at(i));
             } else {
                 vector<FsmParse> initial;

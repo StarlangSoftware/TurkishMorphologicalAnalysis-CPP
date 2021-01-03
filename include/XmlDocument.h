@@ -8,6 +8,7 @@
 #include <fstream>
 #include "XmlElement.h"
 #include "XmlTokenType.h"
+#include "XmlTextType.h"
 
 using namespace std;
 
@@ -17,11 +18,12 @@ private:
     ifstream inputStream;
     XmlTokenType lastReadTokenType = XmlTokenType::XML_END;
     XmlElement* root;
-    string readToken(char previousChar, char* nextChar, bool extraAllowed);
+    string readToken(char previousChar, char* nextChar, bool extraAllowed = false, bool quotaAllowed = false);
     string parseTag();
     string parseAttributeValue();
     string parseEmptyTag();
-    string getNextToken();
+    string getNextToken(XmlTextType xmlTextType);
+    void replaceEscapeCharacters(string& token);
 public:
     explicit XmlDocument(string fileName);
     ~XmlDocument();

@@ -647,8 +647,8 @@ vector<FsmParse> FsmMorphologicalAnalyzer::parseWord(vector<FsmParse> fsmParse, 
                 }
             }
             if (!exists) {
-                result.push_back(currentFsmParse);
                 currentFsmParse.constructInflectionalGroups();
+                result.push_back(currentFsmParse);
             }
         }
         addNewParsesFromCurrentParse(currentFsmParse, fsmParse, maxLength, root);
@@ -687,8 +687,8 @@ vector<FsmParse> FsmMorphologicalAnalyzer::parseWord(vector<FsmParse> fsmParse, 
                 }
             }
             if (!exists) {
-                result.push_back(currentFsmParse);
                 currentFsmParse.constructInflectionalGroups();
+                result.push_back(currentFsmParse);
             }
         }
         addNewParsesFromCurrentParse(currentFsmParse, fsmParse, surfaceForm, root);

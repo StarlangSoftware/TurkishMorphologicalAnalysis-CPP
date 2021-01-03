@@ -32,7 +32,7 @@ public:
     static bool isSertSessiz(const string &s);
     static bool isUppercase(const string &s);
     static const string LOWERCASE_LETTERS;
-    static const string UPPERCASE_LETTERS ;
+    static const string UPPERCASE_LETTERS;
     static const string LETTERS;
 };
 
