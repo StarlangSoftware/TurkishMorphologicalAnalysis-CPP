@@ -855,7 +855,7 @@ vector<FsmParse> FsmMorphologicalAnalyzer::analysis(const string& surfaceForm, b
         return initialFsmParse;
     }
     if (isDouble(surfaceForm)) {
-        fsmParse = FsmParse(stof(surfaceForm), finiteStateMachine.getState("RealRoot"));
+        fsmParse = FsmParse(stod(surfaceForm), surfaceForm, finiteStateMachine.getState("RealRoot"));
         fsmParse.constructInflectionalGroups();
         initialFsmParse.push_back(fsmParse);
         return initialFsmParse;

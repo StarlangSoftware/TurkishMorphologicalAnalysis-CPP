@@ -3,6 +3,8 @@
 //
 
 #include "FsmParse.h"
+
+#include <utility>
 #include "TxtWord.h"
 
 using namespace std;
@@ -46,8 +48,8 @@ FsmParse::FsmParse(int number, State startState) {
  * @param number     {@link Double} input.
  * @param startState {@link State} input.
  */
-FsmParse::FsmParse(double number, State startState) {
-    TxtWord* num = new TxtWord(std::to_string(number));
+FsmParse::FsmParse(double number, string stringValue, State startState) {
+    auto* num = new TxtWord(std::move(stringValue));
     num->addFlag("IS_SAYI");
     this->root = num;
     this->form = root->getName();
