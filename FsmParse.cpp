@@ -104,7 +104,7 @@ FsmParse::FsmParse(TxtWord *root, State startState) {
  * the items of iGs.
  */
 void FsmParse::constructInflectionalGroups() {
-    string parse = getTransitionList();
+    string parse = transitionlist();
     int i;
     vector<string> iGs;
     while (parse.find("^DB+") != string::npos) {
@@ -656,5 +656,5 @@ string FsmParse::getWithList() {
  * @return returns transitionList method.
  */
 string FsmParse::to_String() {
-    return getTransitionList();
+    return transitionlist();
 }

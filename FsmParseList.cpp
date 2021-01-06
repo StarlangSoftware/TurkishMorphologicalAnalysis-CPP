@@ -6,7 +6,7 @@
 
 struct fsmParseComparator{
     bool operator() (FsmParse fsmParseA, FsmParse fsmParseB){
-        return fsmParseA.getTransitionList() < fsmParseB.getTransitionList();
+        return fsmParseA.transitionlist() < fsmParseB.transitionlist();
     }
 };
 
@@ -21,7 +21,7 @@ FsmParseList::FsmParseList(vector<FsmParse> fsmParses) {
     if (!fsmParses.empty()){
         stable_sort(fsmParses.begin(), fsmParses.end(), fsmParseComparator());
         for (int i = 0; i < fsmParses.size() - 1; i++) {
-            if (fsmParses.at(i).getTransitionList() == fsmParses.at(i + 1).getTransitionList()) {
+            if (fsmParses.at(i).transitionlist() == fsmParses.at(i + 1).transitionlist()) {
                 fsmParses.erase(fsmParses.begin() + i + 1);
                 i--;
             }
@@ -175,10 +175,10 @@ string FsmParseList::parsesWithoutPrefixAndSuffix() {
     string* analyses = new string[fsmParses.size()];
     bool removePrefix = true, removeSuffix = true;
     if (fsmParses.size() == 1) {
-        return fsmParses.at(0).getTransitionList().substr(fsmParses.at(0).getTransitionList().find("+") + 1);
+        return fsmParses.at(0).transitionlist().substr(fsmParses.at(0).transitionlist().find("+") + 1);
     }
     for (int i = 0; i < fsmParses.size(); i++) {
-        analyses[i] = fsmParses.at(i).getTransitionList();
+        analyses[i] = fsmParses.at(i).transitionlist();
     }
     while (removePrefix) {
         removePrefix = true;
