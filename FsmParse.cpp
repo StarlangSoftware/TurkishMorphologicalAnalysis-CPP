@@ -489,7 +489,7 @@ string FsmParse::pronounTransition() {
  *
  * @return String result accumulated with items of formList.
  */
-string FsmParse::getTransitionList() {
+string FsmParse::transitionlist() {
     string result;
     if (suffixList.at(0).getName() == "NominalRoot" || suffixList.at(0).getName() == "NominalRootNoPossesive" || suffixList.at(0).getName() == "CompoundNounRoot" || suffixList.at(0).getName() == "NominalRootPlural") {
         result = formList.at(0) + "+NOUN";

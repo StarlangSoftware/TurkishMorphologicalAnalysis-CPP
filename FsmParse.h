@@ -43,7 +43,7 @@ public:
     FsmParse clone();
     string headerTransition();
     string pronounTransition();
-    string getTransitionList();
+    string transitionlist();
     string getSuffixList();
     string getWithList();
     string to_String();
