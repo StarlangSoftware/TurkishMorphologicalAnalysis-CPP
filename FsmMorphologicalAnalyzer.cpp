@@ -925,7 +925,7 @@ FsmParseList FsmMorphologicalAnalyzer::robustMorphologicalAnalysis(const string&
  * @param sentence  to get word from.
  * @return FsmParseList type result.
  */
-FsmParseList *FsmMorphologicalAnalyzer::morphologicalAnalysis(Sentence sentence) {
+FsmParseList *FsmMorphologicalAnalyzer::morphologicalAnalysis(Sentence& sentence) {
     FsmParseList wordFsmParseList;
     auto* result = new FsmParseList[sentence.wordCount()];
     for (int i = 0; i < sentence.wordCount(); i++) {
@@ -947,7 +947,7 @@ FsmParseList *FsmMorphologicalAnalyzer::morphologicalAnalysis(Sentence sentence)
  * @param sentence Sentence type input used to get surfaceForm.
  * @return FsmParseList array which holds the result of the analysis.
  */
-FsmParseList *FsmMorphologicalAnalyzer::robustMorphologicalAnalysis(Sentence sentence) {
+FsmParseList *FsmMorphologicalAnalyzer::robustMorphologicalAnalysis(Sentence& sentence) {
     FsmParseList fsmParseList;
     auto* result = new FsmParseList[sentence.wordCount()];
     for (int i = 0; i < sentence.wordCount(); i++) {
