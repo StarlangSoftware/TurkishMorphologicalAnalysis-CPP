@@ -6,6 +6,13 @@
 #include "catch.hpp"
 #include "../InflectionalGroup.h"
 
+TEST_CASE("InflectionalGroupTest-testGetMorphologicalTag") {
+    REQUIRE(InflectionalGroup::getMorphologicalTag("noun") == MorphologicalTag::NOUN);
+    REQUIRE(InflectionalGroup::getMorphologicalTag("without") == MorphologicalTag::WITHOUT);
+    REQUIRE(InflectionalGroup::getMorphologicalTag("interj") == MorphologicalTag::INTERJECTION);
+    REQUIRE(InflectionalGroup::getMorphologicalTag("inf2") == MorphologicalTag::INFINITIVE2);
+}
+
 TEST_CASE("InflectionalGroupTest-size") {
     InflectionalGroup inflectionalGroup1 = InflectionalGroup("ADJ");
     REQUIRE(1 == inflectionalGroup1.size());
