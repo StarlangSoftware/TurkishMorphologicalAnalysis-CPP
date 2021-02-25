@@ -735,26 +735,20 @@ string MorphologicalParse::getVerbForm(){
     if (containsTag(MorphologicalTag::PASTPARTICIPLE) || containsTag(MorphologicalTag::FUTUREPARTICIPLE) || containsTag(MorphologicalTag::PRESENTPARTICIPLE)){
         return "Part";
     }
-    if (containsTag(MorphologicalTag::INFINITIVE) || containsTag(MorphologicalTag::INFINITIVE2)){
-        return "Vnoun";
-    }
     if (containsTag(MorphologicalTag::SINCEDOINGSO) || containsTag(MorphologicalTag::WITHOUTHAVINGDONESO) || containsTag(MorphologicalTag::WITHOUTBEINGABLETOHAVEDONESO) || containsTag(MorphologicalTag::BYDOINGSO) || containsTag(MorphologicalTag::AFTERDOINGSO) || containsTag(MorphologicalTag::INFINITIVE3)){
         return "Conv";
-    }
-    if (containsTag(MorphologicalTag::AORIST) || containsTag(MorphologicalTag::PASTTENSE) || containsTag(MorphologicalTag::PROGRESSIVE1) || containsTag(MorphologicalTag::FUTURE)){
-        return "Fin";
     }
     return "";
 }
 
-vector<string> MorphologicalParse::getUniversalDependencyFeatures(){
+vector<string> MorphologicalParse::getUniversalDependencyFeatures(string uPos){
     vector<string> featureList;
     string pronType = getPronType();
-    if (!pronType.empty()){
+    if (!pronType.empty() && uPos != "ADJ" && uPos != "VERB" && uPos != "CCONJ"){
         featureList.emplace_back("PronType=" + pronType);
     }
     string numType = getNumType();
-    if (!numType.empty()){
+    if (!numType.empty() && uPos != "VERB"){
         featureList.emplace_back("NumType=" + numType);
     }
     string reflex = getReflex();
@@ -789,7 +783,7 @@ vector<string> MorphologicalParse::getUniversalDependencyFeatures(){
             featureList.emplace_back("Polarity=" + polarity);
         }
         string person = getPerson();
-        if (!person.empty()){
+        if (!person.empty() && uPos != "PROPN"){
             featureList.emplace_back("Person=" + person);
         }
         string voice = getVoice();
@@ -797,15 +791,15 @@ vector<string> MorphologicalParse::getUniversalDependencyFeatures(){
             featureList.emplace_back("Voice=" + voice);
         }
         string aspect = getAspect();
-        if (!aspect.empty()){
+        if (!aspect.empty() && uPos != "PROPN"){
             featureList.emplace_back("Aspect=" + aspect);
         }
         string tense = getTense();
-        if (!tense.empty()){
+        if (!tense.empty() && uPos != "PROPN"){
             featureList.emplace_back("Tense=" + tense);
         }
         string mood = getMood();
-        if (!mood.empty()){
+        if (!mood.empty() && uPos != "PROPN"){
             featureList.emplace_back("Mood=" + mood);
         }
         string verbForm = getVerbForm();
@@ -840,7 +834,7 @@ string MorphologicalParse::getUniversalDependencyPos(){
     if (isVerb()){
         return "VERB";
     }
-    if (isPunctuation()){
+    if (isPunctuation() || isHashTag()){
         return "PUNCT";
     }
     if (containsTag(MorphologicalTag::DETERMINER)){

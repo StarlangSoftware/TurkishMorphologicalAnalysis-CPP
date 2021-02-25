@@ -57,7 +57,7 @@ public:
     bool isAuxiliary();
     bool containsTag(MorphologicalTag tag);
     string getTreePos();
-    vector<string> getUniversalDependencyFeatures();
+    vector<string> getUniversalDependencyFeatures(string uPos);
     string getUniversalDependencyPos();
     string to_string();
 private:
