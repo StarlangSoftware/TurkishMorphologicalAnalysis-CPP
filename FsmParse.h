@@ -46,6 +46,7 @@ public:
     string transitionlist();
     string getSuffixList();
     string getWithList();
+    string replaceRootWord(TxtWord* newRoot);
     string to_String();
 /**
  * The overridden compareTo metgod takes an {@link Object} as an input and if it is an instance of the {@link FsmParse}

@@ -208,3 +208,17 @@ TEST_CASE("FsmMorphologicalAnalyzerTest-morphologicalAnalysisLastIdropsDuringPas
         }
     }
 }
+
+TEST_CASE("FsmMorphologicalAnalyzerTest-replaceWord") {
+    FsmMorphologicalAnalyzer fsm = FsmMorphologicalAnalyzer();
+    REQUIRE("Burada çok abartma var" == fsm.replaceWord(new Sentence("Burada çok mübalağa var"), "mübalağa", "abartma")->to_string());
+    REQUIRE("Bu bina çok kötü şekilsizleştirildi" == fsm.replaceWord(new Sentence("Bu bina çok kötü biçimsizleştirildi"), "biçimsizleş", "şekilsizleş")->to_string());
+    REQUIRE("Kız kardeşinle evlendim" == fsm.replaceWord(new Sentence("Hemşirenle evlendim"), "hemşire", "kız kardeş")->to_string());
+    REQUIRE("Abim geçen yıl ölmüştü gibi" == fsm.replaceWord(new Sentence("Abim geçen yıl son yolculuğa çıkmıştı gibi"), "son yolculuğa çık", "öl")->to_string());
+    REQUIRE("Dün yaptığı güreş maçında yenildi" == fsm.replaceWord(new Sentence("Dün yaptığı güreş maçında mağlup oldu"), "mağlup ol", "yenil")->to_string());
+    REQUIRE("Abim geçen yıl son yolculuğa çıkmıştı gibi" == fsm.replaceWord(new Sentence("Abim geçen yıl ölmüştü gibi"), "öl", "son yolculuğa çık")->to_string());
+    REQUIRE("Dün yaptığı güreş maçında mağlup oldu" == fsm.replaceWord(new Sentence("Dün yaptığı güreş maçında yenildi"), "yenil", "mağlup ol")->to_string());
+    REQUIRE("Dün yaptığı güreş maçında alt oldu sanki" == fsm.replaceWord(new Sentence("Dün yaptığı güreş maçında mağlup oldu sanki"), "mağlup ol", "alt ol")->to_string());
+    REQUIRE("Yemin billah vermişlerdi vazoyu kırmadığına" == fsm.replaceWord(new Sentence("Yemin etmişlerdi vazoyu kırmadığına"), "yemin et", "yemin billah ver")->to_string());
+    REQUIRE("Şvesterine söyle kazağı güzelmiş" == fsm.replaceWord(new Sentence("Hemşirene söyle kazağı güzelmiş"), "hemşire", "şvester")->to_string());
+}

@@ -6,6 +6,7 @@
 
 #include <utility>
 #include "TxtWord.h"
+#include "Transition.h"
 
 using namespace std;
 /**
@@ -646,6 +647,20 @@ string FsmParse::getWithList() {
     string result = root->getName();
     for (string aWith : withList) {
         result = result + "+" + aWith;
+    }
+    return result;
+}
+
+/**
+ * Replace root word of the current parse with the new root word and returns the new word.
+ * @param newRoot Replaced root word
+ * @return Root word of the parse will be replaced with the newRoot and the resulting surface form is returned.
+ */
+string FsmParse::replaceRootWord(TxtWord* newRoot){
+    string result = newRoot->getName();
+    for (string aWith : withList){
+        Transition transition = Transition(aWith);
+        result = transition.makeTransition(newRoot, result);
     }
     return result;
 }

@@ -53,6 +53,7 @@ public:
     vector<FsmParse> morphologicalAnalysis(TxtWord* root, const string& surfaceForm, string state);
     vector<FsmParse> generateAllParses(TxtWord* root, int maxLength);
     vector<FsmParse> morphologicalAnalysis(TxtWord* root, const string& surfaceForm);
+    Sentence* replaceWord(Sentence* original, string previousWord, string newWord);
     bool isProperNoun(const string& surfaceForm);
     FsmParseList robustMorphologicalAnalysis(const string& surfaceForm);
     FsmParseList* morphologicalAnalysis(Sentence& sentence);

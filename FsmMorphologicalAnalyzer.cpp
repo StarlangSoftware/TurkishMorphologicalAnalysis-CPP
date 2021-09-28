@@ -741,6 +741,79 @@ vector<FsmParse> FsmMorphologicalAnalyzer::morphologicalAnalysis(TxtWord *root, 
 }
 
 /**
+ * Replaces previous lemma in the sentence with the new lemma. Both lemma can contain multiple words.
+ * @param original Original sentence to be replaced with.
+ * @param previousWord Root word in the original sentence
+ * @param newWord New word to be replaced.
+ * @return Newly generated sentence by replacing the previous word in the original sentence with the new word.
+ */
+Sentence* FsmMorphologicalAnalyzer::replaceWord(Sentence* original, string previousWord, string newWord){
+    int i;
+    vector<string> previousWordSplitted, newWordSplitted;
+    Sentence* result = new Sentence();
+    string replacedWord, lastWord, newRootWord;
+    bool previousWordMultiple = previousWord.find(' ') != std::string::npos;
+    bool newWordMultiple = newWord.find(' ') != std::string::npos;
+    if (previousWordMultiple){
+        previousWordSplitted = Word::split(previousWord);
+        lastWord = previousWordSplitted[previousWordSplitted.size() - 1];
+    } else {
+        lastWord = previousWord;
+    }
+    if (newWordMultiple){
+        newWordSplitted = Word::split(newWord);
+        newRootWord = newWordSplitted[newWordSplitted.size() - 1];
+    } else {
+        newRootWord = newWord;
+    }
+    TxtWord* newRootTxtWord = (TxtWord*) dictionary.getWord(newRootWord);
+    FsmParseList* parseList = morphologicalAnalysis(*original);
+    for (i = 0; i < original->wordCount(); i++){
+        bool replaced = false;
+        for (int j = 0; j < parseList[i].size(); j++){
+            if (parseList[i].getFsmParse(j).getWord()->getName() == lastWord && newRootTxtWord != nullptr){
+                replaced = true;
+                replacedWord = parseList[i].getFsmParse(j).replaceRootWord(newRootTxtWord);
+            }
+        }
+        if (replaced && !replacedWord.empty()){
+            if (previousWordMultiple){
+                for (int k = 0; k < i - previousWordSplitted.size() + 1; k++){
+                    result->addWord(original->getWord(k));
+                }
+            }
+            if (newWordMultiple){
+                for (int k = 0; k < newWordSplitted.size() - 1; k++){
+                    if (result->wordCount() == 0){
+                        result->addWord(new Word(Word::toUpperCase(Word::charAt(newWordSplitted[k], 0)) + Word::substring(newWordSplitted[k], 1)));
+                    } else {
+                        result->addWord(new Word(newWordSplitted[k]));
+                    }
+                }
+            }
+            if (result->wordCount() == 0){
+                replacedWord = Word::toUpperCase(Word::charAt(replacedWord, 0)) + Word::substring(replacedWord, 1);
+            }
+            result->addWord(new Word(replacedWord));
+            if (previousWordMultiple){
+                i++;
+                break;
+            }
+        } else {
+            if (!previousWordMultiple){
+                result->addWord(original->getWord(i));
+            }
+        }
+    }
+    if (previousWordMultiple){
+        for (; i < original->wordCount(); i++){
+            result->addWord(original->getWord(i));
+        }
+    }
+    return result;
+}
+
+/**
  * The analysisExists method checks several cases. If the given surfaceForm is a punctuation or double then it
  * returns true. If it is not a root word, then it initializes the parse list and returns the parseExists method with
  * this newly initialized list and surfaceForm.
