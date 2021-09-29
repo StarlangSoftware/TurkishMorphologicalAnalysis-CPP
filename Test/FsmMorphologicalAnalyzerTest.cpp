@@ -211,6 +211,8 @@ TEST_CASE("FsmMorphologicalAnalyzerTest-morphologicalAnalysisLastIdropsDuringPas
 
 TEST_CASE("FsmMorphologicalAnalyzerTest-replaceWord") {
     FsmMorphologicalAnalyzer fsm = FsmMorphologicalAnalyzer();
+    REQUIRE("Hemşirenle evlendim" == fsm.replaceWord(new Sentence("Kız kardeşinle evlendim"), "kız kardeş", "hemşire")->to_string());
+    REQUIRE("Yemin etmişlerdi vazoyu kırmadığına" == fsm.replaceWord(new Sentence("Yemin billah vermişlerdi vazoyu kırmadığına"), "yemin billah ver", "yemin et")->to_string());
     REQUIRE("Burada çok abartma var" == fsm.replaceWord(new Sentence("Burada çok mübalağa var"), "mübalağa", "abartma")->to_string());
     REQUIRE("Bu bina çok kötü şekilsizleştirildi" == fsm.replaceWord(new Sentence("Bu bina çok kötü biçimsizleştirildi"), "biçimsizleş", "şekilsizleş")->to_string());
     REQUIRE("Kız kardeşinle evlendim" == fsm.replaceWord(new Sentence("Hemşirenle evlendim"), "hemşire", "kız kardeş")->to_string());
