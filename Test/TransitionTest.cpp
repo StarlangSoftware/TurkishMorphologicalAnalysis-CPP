@@ -116,6 +116,8 @@ TEST_CASE("TransitionTest-testD") {
 
 TEST_CASE("TransitionTest-testExceptions") {
     FsmMorphologicalAnalyzer fsm = FsmMorphologicalAnalyzer();
+    REQUIRE_FALSE(fsm.morphologicalAnalysis("yaparmışçasına").size() == 0);
+    REQUIRE_FALSE(fsm.morphologicalAnalysis("yiyip").size() == 0);
     REQUIRE_FALSE(fsm.morphologicalAnalysis("sana").size() == 0);
     REQUIRE_FALSE(fsm.morphologicalAnalysis("bununla").size() == 0);
     REQUIRE(0 == fsm.morphologicalAnalysis("buyla").size());
