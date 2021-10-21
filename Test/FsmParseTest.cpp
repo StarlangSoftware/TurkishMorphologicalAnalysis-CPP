@@ -36,7 +36,7 @@ TEST_CASE("FsmParseTest-testGetLastLemma") {
 }
 
 TEST_CASE("FsmParseTest-testGetTransitionList") {
-    FsmParse parse1, parse2, parse3, parse4, parse5, parse6, parse7, parse8, parse9;
+    FsmParse parse1, parse2, parse3, parse4, parse5, parse6, parse7, parse8, parse9, parse10;
     FsmMorphologicalAnalyzer fsm = FsmMorphologicalAnalyzer();
     parse1 = fsm.morphologicalAnalysis("açılır").getFsmParse(0);
     parse2 = fsm.morphologicalAnalysis("koparılarak").getFsmParse(0);
@@ -47,6 +47,7 @@ TEST_CASE("FsmParseTest-testGetTransitionList") {
     parse7 = fsm.morphologicalAnalysis("esaslarını").getFsmParse(0);
     parse8 = fsm.morphologicalAnalysis("güçleriyle").getFsmParse(0);
     parse9 = fsm.morphologicalAnalysis("bulmayacakları").getFsmParse(0);
+    parse10 = fsm.morphologicalAnalysis("mü").getFsmParse(0);
     REQUIRE("aç+VERB^DB+VERB+PASS+POS+AOR+A3SG" == parse1.to_String());
     REQUIRE("kop+VERB^DB+VERB+CAUS^DB+VERB+PASS+POS^DB+ADV+BYDOINGSO" == parse2.to_String());
     REQUIRE("topla+NOUN+A3SG+P1SG+DAT" == parse3.to_String());
@@ -56,6 +57,7 @@ TEST_CASE("FsmParseTest-testGetTransitionList") {
     REQUIRE("esas+ADJ^DB+NOUN+ZERO+A3PL+P2SG+ACC" == parse7.to_String());
     REQUIRE("güç+ADJ^DB+NOUN+ZERO+A3PL+P3PL+INS" == parse8.to_String());
     REQUIRE("bul+VERB+NEG^DB+ADJ+FUTPART+P3PL" == parse9.to_String());
+    REQUIRE("mi+QUES+PRES+A3SG" == parse10.to_String());
 }
 
 TEST_CASE("FsmParseTest-testWithList") {

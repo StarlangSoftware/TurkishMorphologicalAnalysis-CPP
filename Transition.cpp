@@ -329,11 +329,14 @@ string Transition::makeTransition(TxtWord *root, string stem, State startState) 
         if (stem == "ben") {
             return "bana";
         }
+        if (stem == "sen") {
+            return "sana";
+        }
     }
     formationToCheck = stem;
     //---vowelEChangesToIDuringYSuffixation---
     //de->d(i)yor, ye->y(i)yor
-    if (rootWord && withFirstChar() == "y" && root->vowelEChangesToIDuringYSuffixation() && Word::charAt(with, 1) != "H") {
+    if (rootWord && withFirstChar() == "y" && root->vowelEChangesToIDuringYSuffixation() && (Word::charAt(with, 1) != "H" || root->getName() == "ye")) {
         formation = Word::substringExceptLastChar(stem) + 'i';
         formationToCheck = formation;
     } else {
@@ -350,7 +353,7 @@ string Transition::makeTransition(TxtWord *root, string stem, State startState) 
                 formation = stem + 'y';
                 formationToCheck = formation;
             } else {
-                if (rootWord && root->duplicatesDuringSuffixation() && TurkishLanguage::isConsonantDrop(Word::charAt(with, 0))) {
+                if (rootWord && root->duplicatesDuringSuffixation() && !Word::startsWith(startState.getName(), "VerbalRoot") && TurkishLanguage::isConsonantDrop(Word::charAt(with, 0))) {
                     //---duplicatesDuringSuffixation---
                     if (softenDuringSuffixation(root)) {
                         //--extra softenDuringSuffixation

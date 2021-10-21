@@ -173,7 +173,7 @@ bool FsmMorphologicalAnalyzer::isPossibleSubstring(const string& shortString, co
             }
         }
     }
-    if (rootWord && (root->getName() == "ben" || root->lastIdropsDuringSuffixation() || root->lastIdropsDuringPassiveSuffixation())) {
+    if (rootWord && (root->getName() == "ben" || root->getName() == "sen" || root->lastIdropsDuringSuffixation() || root->lastIdropsDuringPassiveSuffixation())) {
         return (distance <= MAX_DISTANCE);
     } else {
         if (Word::lastChar(shortString) == "e" || Word::lastChar(shortString) == "a" || Word::lastChar(shortString) == "p" || Word::lastChar(shortString) == "ç" || Word::lastChar(shortString) == "t" || Word::lastChar(shortString) == "k" || (rootWord && (root->rootSoftenDuringSuffixation() || root->vowelEChangesToIDuringYSuffixation() || root->vowelAChangesToIDuringYSuffixation() || root->endingKChangesIntoG()))) {

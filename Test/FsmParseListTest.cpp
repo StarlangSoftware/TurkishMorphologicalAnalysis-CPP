@@ -7,7 +7,7 @@
 #include "../FsmMorphologicalAnalyzer.h"
 
 TEST_CASE("FsmParseListTest-testSize") {
-    FsmParseList parse1, parse2, parse3, parse4, parse5, parse6, parse7, parse8, parse9;
+    FsmParseList parse1, parse2, parse3, parse4, parse5, parse6, parse7, parse8, parse9, parse14;
     FsmMorphologicalAnalyzer fsm = FsmMorphologicalAnalyzer();
     parse1 = fsm.morphologicalAnalysis("açılır");
     parse2 = fsm.morphologicalAnalysis("koparılarak");
@@ -18,6 +18,7 @@ TEST_CASE("FsmParseListTest-testSize") {
     parse7 = fsm.morphologicalAnalysis("esaslarını");
     parse8 = fsm.morphologicalAnalysis("güçleriyle");
     parse9 = fsm.morphologicalAnalysis("bulmayacakları");
+    parse14 = fsm.morphologicalAnalysis("sana");
     REQUIRE(2 == parse1.size());
     REQUIRE(2 == parse2.size());
     REQUIRE(6 == parse3.size());
@@ -27,6 +28,7 @@ TEST_CASE("FsmParseListTest-testSize") {
     REQUIRE(8 == parse7.size());
     REQUIRE(6 == parse8.size());
     REQUIRE(5 == parse9.size());
+    REQUIRE(4 == parse14.size());
 }
 
 TEST_CASE("FsmParseListTest-testRootWords") {

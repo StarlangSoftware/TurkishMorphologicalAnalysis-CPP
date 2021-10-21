@@ -550,7 +550,7 @@ string FsmParse::transitionlist() {
                                                                                 result = formList.at(0) + "+DUP";
                                                                             } else {
                                                                                 if (suffixList.at(0).getName() == "QuestionRoot") {
-                                                                                    result = formList.at(0) + "+QUES";
+                                                                                    result = "mi+QUES";
                                                                                 } else {
                                                                                     if (suffixList.at(0).getName() == "PostP") {
                                                                                         if (formList.at(0) == "karşı" || formList.at(0) == "ilişkin" || formList.at(0) == "göre" || formList.at(0) == "kadar" || formList.at(0) == "ait" || formList.at(0) == "yönelik" || formList.at(0) == "rağmen" || formList.at(0) == "değin" || formList.at(0) == "dek" || formList.at(0) == "doğru" || formList.at(0) == "karşın" || formList.at(0) == "dair" || formList.at(0) == "atfen" || formList.at(0) == "binaen" || formList.at(0) == "hitaben" || formList.at(0) == "istinaden" || formList.at(0) == "mahsuben" || formList.at(0) == "mukabil" || formList.at(0) == "nazaran") {
