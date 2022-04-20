@@ -15,17 +15,8 @@ private:
     string withName;
     string formationToCheck;
     string toPos;
-    string beforeLastVowel(string stem);
-    string lastVowel(string stem);
-    string lastPhoneme(string stem);
     string withFirstChar();
     bool startWithVowelorConsonantDrops();
-    string resolveD(TxtWord* root, string formation);
-    string resolveA(TxtWord* root, string formation, bool rootWord);
-    string resolveH(TxtWord* root, string formation, bool beginningOfSuffix, bool specialCaseTenseSuffix, bool rootWord);
-    string resolveC(string formation);
-    string resolveS(string formation);
-    string resolveSh(string formation);
 public:
     Transition(State toState, string with, string withName);
     Transition(State toState, string with, string withName, string toPos);

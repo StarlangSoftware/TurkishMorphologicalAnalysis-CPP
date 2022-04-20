@@ -20,6 +20,9 @@ public:
     Word clone();
     string getName() const;
     void setName(string name);
+    static string beforeLastVowel(string stem);
+    static string lastVowel(string stem);
+    static string lastPhoneme(string stem);
     static bool isCapital(string surfaceForm);
     static bool isPunctuation(string surfaceForm);
     static bool isHonorific(string surfaceForm);
