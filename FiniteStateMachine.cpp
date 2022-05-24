@@ -130,7 +130,7 @@ State FiniteStateMachine::getState(string name) {
 void FiniteStateMachine::addTransition(State fromState, State toState, string with, string withName) {
     vector<Transition> transitionList;
     Transition newTransition = Transition(toState, with, withName);
-    if (transitions.find(fromState) != transitions.end()){
+    if (transitions.contains(fromState)){
         transitionList = transitions.find(fromState)->second;
     }
     transitionList.emplace_back(newTransition);
@@ -149,7 +149,7 @@ void FiniteStateMachine::addTransition(State fromState, State toState, string wi
 void FiniteStateMachine::addTransition(State fromState, State toState, string with, string withName, string toPos) {
     vector<Transition> transitionList;
     Transition newTransition = Transition(toState, with, withName, toPos);
-    if (transitions.find(fromState) != transitions.end()){
+    if (transitions.contains(fromState)){
         transitionList = transitions.find(fromState)->second;
     }
     transitionList.emplace_back(newTransition);
@@ -164,7 +164,7 @@ void FiniteStateMachine::addTransition(State fromState, State toState, string wi
  */
 vector<Transition> FiniteStateMachine::getTransitions(State state) {
     vector<Transition> transitionList;
-    if (transitions.find(state) != transitions.end()){
+    if (transitions.contains(state)){
         return transitions.find(state)->second;
     } else {
         return transitionList;

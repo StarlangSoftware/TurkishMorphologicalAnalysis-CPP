@@ -481,40 +481,72 @@ bool MorphologicalParse::containsTag(MorphologicalTag tag) {
  */
 string MorphologicalParse::getTreePos() {
     if (isProperNoun()){
-        return "NNP";
+        return "NP";
     } else {
-        if (isVerb()){
-            return "V";
+        if (root->getName() == "değil"){
+            return "NEG";
         } else {
-            if (isAdjective()){
-                return "JJ";
-            } else {
-                if (isNoun()){
-                    return "NN";
+            if (isVerb()){
+                if (lastIGContainsTag(MorphologicalTag::ZERO)){
+                    return "NOMP";
                 } else {
-                    if (containsTag(MorphologicalTag::ADVERB)){
-                        return "RB";
+                    return "VP";
+                }
+            } else {
+                if (isAdjective()){
+                    return "ADJP";
+                } else {
+                    if (isNoun() || isPercent()){
+                        return "NP";
                     } else {
-                        if (isCardinal()){
-                            return "CD";
+                        if (containsTag(MorphologicalTag::ADVERB)){
+                            return "ADVP";
                         } else {
-                            if (containsTag(MorphologicalTag::POSTPOSITION)){
-                                return  "IN";
+                            if (isNumber() || isFraction()){
+                                return "NUM";
                             } else {
-                                if (containsTag(MorphologicalTag::CONJUNCTION)){
-                                    return "CC";
+                                if (containsTag(MorphologicalTag::POSTPOSITION)){
+                                    return "PP";
                                 } else {
-                                    if (containsTag(MorphologicalTag::DETERMINER)){
-                                        return "DT";
+                                    if (containsTag(MorphologicalTag::CONJUNCTION)){
+                                        return "CONJP";
                                     } else {
-                                        if (containsTag(MorphologicalTag::INTERJECTION)){
-                                            return "UH";
+                                        if (containsTag(MorphologicalTag::DETERMINER)){
+                                            return "DP";
                                         } else {
-                                            if (containsTag(MorphologicalTag::QUESTIONPRONOUN)){
-                                                return "WP";
+                                            if (containsTag(MorphologicalTag::INTERJECTION)){
+                                                return "INTJP";
                                             } else {
-                                                if (containsTag(MorphologicalTag::PRONOUN)){
-                                                    return "PRP";
+                                                if (containsTag(MorphologicalTag::QUESTIONPRONOUN)){
+                                                    return "WP";
+                                                } else {
+                                                    if (containsTag(MorphologicalTag::PRONOUN)){
+                                                        return "NP";
+                                                    } else {
+                                                        if (isPunctuation()){
+                                                            if (root->getName() == "!" || root->getName() == "?"){
+                                                                return ".";
+                                                            } else {
+                                                                if (root->getName() == ";" || root->getName() == "-" || root->getName() == "--") {
+                                                                    return ":";
+                                                                } else {
+                                                                    if (root->getName() == "(" ||
+                                                                        root->getName() == "-LRB-" ||
+                                                                        root->getName() == "-lrb-") {
+                                                                        return "-LRB-";
+                                                                    } else {
+                                                                        if (root->getName() == ")" ||
+                                                                            root->getName() == "-RRB-" ||
+                                                                            root->getName() == "-rrb-") {
+                                                                            return "-rrb-";
+                                                                        } else {
+                                                                            return root->getName();
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
                                                 }
                                             }
                                         }
