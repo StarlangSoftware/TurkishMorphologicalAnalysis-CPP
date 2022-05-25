@@ -940,7 +940,7 @@ vector<FsmParse> FsmMorphologicalAnalyzer::analysis(const string& surfaceForm, b
 
 bool FsmMorphologicalAnalyzer::patternMatches(string expr, const string& value){
     regex r;
-    if (mostUsedPatterns.find(expr) == mostUsedPatterns.end()){
+    if (!mostUsedPatterns.contains(expr)){
         r = regex(expr);
         mostUsedPatterns.emplace(expr, r);
     } else {

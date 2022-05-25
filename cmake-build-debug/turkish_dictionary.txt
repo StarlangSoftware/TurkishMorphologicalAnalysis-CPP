@@ -1468,7 +1468,6 @@ akışkan IS_ADJ
 akışkanlaş CL_FIIL
 akışkanlaşma CL_ISIM
 akışkanlaştırıcı CL_ISIM
-akışkanlaştırıcılık CL_ISIM
 akışkanlaştırma CL_ISIM
 akışlı IS_ADJ
 akışma CL_ISIM
@@ -11296,7 +11295,6 @@ cyrus IS_OA
 çalıştırıcılı IS_ADJ
 çalıştırıcılık CL_ISIM
 çalıştırıcısız IS_ADJ
-çalıştırıcısızlık CL_ISIM
 çalıştırma CL_ISIM
 çalka CL_FIIL F4PR-NO-REF
 çalkağı CL_ISIM
@@ -17716,7 +17714,6 @@ erkam IS_OA
 erkan IS_CA CL_ISIM IS_OA
 erkân IS_CA CL_ISIM IS_OA
 erkanıharbiyeiumumiye CL_ISIM
-erkânıharbiyeiumumiye CL_ISIM
 erkanıharp IS_SD CL_ISIM
 erkânıharp IS_SD CL_ISIM
 erkânıharplik CL_ISIM IS_SD
@@ -31668,7 +31665,6 @@ kırkyıllık IS_ADJ
 kırlangıç IS_SD CL_ISIM
 kırlangıçbalığı IS_B_SD IS_BILEŞ CL_ISIM
 kırlangıçdönümü IS_BILEŞ CL_ISIM
-kırlangıçfırtınası IS_B_SI IS_BILEŞ CL_ISIM
 kırlangıçgiller CL_ISIM IS_CA
 kırlangıçkuyruğu CL_ISIM
 kırlangıçotu IS_BILEŞ CL_ISIM
@@ -31746,7 +31742,6 @@ kısırgan CL_FIIL F5PR
 kısırganma CL_ISIM
 kısırlaş CL_FIIL
 kısırlaştır CL_FIIL
-kısırlaştırılmış IS_ADJ
 kısırlaştırma CL_ISIM
 kısırlık CL_ISIM
 kısış CL_ISIM
@@ -38090,7 +38085,6 @@ miguel IS_OA
 miğfer CL_ISIM
 mihalgazi IS_OA
 mihalıççık IS_OA
-mihalıççıkodunpazarı IS_OA
 mihalis IS_OA
 mihallıççık IS_OA
 mihály IS_OA
@@ -42056,7 +42050,6 @@ ongün IS_OA
 ongüner IS_OA
 ongüneş IS_OA
 oniki IS_ADJ CL_ISIM
-onikiparmakbağırsağı IS_B_SD IS_BILEŞ CL_ISIM
 onikitelli CL_ISIM
 oniks CL_ISIM
 onkoloji CL_ISIM
