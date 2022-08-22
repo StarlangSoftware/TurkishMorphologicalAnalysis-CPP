@@ -3,7 +3,7 @@
 //
 
 #include "catch.hpp"
-#include "../MorphologicalParse.h"
+#include "../src/MorphologicalParse.h"
 
 TEST_CASE("MorphologicalParseTest-testGetTransitionList") {
     MorphologicalParse parse1, parse2, parse3, parse4, parse5, parse6, parse7, parse8;

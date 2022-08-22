@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include "catch.hpp"
-#include "../FsmMorphologicalAnalyzer.h"
+#include "../src/FsmMorphologicalAnalyzer.h"
 
 TEST_CASE("FsmMorphologicalAnalyzerTest-morphologicalAnalysisDataTimeNumber") {
     FsmMorphologicalAnalyzer fsm = FsmMorphologicalAnalyzer();

@@ -3,7 +3,7 @@
 //
 
 #include "catch.hpp"
-#include "../FsmMorphologicalAnalyzer.h"
+#include "../src/FsmMorphologicalAnalyzer.h"
 
 TEST_CASE("TransitionTest-testNumberWithAccusative") {
     FsmMorphologicalAnalyzer fsm = FsmMorphologicalAnalyzer();

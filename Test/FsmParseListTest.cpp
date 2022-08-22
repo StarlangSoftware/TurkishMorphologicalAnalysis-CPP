@@ -3,8 +3,8 @@
 //
 
 #include "catch.hpp"
-#include "../FsmParseList.h"
-#include "../FsmMorphologicalAnalyzer.h"
+#include "../src/FsmParseList.h"
+#include "../src/FsmMorphologicalAnalyzer.h"
 
 TEST_CASE("FsmParseListTest-testSize") {
     FsmParseList parse1, parse2, parse3, parse4, parse5, parse6, parse7, parse8, parse9, parse14;

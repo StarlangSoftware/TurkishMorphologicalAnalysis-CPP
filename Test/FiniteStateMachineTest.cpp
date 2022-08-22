@@ -3,7 +3,7 @@
 //
 
 #include "catch.hpp"
-#include "../FiniteStateMachine.h"
+#include "../src/FiniteStateMachine.h"
 #include <CounterHashMap.h>
 
 TEST_CASE("FiniteStateMachineTest-testStateCount") {

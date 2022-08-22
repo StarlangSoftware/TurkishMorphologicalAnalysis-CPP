@@ -3,7 +3,7 @@
 //
 
 #include "catch.hpp"
-#include "../DisambiguationCorpus.h"
+#include "../src/DisambiguationCorpus.h"
 
 TEST_CASE("DisambiguationCorpusTest-testCorpus") {
     DisambiguationCorpus corpus = DisambiguationCorpus("penntreebank.txt");

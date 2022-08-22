@@ -3,7 +3,7 @@
 //
 
 #include "catch.hpp"
-#include "../FsmMorphologicalAnalyzer.h"
+#include "../src/FsmMorphologicalAnalyzer.h"
 
 TEST_CASE("FsmParseTest-testGetLastLemmaWithTag") {
     FsmParse parse1, parse2, parse4, parse5, parse6;
