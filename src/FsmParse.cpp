@@ -450,6 +450,12 @@ string FsmParse::pronounTransition() {
  * If it is "DuplicateRoot", it assigns concatenation of first item of formList and +DUP to the result String.
  * Ex : Allak
  * <p>
+ * If it is "CodeRoot", it assigns concatenation of first item of formList and +CODE to the result String.
+ * Ex : 5000-WX
+ * <p>
+ * If it is "MetricRoot", it assigns concatenation of first item of formList and +METRIC to the result String.
+ * Ex : 6cmx12cm
+ * <p>
  * If it is "QuestionRoot", it assigns concatenation of first item of formList and +QUES to the result String.
  * Ex : Mı
  * <p>
@@ -549,40 +555,48 @@ string FsmParse::transitionlist() {
                                                                             if (suffixList.at(0).getName() == "DuplicateRoot") {
                                                                                 result = formList.at(0) + "+DUP";
                                                                             } else {
-                                                                                if (suffixList.at(0).getName() == "QuestionRoot") {
-                                                                                    result = "mi+QUES";
+                                                                                if (suffixList.at(0).getName() == "CodeRoot"){
+                                                                                    result = formList.at(0) + "CODE";
                                                                                 } else {
-                                                                                    if (suffixList.at(0).getName() == "PostP") {
-                                                                                        if (formList.at(0) == "karşı" || formList.at(0) == "ilişkin" || formList.at(0) == "göre" || formList.at(0) == "kadar" || formList.at(0) == "ait" || formList.at(0) == "yönelik" || formList.at(0) == "rağmen" || formList.at(0) == "değin" || formList.at(0) == "dek" || formList.at(0) == "doğru" || formList.at(0) == "karşın" || formList.at(0) == "dair" || formList.at(0) == "atfen" || formList.at(0) == "binaen" || formList.at(0) == "hitaben" || formList.at(0) == "istinaden" || formList.at(0) == "mahsuben" || formList.at(0) == "mukabil" || formList.at(0) == "nazaran") {
-                                                                                            result = formList.at(0) + "+POSTP+PCDAT";
+                                                                                    if (suffixList.at(0).getName() == "MetricRoot"){
+                                                                                        result = formList.at(0) + "METRIC";
+                                                                                    } else {
+                                                                                        if (suffixList.at(0).getName() == "QuestionRoot") {
+                                                                                            result = "mi+QUES";
                                                                                         } else {
-                                                                                            if (formList.at(0) == "sonra" || formList.at(0) == "önce" || formList.at(0) == "beri" || formList.at(0) == "fazla" || formList.at(0) == "dolayı" || formList.at(0) == "itibaren" || formList.at(0) == "başka" || formList.at(0) == "çok" || formList.at(0) == "evvel" || formList.at(0) == "ötürü" || formList.at(0) == "yana" || formList.at(0) == "öte" || formList.at(0) == "aşağı" || formList.at(0) == "yukarı" || formList.at(0) == "dışarı" || formList.at(0) == "az" || formList.at(0) == "gayrı") {
-                                                                                                result = formList.at(0) + "+POSTP+PCABL";
-                                                                                            } else {
-                                                                                                if (formList.at(0) == "yanısıra") {
-                                                                                                    result = formList.at(0) + "+POSTP+PCGEN";
+                                                                                            if (suffixList.at(0).getName() == "PostP") {
+                                                                                                if (formList.at(0) == "karşı" || formList.at(0) == "ilişkin" || formList.at(0) == "göre" || formList.at(0) == "kadar" || formList.at(0) == "ait" || formList.at(0) == "yönelik" || formList.at(0) == "rağmen" || formList.at(0) == "değin" || formList.at(0) == "dek" || formList.at(0) == "doğru" || formList.at(0) == "karşın" || formList.at(0) == "dair" || formList.at(0) == "atfen" || formList.at(0) == "binaen" || formList.at(0) == "hitaben" || formList.at(0) == "istinaden" || formList.at(0) == "mahsuben" || formList.at(0) == "mukabil" || formList.at(0) == "nazaran") {
+                                                                                                    result = formList.at(0) + "+POSTP+PCDAT";
                                                                                                 } else {
-                                                                                                    if (formList.at(0) == "birlikte" || formList.at(0) == "beraber") {
-                                                                                                        result = formList.at(0) + "+POSTP+PCINS";
+                                                                                                    if (formList.at(0) == "sonra" || formList.at(0) == "önce" || formList.at(0) == "beri" || formList.at(0) == "fazla" || formList.at(0) == "dolayı" || formList.at(0) == "itibaren" || formList.at(0) == "başka" || formList.at(0) == "çok" || formList.at(0) == "evvel" || formList.at(0) == "ötürü" || formList.at(0) == "yana" || formList.at(0) == "öte" || formList.at(0) == "aşağı" || formList.at(0) == "yukarı" || formList.at(0) == "dışarı" || formList.at(0) == "az" || formList.at(0) == "gayrı") {
+                                                                                                        result = formList.at(0) + "+POSTP+PCABL";
                                                                                                     } else {
-                                                                                                        if (formList.at(0) == "aşkın" || formList.at(0) == "takiben") {
-                                                                                                            result = formList.at(0) + "+POSTP+PCACC";
+                                                                                                        if (formList.at(0) == "yanısıra") {
+                                                                                                            result = formList.at(0) + "+POSTP+PCGEN";
                                                                                                         } else {
-                                                                                                            result = formList.at(0) + "+POSTP+PCNOM";
+                                                                                                            if (formList.at(0) == "birlikte" || formList.at(0) == "beraber") {
+                                                                                                                result = formList.at(0) + "+POSTP+PCINS";
+                                                                                                            } else {
+                                                                                                                if (formList.at(0) == "aşkın" || formList.at(0) == "takiben") {
+                                                                                                                    result = formList.at(0) + "+POSTP+PCACC";
+                                                                                                                } else {
+                                                                                                                    result = formList.at(0) + "+POSTP+PCNOM";
+                                                                                                                }
+                                                                                                            }
                                                                                                         }
                                                                                                     }
                                                                                                 }
-                                                                                            }
-                                                                                        }
-                                                                                    } else {
-                                                                                        if (Word::startsWith(suffixList.at(0).getName(), "PronounRoot")) {
-                                                                                            result = pronounTransition();
-                                                                                        } else {
-                                                                                            if (suffixList.at(0).getName() == "OrdinalRoot") {
-                                                                                                result = formList.at(0) + "+NUM+ORD";
                                                                                             } else {
-                                                                                                if (Word::startsWith(suffixList.at(0).getName(), "Adjective")) {
-                                                                                                    result = formList.at(0) + "+ADJ";
+                                                                                                if (Word::startsWith(suffixList.at(0).getName(), "PronounRoot")) {
+                                                                                                    result = pronounTransition();
+                                                                                                } else {
+                                                                                                    if (suffixList.at(0).getName() == "OrdinalRoot") {
+                                                                                                        result = formList.at(0) + "+NUM+ORD";
+                                                                                                    } else {
+                                                                                                        if (Word::startsWith(suffixList.at(0).getName(), "Adjective")) {
+                                                                                                            result = formList.at(0) + "+ADJ";
+                                                                                                        }
+                                                                                                    }
                                                                                                 }
                                                                                             }
                                                                                         }

@@ -55,18 +55,26 @@ TEST_CASE("FsmParseListTest-testRootWords") {
 }
 
 TEST_CASE("FsmParseListTest-testGetParseWithLongestRootWord") {
-    FsmParseList parse2, parse3, parse4, parse5, parse6;
+    FsmParseList parse2, parse3, parse4, parse5, parse6, parse15, parse16, parse17, parse18;
     FsmMorphologicalAnalyzer fsm = FsmMorphologicalAnalyzer();
     parse2 = fsm.morphologicalAnalysis("koparılarak");
     parse3 = fsm.morphologicalAnalysis("toplama");
     parse4 = fsm.morphologicalAnalysis("değerlendirmede");
     parse5 = fsm.morphologicalAnalysis("soruşturmasının");
     parse6 = fsm.morphologicalAnalysis("karşılaştırmalı");
+    parse15 = fsm.morphologicalAnalysis("açacağını");
+    parse16 = fsm.morphologicalAnalysis("kollarımız");
+    parse17 = fsm.morphologicalAnalysis("yapmamızı");
+    parse18 = fsm.morphologicalAnalysis("koşmalıyız");
     REQUIRE(Word("kopar") == *(parse2.getParseWithLongestRootWord().getWord()));
     REQUIRE(Word("toplama") == *(parse3.getParseWithLongestRootWord().getWord()));
     REQUIRE(Word("değerlendirme") == *(parse4.getParseWithLongestRootWord().getWord()));
     REQUIRE(Word("soruşturma") == *(parse5.getParseWithLongestRootWord().getWord()));
     REQUIRE(Word("karşılaştırmalı") == *(parse6.getParseWithLongestRootWord().getWord()));
+    REQUIRE(Word("aç") == *(parse15.getParseWithLongestRootWord().getWord()));
+    REQUIRE(Word("kol") == *(parse16.getParseWithLongestRootWord().getWord()));
+    REQUIRE(Word("yap") == *(parse17.getParseWithLongestRootWord().getWord()));
+    REQUIRE(Word("koş") == *(parse18.getParseWithLongestRootWord().getWord()));
 }
 
 TEST_CASE("FsmParseListTest-testReduceToParsesWithSameRootAndPos") {

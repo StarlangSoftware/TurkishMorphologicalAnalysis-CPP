@@ -11,7 +11,7 @@ TEST_CASE("FiniteStateMachineTest") {
 
     SECTION("testStateCount") {
         vector<State> stateList = fsm.getStates();
-        REQUIRE(139 == stateList.size());
+        REQUIRE(141 == stateList.size());
     }
 
     SECTION("testStartEndStates") {
@@ -22,7 +22,7 @@ TEST_CASE("FiniteStateMachineTest") {
                 endStateCount++;
             }
         }
-        REQUIRE(35 == endStateCount);
+        REQUIRE(37 == endStateCount);
         CounterHashMap <string> posCounts = CounterHashMap<string>();
         for (State state: stateList) {
             posCounts.put(state.getPos());

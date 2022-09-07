@@ -29,7 +29,7 @@ const string InflectionalGroup::tags[TAG_SIZE] = {"Noun", "Adv", "Adj", "Verb", 
                                                   "Inf2", "Inf3", "BSTag", "ESTag", "BTTag",
                                                   "ETTag", "BDTag", "EDTag", "Inf1", "AsLongAs",
                                                   "Dist", "Adamantly", "Percent", "WithoutBeingAbleToHaveDoneSo", "Dim",
-                                                  "Pers", "Fraction", "Hashtag", "Email", "Date"};
+                                                  "Pers", "Fraction", "Hashtag", "Email", "Date", "Code", "Metric"};
 
 const MorphologicalTag InflectionalGroup::morphoTags[TAG_SIZE] = {MorphologicalTag::NOUN, MorphologicalTag::ADVERB, MorphologicalTag::ADJECTIVE,
                                                                   MorphologicalTag::VERB, MorphologicalTag::A1SG, MorphologicalTag::A2SG, MorphologicalTag::A3SG, MorphologicalTag::A1PL,
@@ -56,7 +56,8 @@ const MorphologicalTag InflectionalGroup::morphoTags[TAG_SIZE] = {MorphologicalT
                                                                   MorphologicalTag::INFINITIVE2, MorphologicalTag::INFINITIVE3, MorphologicalTag::BEGINNINGOFSENTENCE, MorphologicalTag::ENDOFSENTENCE, MorphologicalTag::BEGINNINGOFTITLE,
                                                                   MorphologicalTag::ENDOFTITLE, MorphologicalTag::BEGINNINGOFDOCUMENT, MorphologicalTag::ENDOFDOCUMENT, MorphologicalTag::INFINITIVE, MorphologicalTag::ASLONGAS,
                                                                   MorphologicalTag::DISTRIBUTIVE, MorphologicalTag::ADAMANTLY, MorphologicalTag::PERCENT, MorphologicalTag::WITHOUTBEINGABLETOHAVEDONESO, MorphologicalTag::DIMENSION,
-                                                                  MorphologicalTag::PERSONALPRONOUN, MorphologicalTag::FRACTION, MorphologicalTag::HASHTAG, MorphologicalTag::EMAIL, MorphologicalTag::DATE};
+                                                                  MorphologicalTag::PERSONALPRONOUN, MorphologicalTag::FRACTION, MorphologicalTag::HASHTAG, MorphologicalTag::EMAIL, MorphologicalTag::DATE,
+                                                                  MorphologicalTag::CODE, MorphologicalTag::METRIC};
 
 /**
  * The getMorphologicalTag method takes a String tag as an input and if the input matches with one of the elements of
