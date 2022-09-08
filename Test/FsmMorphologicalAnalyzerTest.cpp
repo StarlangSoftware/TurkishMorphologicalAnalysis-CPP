@@ -11,12 +11,18 @@
 TEST_CASE("testGenerateAllParses") {
     FsmMorphologicalAnalyzer fsm = FsmMorphologicalAnalyzer();
     TxtDictionary dictionary = fsm.getDictionary();
-    string testWords[29] = {"açıkla", "yıldönümü", "resim", "hal", "cenk", "emlak", "git", "kalp", "kavur", "ye", "yemek", "göç", "ak", "sıska", "yıka", "bul",
-                            "cevapla", "coş", "böl", "del", "giy", "kaydol", "anla", "çök", "çık", "doldur", "azal", "göster", "aksa"};
+    vector<string> testWords = {"açıkla", "yıldönümü", "resim",
+                            "hal", "emlak", "git",
+                            "kavur", "ye", "yemek", "göç",
+                            "ak", "sıska", "yıka", "bul",
+                            "cevapla", "coş", "böl", "del",
+                            "giy", "kaydol", "anla", "çök",
+                            "çık", "doldur", "azal", "göster",
+                            "aksa", "cenk", "kalp"};
     vector<FsmParse> parsesGenerated;
     vector<string> parsesExpected;
     string line;
-    for (int i = 0; i < testWords->size(); i++) {
+    for (int i = 0; i < testWords.size(); i++) {
         TxtWord* word = (TxtWord*) fsm.getDictionary().getWord(testWords[i]);
         parsesExpected.clear();
         ifstream inputFile;

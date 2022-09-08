@@ -737,6 +737,9 @@ vector<FsmParse> FsmMorphologicalAnalyzer::morphologicalAnalysis(TxtWord *root, 
  */
 vector<FsmParse> FsmMorphologicalAnalyzer::generateAllParses(TxtWord *root, int maxLength) {
     vector<FsmParse> initialFsmParse;
+    if (root->isProperNoun()){
+        initializeParseListFromRoot(initialFsmParse, root, true);
+    }
     initializeParseListFromRoot(initialFsmParse, root, false);
     return parseWord(initialFsmParse, maxLength);
 }

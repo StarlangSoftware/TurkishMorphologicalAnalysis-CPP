@@ -127,7 +127,7 @@ bool Transition::transitionPossible(FsmParse currentFsmParse) {
     if (with == "Ar" && Word::endsWith(currentFsmParse.getSurfaceForm(), "l") && currentFsmParse.getWord()->getName() != currentFsmParse.getSurfaceForm()) {
         return false;
     }
-    if (!currentFsmParse.getVerbAgreement().empty() && !currentFsmParse.getPossesiveAgreement().empty() && withName.empty()) {
+    if (!currentFsmParse.getVerbAgreement().empty() && !currentFsmParse.getPossesiveAgreement().empty() && !withName.empty()) {
         if (currentFsmParse.getVerbAgreement() == "A3PL" && withName == "^DB+VERB+ZERO+PRES+A1SG") {
             return false;
         }
@@ -154,7 +154,7 @@ bool Transition::transitionPossible(TxtWord* root, State fromState) {
     if (with == "kü") {
         return root->takesRelativeSuffixKu();
     }
-    if (with == "dHr") {
+    if (with == "DHr") {
         if (toState.getName() == "Adverb") {
             return true;
         } else {
@@ -355,7 +355,7 @@ string Transition::makeTransition(TxtWord *root, string stem, State startState) 
                                     } else {
                                         if (Word::lastPhoneme(stem) == "k"){
                                             //ahenk->ahengi, künk->küngü, renk->rengi, pelesenk->pelesengi
-                                            if (startWithVowelorConsonantDrops() && rootWord && root->endingKChangesIntoG() && !root->isProperNoun()) {
+                                            if (startWithVowelorConsonantDrops() && rootWord && root->endingKChangesIntoG() && (!root->isProperNoun() || startState.to_String() != "ProperRoot")) {
                                                 formation = Word::substringExceptLastChar(stem) + 'g';
                                             } else {
                                                 //ablak->ablağı, küllük->küllüğü, kitaplık->kitaplığı, evcilik->evciliği
