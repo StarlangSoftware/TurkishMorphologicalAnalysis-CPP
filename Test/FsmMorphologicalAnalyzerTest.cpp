@@ -4,7 +4,37 @@
 
 #include <iostream>
 #include "catch.hpp"
+#include <fstream>
+#include <sstream>
 #include "../src/FsmMorphologicalAnalyzer.h"
+
+TEST_CASE("testGenerateAllParses") {
+    FsmMorphologicalAnalyzer fsm = FsmMorphologicalAnalyzer();
+    TxtDictionary dictionary = fsm.getDictionary();
+    string testWords[29] = {"açıkla", "yıldönümü", "resim", "hal", "cenk", "emlak", "git", "kalp", "kavur", "ye", "yemek", "göç", "ak", "sıska", "yıka", "bul",
+                            "cevapla", "coş", "böl", "del", "giy", "kaydol", "anla", "çök", "çık", "doldur", "azal", "göster", "aksa"};
+    vector<FsmParse> parsesGenerated;
+    vector<string> parsesExpected;
+    string line;
+    for (int i = 0; i < testWords->size(); i++) {
+        TxtWord* word = (TxtWord*) fsm.getDictionary().getWord(testWords[i]);
+        parsesExpected.clear();
+        ifstream inputFile;
+        inputFile.open("parses/" + word->getName() + ".txt", ifstream :: in);
+        while (inputFile.good()) {
+            getline(inputFile, line);
+            if (!line.empty()){
+                parsesExpected.push_back(Word::split(line)[1]);
+            }
+        }
+        inputFile.close();
+        parsesGenerated = fsm.generateAllParses(word, Word::size(word->getName()) + 5);
+        REQUIRE(parsesExpected.size() == parsesGenerated.size());
+        for (FsmParse parseGenerated : parsesGenerated) {
+            REQUIRE(std::find(parsesExpected.begin(), parsesExpected.end(), parseGenerated.to_String()) != parsesExpected.end());
+        }
+    }
+}
 
 TEST_CASE("FsmMorphologicalAnalyzerTest") {
     FsmMorphologicalAnalyzer fsm = FsmMorphologicalAnalyzer();
