@@ -10,7 +10,7 @@ struct fsmParseComparator{
     }
 };
 
-const string FsmParseList::longestRootExceptions[227] = {
+const string FsmParseList::longestRootExceptions[232] = {
         "acağı acak NOUN VERB", "acağım acak NOUN VERB", "acağımı acak NOUN VERB", "acağımız acak NOUN VERB", "acağın acak NOUN VERB",
         "acağına acak NOUN VERB", "acağını acak NOUN VERB", "acağının acak NOUN VERB", "acağınız acak NOUN VERB", "acağınıza acak NOUN VERB",
         "acağınızdır acak NOUN VERB", "acağınızı acak NOUN VERB", "acağınızın acak NOUN VERB", "acağız acak NOUN VERB", "acakları acak NOUN VERB",
@@ -56,7 +56,8 @@ const string FsmParseList::longestRootExceptions[227] = {
         "rız r NOUN VERB", "rken r NOUN VERB", "rken r NOUN VERB", "rsa r NOUN VERB", "rsak r NOUN VERB",
         "rsanız r NOUN VERB", "rse r NOUN VERB", "rsek r NOUN VERB", "rseniz r NOUN VERB", "rsiniz r NOUN VERB",
         "rsınız r NOUN VERB", "sa sa VERB ADJ", "se se VERB ADJ", "ulan u NOUN VERB", "un un VERB NOUN",
-        "üne ün VERB NOUN", "unun un VERB NOUN"};
+        "üne ün VERB NOUN", "unun un VERB NOUN", "ince i NOUN VERB", "unca u NOUN VERB", "ınca ı NOUN VERB",
+        "unca un NOUN VERB", "ilen ile VERB VERB"};
 
 /**
  * A constructor of {@link FsmParseList} class which takes an {@link vector} fsmParses as an input. First it sorts
