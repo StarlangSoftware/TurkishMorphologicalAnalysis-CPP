@@ -144,6 +144,9 @@ void FsmParseList::reduceToParsesWithSameRootAndPos(Word* currentWithPos) {
 FsmParse FsmParseList::getParseWithLongestRootWord() {
     FsmParse bestParse;
     int maxLength = -1;
+    if (!fsmParses.empty()){
+        bestParse = fsmParses[0];
+    }
     for (auto & fsmParse : fsmParses){
         int length = Word::size(fsmParse.getWord()->getName());
         if (length > maxLength && !isLongestRootException(fsmParse)){
