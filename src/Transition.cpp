@@ -14,10 +14,10 @@
  * @param with     String input.
  * @param withName String input.
  */
-Transition::Transition(State toState, string with, string withName) {
-    this->toState = move(toState);
-    this->with = move(with);
-    this->withName = move(withName);
+Transition::Transition(const State& toState, const string& with, const string& withName) {
+    this->toState = toState;
+    this->with = with;
+    this->withName = withName;
     toPos = "";
 }
 
@@ -30,11 +30,11 @@ Transition::Transition(State toState, string with, string withName) {
  * @param withName String input.
  * @param toPos    String input.
  */
-Transition::Transition(State toState, string with, string withName, string toPos) {
-    this->toState = move(toState);
-    this->with = move(with);
-    this->withName = move(withName);
-    this->toPos = move(toPos);
+Transition::Transition(const State& toState, const string& with, const string& withName, const string& toPos) {
+    this->toState = toState;
+    this->with = with;
+    this->withName = withName;
+    this->toPos = toPos;
 }
 
 /**
@@ -43,10 +43,10 @@ Transition::Transition(State toState, string with, string withName, string toPos
  *
  * @param with String input.
  */
-Transition::Transition(string with) {
+Transition::Transition(const string& with) {
     withName = "";
     toPos = "";
-    this->with = move(with);
+    this->with = with;
 }
 
 /**
@@ -54,7 +54,7 @@ Transition::Transition(string with) {
  *
  * @return toState variable.
  */
-State Transition::getToState() {
+State Transition::getToState() const{
     return toState;
 }
 
@@ -63,7 +63,7 @@ State Transition::getToState() {
  *
  * @return toPos variable.
  */
-string Transition::getToPos() {
+string Transition::getToPos() const{
     return toPos;
 }
 
@@ -84,7 +84,7 @@ string Transition::getToPos() {
  * @param realSurfaceForm    {@link String} input.
  * @return true when the transition is possible according to Turkish grammar, false otherwise.
  */
-bool Transition::transitionPossible(string currentSurfaceForm, string realSurfaceForm) {
+bool Transition::transitionPossible(const string& currentSurfaceForm, const string& realSurfaceForm) const{
     if (Word::size(currentSurfaceForm) == 0 || Word::size(currentSurfaceForm) >= Word::size(realSurfaceForm)) {
         return true;
     }
@@ -123,7 +123,7 @@ bool Transition::transitionPossible(string currentSurfaceForm, string realSurfac
  * @param currentFsmParse Parse to be checked
  * @return true if transition is possible false otherwise
  */
-bool Transition::transitionPossible(FsmParse currentFsmParse) {
+bool Transition::transitionPossible(const FsmParse& currentFsmParse) const{
     if (with == "Ar" && Word::endsWith(currentFsmParse.getSurfaceForm(), "l") && currentFsmParse.getWord()->getName() != currentFsmParse.getSurfaceForm()) {
         return false;
     }
@@ -138,7 +138,7 @@ bool Transition::transitionPossible(FsmParse currentFsmParse) {
     return true;
 }
 
-bool Transition::transitionPossible(TxtWord* root, State fromState) {
+bool Transition::transitionPossible(TxtWord* root, const State& fromState) const{
     if (root->isAdjective() && ((root->isNominal() && !root->isExceptional()) || root->isPronoun()) && toState.getName() == "NominalRoot(ADJ)" && with == "0") {
         return false;
     }
@@ -172,7 +172,7 @@ bool Transition::transitionPossible(TxtWord* root, State fromState) {
  *
  * @return the first character of the with variable.
  */
-string Transition::withFirstChar() {
+string Transition::withFirstChar() const{
     if (with.empty()) {
         return "$";
     }
@@ -195,7 +195,7 @@ string Transition::withFirstChar() {
  *
  * @return true if it starts with vowel or consonant drops, false otherwise.
  */
-bool Transition::startWithVowelorConsonantDrops() {
+bool Transition::startWithVowelorConsonantDrops() const{
     if (TurkishLanguage::isConsonantDrop(withFirstChar()) && with != "ylA" && with != "ysA" && with != "ymHs" && with != "yDH" && with != "yken") {
         return true;
     }
@@ -217,7 +217,7 @@ bool Transition::startWithVowelorConsonantDrops() {
  * @param root {@link TxtWord} input.
  * @return true if there is softening during suffixation of the given root, false otherwise.
  */
-bool Transition::softenDuringSuffixation(TxtWord* root) {
+bool Transition::softenDuringSuffixation(TxtWord* root) const{
     if ((root->isNominal() || root->isAdjective()) && root->nounSoftenDuringSuffixation() && (with == "Hm" || with == "nDAn" || with == "ncA" || with == "nDA" || with == "yA" || with == "yHm" || with == "yHz" || with == "yH" || with == "nH" || with == "nA" || with == "nHn" || with == "H" || with == "sH" || with == "Hn" || with == "HnHz" || with == "HmHz")) {
         return true;
     }
@@ -236,7 +236,7 @@ bool Transition::softenDuringSuffixation(TxtWord* root) {
  * @param stem String input.
  * @return String type output that has the transition.
  */
-string Transition::makeTransition(TxtWord *root, string stem) {
+string Transition::makeTransition(TxtWord *root, const string& stem){
     if (root->isVerb()) {
         return makeTransition(root, stem, State("VerbalRoot", true, false));
     } else {
@@ -244,7 +244,7 @@ string Transition::makeTransition(TxtWord *root, string stem) {
     }
 }
 
-string Transition::makeTransition(TxtWord *root, string stem, State startState) {
+string Transition::makeTransition(TxtWord *root, const string& stem, const State& startState){
     bool rootWord = root->getName() == stem || (root->getName() + "'") == stem;
     string formation = stem;
     int i = 0;
@@ -440,7 +440,7 @@ string Transition::makeTransition(TxtWord *root, string stem, State startState) 
  *
  * @return with variable.
  */
-string Transition::to_String(){
+string Transition::to_String() const{
     return with;
 }
 
@@ -449,6 +449,6 @@ string Transition::to_String(){
  *
  * @return the withName variable.
  */
-string Transition::getWith(){
+string Transition::getWith() const{
     return withName;
 }

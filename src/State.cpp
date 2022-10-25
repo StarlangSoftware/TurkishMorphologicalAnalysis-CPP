@@ -12,8 +12,8 @@
  * @param startState boolean input.
  * @param endState   boolean input.
  */
-State::State(string name, bool startState, bool endState) {
-    this->name = move(name);
+State::State(const string& name, bool startState, bool endState) {
+    this->name = name;
     this->startState = startState;
     this->endState = endState;
     this->pos = "";
@@ -28,11 +28,11 @@ State::State(string name, bool startState, bool endState) {
  * @param endState   boolean input.
  * @param pos        String input.
  */
-State::State(string name, bool startState, bool endState, string pos) {
-    this->name = move(name);
+State::State(const string& name, bool startState, bool endState, const string& pos) {
+    this->name = name;
     this->startState = startState;
     this->endState = endState;
-    this->pos = move(pos);
+    this->pos = pos;
 }
 
 /**
@@ -40,7 +40,7 @@ State::State(string name, bool startState, bool endState, string pos) {
  *
  * @return String name.
  */
-string State::getName() {
+string State::getName() const{
     return name;
 }
 
@@ -49,7 +49,7 @@ string State::getName() {
  *
  * @return String pos.
  */
-string State::getPos() {
+string State::getPos() const{
     return pos;
 }
 
@@ -58,7 +58,7 @@ string State::getPos() {
  *
  * @return boolean endState.
  */
-bool State::isEndState() {
+bool State::isEndState() const{
     return endState;
 }
 
@@ -67,7 +67,7 @@ bool State::isEndState() {
  *
  * @return String name.
  */
-string State::to_String() {
+string State::to_String() const{
     return name;
 }
 

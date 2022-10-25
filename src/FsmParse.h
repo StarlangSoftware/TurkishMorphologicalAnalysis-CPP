@@ -23,31 +23,31 @@ private:
 public:
     explicit FsmParse(Word* root);
     FsmParse() = default;
-    FsmParse(int number, State startState);
-    FsmParse(double number, string stringValue, State startState);
-    FsmParse(string punctuation, State startState);
-    FsmParse(TxtWord* root, State startState);
+    FsmParse(int number, const State& startState);
+    FsmParse(double number, const string& stringValue, const State& startState);
+    FsmParse(const string& punctuation, const State& startState);
+    FsmParse(TxtWord* root, const State& startState);
     void constructInflectionalGroups();
-    string getVerbAgreement();
-    string getPossesiveAgreement();
-    void setAgreement(string transitionName);
-    string getLastLemmaWithTag(string pos);
-    string getLastLemma();
-    void addSuffix(State suffix, string form, string transition, string with, string toPos);
-    string getSurfaceForm();
-    State getStartState();
-    string getFinalPos();
-    string getInitialPos();
-    void setForm(string name);
-    State getFinalSuffix();
-    FsmParse clone();
-    string headerTransition();
-    string pronounTransition();
-    string transitionlist();
-    string getSuffixList();
-    string getWithList();
-    string replaceRootWord(TxtWord* newRoot);
-    string to_String();
+    string getVerbAgreement() const;
+    string getPossesiveAgreement() const;
+    void setAgreement(const string& transitionName);
+    string getLastLemmaWithTag(const string& pos) const;
+    string getLastLemma() const;
+    void addSuffix(const State& suffix, const string& _form, const string& transition, const string& with, const string& toPos);
+    string getSurfaceForm() const;
+    State getStartState() const;
+    string getFinalPos() const;
+    string getInitialPos() const;
+    void setForm(const string& name);
+    State getFinalSuffix() const;
+    FsmParse clone() const;
+    string headerTransition() const;
+    string pronounTransition() const;
+    string transitionlist() const;
+    string getSuffixList() const;
+    string getWithList() const;
+    string replaceRootWord(TxtWord* newRoot) const;
+    string to_String() const;
 /**
  * The overridden compareTo metgod takes an {@link Object} as an input and if it is an instance of the {@link FsmParse}
  * class it returns the result of comparison of the items of transitionList with input {@link Object}.

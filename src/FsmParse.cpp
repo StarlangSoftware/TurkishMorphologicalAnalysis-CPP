@@ -28,8 +28,8 @@ FsmParse::FsmParse(Word* root){
  * @param number     {@link Integer} input.
  * @param startState {@link State} input.
  */
-FsmParse::FsmParse(int number, State startState) {
-    TxtWord* num = new TxtWord(std::to_string(number));
+FsmParse::FsmParse(int number, const State& startState) {
+    auto* num = new TxtWord(std::to_string(number));
     num->addFlag("IS_SAYI");
     this->root = num;
     this->form = root->getName();
@@ -49,8 +49,8 @@ FsmParse::FsmParse(int number, State startState) {
  * @param number     {@link Double} input.
  * @param startState {@link State} input.
  */
-FsmParse::FsmParse(double number, string stringValue, State startState) {
-    auto* num = new TxtWord(std::move(stringValue));
+FsmParse::FsmParse(double number, const string& stringValue, const State& startState) {
+    auto* num = new TxtWord(stringValue);
     num->addFlag("IS_SAYI");
     this->root = num;
     this->form = root->getName();
@@ -70,8 +70,8 @@ FsmParse::FsmParse(double number, string stringValue, State startState) {
  * @param punctuation {@link String} input.
  * @param startState  {@link State} input.
  */
-FsmParse::FsmParse(string punctuation, State startState) {
-    this->root = new TxtWord(move(punctuation));
+FsmParse::FsmParse(const string& punctuation, const State& startState) {
+    this->root = new TxtWord(punctuation);
     this->form = root->getName();
     this->pos = startState.getPos();
     this->initialPos = startState.getPos();
@@ -88,7 +88,7 @@ FsmParse::FsmParse(string punctuation, State startState) {
  * @param root       {@link TxtWord} input.
  * @param startState {@link State} input.
  */
-FsmParse::FsmParse(TxtWord *root, State startState) {
+FsmParse::FsmParse(TxtWord *root, const State& startState) {
     this->root = root;
     this->form = root->getName();
     this->pos = startState.getPos();
@@ -124,7 +124,7 @@ void FsmParse::constructInflectionalGroups() {
  *
  * @return the verbAgreement variable.
  */
-string FsmParse::getVerbAgreement() {
+string FsmParse::getVerbAgreement() const{
     return verbAgreement;
 }
 
@@ -133,7 +133,7 @@ string FsmParse::getVerbAgreement() {
  *
  * @return the possesiveAgreement variable.
  */
-string FsmParse::getPossesiveAgreement() {
+string FsmParse::getPossesiveAgreement() const{
     return possesiveAgreement;
 }
 
@@ -144,33 +144,33 @@ string FsmParse::getPossesiveAgreement() {
  *
  * @param transitionName {@link String} input.
  */
-void FsmParse::setAgreement(string transitionName) {
-    if (transitionName != "" && (transitionName == "A1SG" || transitionName == "A2SG" || transitionName == "A3SG" || transitionName == "A1PL" || transitionName == "A2PL" || transitionName == "A3PL")) {
+void FsmParse::setAgreement(const string& transitionName) {
+    if (!transitionName.empty() && (transitionName == "A1SG" || transitionName == "A2SG" || transitionName == "A3SG" || transitionName == "A1PL" || transitionName == "A2PL" || transitionName == "A3PL")) {
         this->verbAgreement = transitionName;
     }
-    if (transitionName != "" && (transitionName == "PNON" || transitionName == "P1SG" || transitionName == "P2SG" || transitionName == "P3SG" || transitionName == "P1PL" || transitionName == "P2PL" || transitionName == "P3PL")) {
+    if (!transitionName.empty() && (transitionName == "PNON" || transitionName == "P1SG" || transitionName == "P2SG" || transitionName == "P3SG" || transitionName == "P1PL" || transitionName == "P2PL" || transitionName == "P3PL")) {
         this->possesiveAgreement = transitionName;
     }
 }
 
 /**
- * The getLastLemmaWithTag method takes a String input pos as an input. If given pos is an initial pos then it assigns
+ * The getLastLemmaWithTag method takes a String input _pos as an input. If given _pos is an initial _pos then it assigns
  * root to the lemma, and assign null otherwise.  Then, it loops i times where i ranges from 1 to size of the formList,
- * if the item at i-1 of transitionList is not null and contains a derivational boundary with pos but not with ZERO,
+ * if the item at i-1 of transitionList is not null and contains a derivational boundary with _pos but not with ZERO,
  * it assigns the ith item of formList to lemma.
  *
- * @param pos {@link String} input.
+ * @param _pos {@link String} input.
  * @return String output lemma.
  */
-string FsmParse::getLastLemmaWithTag(string pos) {
+string FsmParse::getLastLemmaWithTag(const string& _pos) const{
     string lemma;
-    if (!initialPos.empty() && initialPos == pos) {
+    if (!initialPos.empty() && initialPos == _pos) {
         lemma = root->getName();
     } else {
         lemma = "";
     }
     for (int i = 1; i < formList.size(); i++) {
-        if (!transitionList.at(i - 1).empty() && transitionList.at(i - 1).find("^DB+" + pos) != string::npos && transitionList.at(i - 1).find("^DB+" + pos + "+ZERO") == string::npos) {
+        if (!transitionList.at(i - 1).empty() && transitionList.at(i - 1).find("^DB+" + _pos) != string::npos && transitionList.at(i - 1).find("^DB+" + _pos + "+ZERO") == string::npos) {
             lemma = formList.at(i);
         }
     }
@@ -183,7 +183,7 @@ string FsmParse::getLastLemmaWithTag(string pos) {
  *
  * @return String output lemma.
  */
-string FsmParse::getLastLemma() {
+string FsmParse::getLastLemma() const{
     string lemma = root->getName();
     for (int i = 1; i < formList.size(); i++) {
         if (!transitionList.at(i - 1).empty() && transitionList.at(i - 1).find("^DB+") != string::npos) {
@@ -194,18 +194,18 @@ string FsmParse::getLastLemma() {
 }
 
 /**
- * The addSuffix method takes 5 different inputs; {@link State} suffix, {@link String} form, transition, with and toPos.
+ * The addSuffix method takes 5 different inputs; {@link State} suffix, {@link String} _form, transition, with and toPos.
  * If the pos of given input suffix is not null, it then assigns it to the pos variable. If the pos of the given suffix
  * is null but given toPos is not null than it assigns toPos to pos variable. At the end, it adds suffix to the suffixList,
- * form to the formList, transition to the transitionList and if given with is not 0, it is also added to withList.
+ * _form to the formList, transition to the transitionList and if given with is not 0, it is also added to withList.
  *
  * @param suffix     {@link State} input.
- * @param form       {@link String} input.
+ * @param _form       {@link String} input.
  * @param transition {@link String} input.
  * @param with       {@link String} input.
  * @param toPos      {@link String} input.
  */
-void FsmParse::addSuffix(State suffix, string form, string transition, string with, string toPos) {
+void FsmParse::addSuffix(const State& suffix, const string& _form, const string& transition, const string& with, const string& toPos) {
     if (!suffix.getPos().empty()) {
         pos = suffix.getPos();
     } else {
@@ -214,12 +214,12 @@ void FsmParse::addSuffix(State suffix, string form, string transition, string wi
         }
     }
     suffixList.emplace_back(suffix);
-    formList.emplace_back(form);
+    formList.emplace_back(_form);
     transitionList.emplace_back(transition);
     if (with != "0") {
         withList.emplace_back(with);
     }
-    this->form = form;
+    this->form = _form;
 }
 
 /**
@@ -227,7 +227,7 @@ void FsmParse::addSuffix(State suffix, string form, string transition, string wi
  *
  * @return the form variable.
  */
-string FsmParse::getSurfaceForm() {
+string FsmParse::getSurfaceForm() const{
     return form;
 }
 
@@ -236,7 +236,7 @@ string FsmParse::getSurfaceForm() {
  *
  * @return the first item of suffixList {@link ArrayList}.
  */
-State FsmParse::getStartState() {
+State FsmParse::getStartState() const{
     return suffixList.at(0);
 }
 
@@ -245,7 +245,7 @@ State FsmParse::getStartState() {
  *
  * @return the pos variable.
  */
-string FsmParse::getFinalPos() {
+string FsmParse::getFinalPos() const{
     return pos;
 }
 
@@ -254,7 +254,7 @@ string FsmParse::getFinalPos() {
  *
  * @return the initialPos variable.
  */
-string FsmParse::getInitialPos() {
+string FsmParse::getInitialPos() const{
     return initialPos;
 }
 
@@ -264,8 +264,8 @@ string FsmParse::getInitialPos() {
  *
  * @param name String input to set form.
  */
-void FsmParse::setForm(string name) {
-    form = move(name);
+void FsmParse::setForm(const string& name) {
+    form = name;
     formList.erase(formList.begin());
     formList.emplace_back(name);
 }
@@ -275,7 +275,7 @@ void FsmParse::setForm(string name) {
  *
  * @return the last item of suffixList {@link ArrayList}.
  */
-State FsmParse::getFinalSuffix() {
+State FsmParse::getFinalSuffix() const{
     return suffixList.at(suffixList.size() - 1);
 }
 
@@ -286,8 +286,7 @@ State FsmParse::getFinalSuffix() {
  *
  * @return FsmParse object.
  */
-FsmParse FsmParse::clone() {
-    int i;
+FsmParse FsmParse::clone() const{
     FsmParse p = FsmParse(root);
     p.form = form;
     p.pos = pos;
@@ -313,7 +312,7 @@ FsmParse FsmParse::clone() {
  *
  * @return corresponding tags of the headers and an empty {@link String} if any case does not match.
  */
-string FsmParse::headerTransition() {
+string FsmParse::headerTransition() const{
     if (formList.at(0) == "<DOC>") {
         return "<DOC>+BDTAG";
     }
@@ -355,7 +354,7 @@ string FsmParse::headerTransition() {
  *
  * @return corresponding transitions of pronouns and an empty {@link String} if any case does not match.
  */
-string FsmParse::pronounTransition() {
+string FsmParse::pronounTransition() const{
     if (formList.at(0) == "kendi") {
         return "kendi+PRON+REFLEXP";
     }
@@ -496,7 +495,7 @@ string FsmParse::pronounTransition() {
  *
  * @return String result accumulated with items of formList.
  */
-string FsmParse::transitionlist() {
+string FsmParse::transitionlist() const{
     string result;
     if (suffixList.at(0).getName() == "NominalRoot" || suffixList.at(0).getName() == "NominalRootNoPossesive" || suffixList.at(0).getName() == "CompoundNounRoot" || suffixList.at(0).getName() == "NominalRootPlural") {
         result = formList.at(0) + "+NOUN";
@@ -641,11 +640,11 @@ string FsmParse::transitionlist() {
  *
  * @return result {@link String} accumulated with the items of formList and suffixList.
  */
-string FsmParse::getSuffixList() {
+string FsmParse::getSuffixList() const{
     string result = suffixList.at(0).getName() + '(' + formList.at(0) + ')';
     for (int i = 1; i < formList.size(); i++) {
         if (formList.at(i) != formList.at(i - 1)) {
-            result = result + "+" + suffixList.at(i).getName() + '(' + formList.at(i) + ')';
+            result += "+" + suffixList.at(i).getName() + '(' + formList.at(i) + ')';
         }
     }
     return result;
@@ -657,10 +656,10 @@ string FsmParse::getSuffixList() {
  *
  * @return result {@link String} accumulated with items of withList.
  */
-string FsmParse::getWithList() {
+string FsmParse::getWithList() const{
     string result = root->getName();
-    for (string aWith : withList) {
-        result = result + "+" + aWith;
+    for (const string& aWith : withList) {
+        result += "+" + aWith;
     }
     return result;
 }
@@ -670,9 +669,9 @@ string FsmParse::getWithList() {
  * @param newRoot Replaced root word
  * @return Root word of the parse will be replaced with the newRoot and the resulting surface form is returned.
  */
-string FsmParse::replaceRootWord(TxtWord* newRoot){
+string FsmParse::replaceRootWord(TxtWord* newRoot) const{
     string result = newRoot->getName();
-    for (string aWith : withList){
+    for (const string& aWith : withList){
         Transition transition = Transition(aWith);
         result = transition.makeTransition(newRoot, result);
     }
@@ -684,6 +683,6 @@ string FsmParse::replaceRootWord(TxtWord* newRoot){
  *
  * @return returns transitionList method.
  */
-string FsmParse::to_String() {
+string FsmParse::to_String() const{
     return transitionlist();
 }

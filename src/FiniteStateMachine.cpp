@@ -4,7 +4,6 @@
 
 #include <XmlDocument.h>
 #include "FiniteStateMachine.h"
-#include <iostream>
 
 /**
  * Constructor reads the finite state machine in the given input file. It has a NodeList which holds the states
@@ -23,10 +22,10 @@
  *
  * @param fileName the resource file to read the finite state machine. Only files in resources folder are supported.
  */
-FiniteStateMachine::FiniteStateMachine(string fileName) {
+FiniteStateMachine::FiniteStateMachine(const string& fileName) {
     State state, toState;
     XmlElement *stateListNode, *stateNode, *transitionNode, *withNode;
-    XmlDocument xmlDocument(move(fileName));
+    XmlDocument xmlDocument(fileName);
     xmlDocument.parse();
     stateListNode = xmlDocument.getFirstChild();
     stateNode = stateListNode->getFirstChild();
@@ -92,7 +91,7 @@ FiniteStateMachine::FiniteStateMachine(string fileName) {
  * @param transition is used to compare with the actual transition of a state.
  * @return true when the actual transition equals to the transition input, false otherwise.
  */
-bool FiniteStateMachine::isValidTransition(string transition) {
+bool FiniteStateMachine::isValidTransition(const string& transition) {
     for (const auto& state : transitions) {
         for (Transition transition1 : state.second) {
             if (!transition1.to_String().empty() && transition1.to_String() == transition) {
@@ -110,7 +109,7 @@ bool FiniteStateMachine::isValidTransition(string transition) {
  * @param name is used to compare with the state's actual name.
  * @return state if found any, null otherwise.
  */
-State FiniteStateMachine::getState(string name) {
+State FiniteStateMachine::getState(const string& name) const{
     for (State state : states) {
         if (state.getName() == name) {
             return state;
@@ -127,7 +126,7 @@ State FiniteStateMachine::getState(string name) {
  * @param with     String input indicating with what the transition will be made.
  * @param withName String input.
  */
-void FiniteStateMachine::addTransition(State fromState, State toState, string with, string withName) {
+void FiniteStateMachine::addTransition(const State& fromState, const State& toState, const string& with, const string& withName) {
     vector<Transition> transitionList;
     Transition newTransition = Transition(toState, with, withName);
     if (transitions.contains(fromState)){
@@ -146,7 +145,7 @@ void FiniteStateMachine::addTransition(State fromState, State toState, string wi
  * @param withName String input.
  * @param toPos    String input.
  */
-void FiniteStateMachine::addTransition(State fromState, State toState, string with, string withName, string toPos) {
+void FiniteStateMachine::addTransition(const State& fromState, const State& toState, const string& with, const string& withName, const string& toPos) {
     vector<Transition> transitionList;
     Transition newTransition = Transition(toState, with, withName, toPos);
     if (transitions.contains(fromState)){
@@ -162,7 +161,7 @@ void FiniteStateMachine::addTransition(State fromState, State toState, string wi
  * @param state State input.
  * @return transitions at given state.
  */
-vector<Transition> FiniteStateMachine::getTransitions(State state) {
+vector<Transition> FiniteStateMachine::getTransitions(const State& state) const{
     vector<Transition> transitionList;
     if (transitions.contains(state)){
         return transitions.find(state)->second;
@@ -171,6 +170,6 @@ vector<Transition> FiniteStateMachine::getTransitions(State state) {
     }
 }
 
-vector<State> FiniteStateMachine::getStates() {
+vector<State> FiniteStateMachine::getStates() const{
     return states;
 }

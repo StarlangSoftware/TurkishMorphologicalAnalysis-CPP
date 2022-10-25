@@ -10,19 +10,19 @@ class FsmParseList {
 private:
     vector<FsmParse> fsmParses;
     static const string longestRootExceptions[230];
-    bool isLongestRootException(FsmParse fsmParse);
+    bool isLongestRootException(const FsmParse& fsmParse) const;
 public:
     FsmParseList() = default;
     explicit FsmParseList(vector<FsmParse> fsmParses);
     int size();
-    FsmParse getFsmParse(int index);
-    string rootWords();
+    FsmParse getFsmParse(int index) const;
+    string rootWords() const;
     void reduceToParsesWithSameRootAndPos(Word* currentWithPos);
-    FsmParse getParseWithLongestRootWord();
-    void reduceToParsesWithSameRoot(string currentRoot);
-    vector<FsmParseList> constructParseListForDifferentRootWithPos();
-    string parsesWithoutPrefixAndSuffix();
-    string to_String();
+    FsmParse getParseWithLongestRootWord() const;
+    void reduceToParsesWithSameRoot(const string& currentRoot);
+    vector<FsmParseList> constructParseListForDifferentRootWithPos() const;
+    string parsesWithoutPrefixAndSuffix() const;
+    string to_String() const;
 };
 
 

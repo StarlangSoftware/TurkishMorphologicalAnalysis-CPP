@@ -9,7 +9,7 @@
 TEST_CASE("FsmParseListTest") {
     FsmParseList parse1, parse2, parse3, parse4, parse5, parse6, parse7, parse8,
     parse9, parse10, parse11, parse12, parse13, parse14, parse15, parse16, parse17, parse18;
-    FsmMorphologicalAnalyzer fsm = FsmMorphologicalAnalyzer();
+    static FsmMorphologicalAnalyzer fsm = FsmMorphologicalAnalyzer();
 
     SECTION("FsmParseListTest-testSize") {
         parse1 = fsm.morphologicalAnalysis("açılır");

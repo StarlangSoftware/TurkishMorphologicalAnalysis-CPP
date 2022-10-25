@@ -5,7 +5,7 @@
 #include "FsmParseList.h"
 
 struct fsmParseComparator{
-    bool operator() (FsmParse fsmParseA, FsmParse fsmParseB){
+    bool operator() (const FsmParse& fsmParseA, const FsmParse& fsmParseB){
         return fsmParseA.transitionlist() < fsmParseB.transitionlist();
     }
 };
@@ -94,7 +94,7 @@ int FsmParseList::size() {
  * @param index Integer input.
  * @return the item of fsmParses {@link vector} at given index.
  */
-FsmParse FsmParseList::getFsmParse(int index) {
+FsmParse FsmParseList::getFsmParse(int index) const{
     return fsmParses.at(index);
 }
 
@@ -105,7 +105,7 @@ FsmParse FsmParseList::getFsmParse(int index) {
  *
  * @return String result that has root words.
  */
-string FsmParseList::rootWords() {
+string FsmParseList::rootWords() const{
     string result = fsmParses.at(0).getWord()->getName(), currentRoot = result;
     for (int i = 1; i < fsmParses.size(); i++) {
         if (fsmParses.at(i).getWord()->getName() != currentRoot) {
@@ -141,7 +141,7 @@ void FsmParseList::reduceToParsesWithSameRootAndPos(Word* currentWithPos) {
  *
  * @return FsmParse Parse with the longest root word.
  */
-FsmParse FsmParseList::getParseWithLongestRootWord() {
+FsmParse FsmParseList::getParseWithLongestRootWord() const{
     FsmParse bestParse;
     int maxLength = -1;
     if (!fsmParses.empty()){
@@ -163,7 +163,7 @@ FsmParse FsmParseList::getParseWithLongestRootWord() {
  * @param fsmParse {@link FsmParse} input.
  * @return true if the longest root belongs to an exceptional case, false otherwise.
  */
-bool FsmParseList::isLongestRootException(FsmParse fsmParse) {
+bool FsmParseList::isLongestRootException(const FsmParse& fsmParse) const{
     string surfaceForm = fsmParse.getSurfaceForm();
     string root = fsmParse.getWord()->getName();
 
@@ -177,7 +177,7 @@ bool FsmParseList::isLongestRootException(FsmParse fsmParse) {
         possibleRoot = Word::replaceAll(possibleRoot, surfaceFormEnding, "");
 
         if (Word::endsWith(surfaceForm, surfaceFormEnding) && Word::endsWith(root, longestRootEnding) && fsmParse.getRootPos() == longestRootPos) {
-            for (FsmParse currentParse : fsmParses) {
+            for (const FsmParse& currentParse : fsmParses) {
                 if (currentParse.getWord()->getName() == possibleRoot && currentParse.getRootPos() == possibleRootPos) {
                     return true;
                 }
@@ -194,7 +194,7 @@ bool FsmParseList::isLongestRootException(FsmParse fsmParse) {
  *
  * @param currentRoot {@link String} input.
  */
-void FsmParseList::reduceToParsesWithSameRoot(string currentRoot) {
+void FsmParseList::reduceToParsesWithSameRoot(const string& currentRoot) {
     int i = 0;
     while (i < fsmParses.size()) {
         if (fsmParses.at(i).getWord()->getName() != currentRoot) {
@@ -216,7 +216,7 @@ void FsmParseList::reduceToParsesWithSameRoot(string currentRoot) {
  *
  * @return result {@link ArrayList} type of {@link FsmParseList}.
  */
-vector<FsmParseList> FsmParseList::constructParseListForDifferentRootWithPos() {
+vector<FsmParseList> FsmParseList::constructParseListForDifferentRootWithPos() const{
     vector<FsmParseList> result;
     int i = 0;
     while (i < fsmParses.size()) {
@@ -254,11 +254,11 @@ vector<FsmParseList> FsmParseList::constructParseListForDifferentRootWithPos() {
  *
  * @return result {@link String} that has the accumulated items of analyses array.
  */
-string FsmParseList::parsesWithoutPrefixAndSuffix() {
-    string* analyses = new string[fsmParses.size()];
+string FsmParseList::parsesWithoutPrefixAndSuffix() const{
+    auto* analyses = new string[fsmParses.size()];
     bool removePrefix = true, removeSuffix = true;
     if (fsmParses.size() == 1) {
-        return fsmParses.at(0).transitionlist().substr(fsmParses.at(0).transitionlist().find("+") + 1);
+        return fsmParses.at(0).transitionlist().substr(fsmParses.at(0).transitionlist().find('+') + 1);
     }
     for (int i = 0; i < fsmParses.size(); i++) {
         analyses[i] = fsmParses.at(i).transitionlist();
@@ -266,30 +266,30 @@ string FsmParseList::parsesWithoutPrefixAndSuffix() {
     while (removePrefix) {
         removePrefix = true;
         for (int i = 0; i < fsmParses.size() - 1; i++) {
-            if (analyses[i].find("+") == string::npos || analyses[i + 1].find("+") == string::npos ||
-                analyses[i].substr(0, analyses[i].find("+") + 1) != analyses[i + 1].substr(0, analyses[i + 1].find("+") + 1)) {
+            if (analyses[i].find('+') == string::npos || analyses[i + 1].find('+') == string::npos ||
+                analyses[i].substr(0, analyses[i].find('+') + 1) != analyses[i + 1].substr(0, analyses[i + 1].find('+') + 1)) {
                 removePrefix = false;
                 break;
             }
         }
         if (removePrefix) {
             for (int i = 0; i < fsmParses.size(); i++) {
-                analyses[i] = analyses[i].substr(analyses[i].find("+") + 1);
+                analyses[i] = analyses[i].substr(analyses[i].find('+') + 1);
             }
         }
     }
     while (removeSuffix) {
         removeSuffix = true;
         for (int i = 0; i < fsmParses.size() - 1; i++) {
-            if (analyses[i].find("+") == string::npos || analyses[i + 1].find("+") == string::npos ||
-                analyses[i].substr(analyses[i].find_last_of("+")) != analyses[i + 1].substr(analyses[i + 1].find_last_of("+"))) {
+            if (analyses[i].find('+') == string::npos || analyses[i + 1].find('+') == string::npos ||
+                analyses[i].substr(analyses[i].find_last_of('+')) != analyses[i + 1].substr(analyses[i + 1].find_last_of('+'))) {
                 removeSuffix = false;
                 break;
             }
         }
         if (removeSuffix) {
             for (int i = 0; i < fsmParses.size(); i++) {
-                analyses[i] = analyses[i].substr(0, analyses[i].find_last_of("+"));
+                analyses[i] = analyses[i].substr(0, analyses[i].find_last_of('+'));
             }
         }
     }
@@ -314,10 +314,10 @@ string FsmParseList::parsesWithoutPrefixAndSuffix() {
  *
  * @return result {@link String} that has the items of fsmParses {@link ArrayList}.
  */
-string FsmParseList::to_String() {
+string FsmParseList::to_String() const{
     string result;
-    for (int i = 0; i < fsmParses.size(); i++) {
-        result += fsmParses.at(i).to_String() + "\n";
+    for (const auto & fsmParse : fsmParses) {
+        result += fsmParse.to_String() + "\n";
     }
     return result;
 }

@@ -13,10 +13,10 @@ using namespace std;
 class DisambiguationCorpus : public Corpus{
 public:
     DisambiguationCorpus();
-    DisambiguationCorpus emptyCopy();
-    explicit DisambiguationCorpus(string fileName);
-    void writeToFile(string fileName);
-    void writeToFile(string fileName, WordFormat format);
+    DisambiguationCorpus emptyCopy() const;
+    explicit DisambiguationCorpus(const string& fileName);
+    void writeToFile(const string& fileName);
+    void writeToFile(const string& fileName, WordFormat format);
 };
 
 

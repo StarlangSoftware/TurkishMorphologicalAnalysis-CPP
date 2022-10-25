@@ -7,7 +7,7 @@
 #include "CounterHashMap.h"
 
 TEST_CASE("FiniteStateMachineTest") {
-    FiniteStateMachine fsm = FiniteStateMachine("turkish_finite_state_machine.xml");
+    static FiniteStateMachine fsm = FiniteStateMachine("turkish_finite_state_machine.xml");
 
     SECTION("testStateCount") {
         vector<State> stateList = fsm.getStates();

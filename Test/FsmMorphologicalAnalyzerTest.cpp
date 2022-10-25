@@ -22,8 +22,8 @@ TEST_CASE("testGenerateAllParses") {
     vector<FsmParse> parsesGenerated;
     vector<string> parsesExpected;
     string line;
-    for (int i = 0; i < testWords.size(); i++) {
-        TxtWord* word = (TxtWord*) fsm.getDictionary().getWord(testWords[i]);
+    for (auto & testWord : testWords) {
+        TxtWord* word = (TxtWord*) fsm.getDictionary().getWord(testWord);
         parsesExpected.clear();
         ifstream inputFile;
         inputFile.open("parses/" + word->getName() + ".txt", ifstream :: in);
@@ -36,15 +36,15 @@ TEST_CASE("testGenerateAllParses") {
         inputFile.close();
         parsesGenerated = fsm.generateAllParses(word, Word::size(word->getName()) + 5);
         REQUIRE(parsesExpected.size() == parsesGenerated.size());
-        for (FsmParse parseGenerated : parsesGenerated) {
+        for (const FsmParse& parseGenerated : parsesGenerated) {
             REQUIRE(std::find(parsesExpected.begin(), parsesExpected.end(), parseGenerated.to_String()) != parsesExpected.end());
         }
     }
 }
 
 TEST_CASE("FsmMorphologicalAnalyzerTest") {
-    FsmMorphologicalAnalyzer fsm = FsmMorphologicalAnalyzer();
-    TxtDictionary dictionary = fsm.getDictionary();
+    static FsmMorphologicalAnalyzer fsm = FsmMorphologicalAnalyzer();
+    static TxtDictionary dictionary = fsm.getDictionary();
 
     SECTION("morphologicalAnalysisDataTimeNumber") {
         REQUIRE_FALSE(fsm.morphologicalAnalysis("3/4").size() == 0);
@@ -230,7 +230,6 @@ TEST_CASE("FsmMorphologicalAnalyzerTest") {
     }
 
     SECTION("replaceWord") {
-        FsmMorphologicalAnalyzer fsm = FsmMorphologicalAnalyzer();
         REQUIRE("Hemşirenle evlendim" ==
                 fsm.replaceWord(new Sentence("Kız kardeşinle evlendim"), "kız kardeş", "hemşire")->to_string());
         REQUIRE("Yemin etmişlerdi vazoyu kırmadığına" ==

@@ -483,14 +483,15 @@ const MorphologicalTag MetamorphicParse::morphotacticTags[META_MORPHEME_SIZE] = 
  * @param tag String to get meta morphemes from.
  * @return vector type result which holds meta morphemes.
  */
-vector<MorphologicalTag> MetamorphicParse::getMetaMorphemeTag(string tag) {
+vector<MorphologicalTag> MetamorphicParse::getMetaMorphemeTag(const string& tag) {
     vector<MorphologicalTag> result;
     string s = Word::charAt(tag, 0);
+    string _tag = tag;
     if (Word::isPunctuation(s)) {
-        tag = tag.substr(1, tag.size());
+        _tag = tag.substr(1, tag.size());
     }
     for (int j = 0; j < META_MORPHEME_SIZE; j++) {
-        if (tag == MetamorphicParse::metaMorphemes[j]) {
+        if (_tag == MetamorphicParse::metaMorphemes[j]) {
             result.emplace_back(morphotacticTags[j]);
         }
     }
@@ -504,14 +505,15 @@ vector<MorphologicalTag> MetamorphicParse::getMetaMorphemeTag(string tag) {
  * @param tag   String to get meta morphemes from.
  * @return ArrayList type result which holds meta morphemes.
  */
-vector<MorphologicalTag> MetamorphicParse::getMetaMorphemeTag(MorphologicalParse parse, string tag){
+vector<MorphologicalTag> MetamorphicParse::getMetaMorphemeTag(const MorphologicalParse& parse, const string& tag){
     vector<MorphologicalTag> result;
     string s = Word::charAt(tag, 0);
+    string _tag = tag;
     if (Word::isPunctuation(s)) {
-        tag = tag.substr(1, tag.size());
+        _tag = tag.substr(1, tag.size());
     }
     for (int j = 0; j < META_MORPHEME_SIZE; j++) {
-        if (tag == MetamorphicParse::metaMorphemes[j] && parse.containsTag(morphotacticTags[j])) {
+        if (_tag == MetamorphicParse::metaMorphemes[j] && parse.containsTag(morphotacticTags[j])) {
             result.emplace_back(morphotacticTags[j]);
         }
     }
@@ -523,7 +525,7 @@ vector<MorphologicalTag> MetamorphicParse::getMetaMorphemeTag(MorphologicalParse
  *
  * @return Word type root.
  */
-Word MetamorphicParse::getWord() {
+Word MetamorphicParse::getWord() const{
     return root;
 }
 
@@ -538,7 +540,7 @@ MetamorphicParse::MetamorphicParse() = default;
  *
  * @param parse String to parse.
  */
-MetamorphicParse::MetamorphicParse(string parse){
+MetamorphicParse::MetamorphicParse(const string& parse){
     int i;
     if (parse == "+") {
         root = Word("+");
@@ -555,7 +557,7 @@ MetamorphicParse::MetamorphicParse(string parse){
  *
  * @return the size of the metaMorphemeList.
  */
-int MetamorphicParse::size(){
+int MetamorphicParse::size() const{
     return metaMorphemeList.size() + 1;
 }
 
@@ -564,8 +566,8 @@ int MetamorphicParse::size(){
  *
  * @param newTacticSet String to add the metaMorphemeList.
  */
-void MetamorphicParse::addMetaMorphemeList(string newTacticSet) {
-    vector<string> tactics = Word::split(move(newTacticSet), "+");
+void MetamorphicParse::addMetaMorphemeList(const string& newTacticSet) {
+    vector<string> tactics = Word::split(newTacticSet, "+");
     metaMorphemeList.insert(metaMorphemeList.end(), tactics.begin(), tactics.end());
 }
 
@@ -584,7 +586,7 @@ void MetamorphicParse::removeMetaMorphemeFromIndex(int index) {
  * @param index is used to get the meta morpheme.
  * @return metaMorphemeList's corresponding meta morpheme.
  */
-string MetamorphicParse::getMetaMorpheme(int index) {
+string MetamorphicParse::getMetaMorpheme(int index) const{
     if (index == 0) {
         return root.getName();
     } else {
@@ -597,10 +599,10 @@ string MetamorphicParse::getMetaMorpheme(int index) {
  *
  * @return String result.
  */
-string MetamorphicParse::to_string() {
+string MetamorphicParse::to_string() const{
     string result = root.getName();
-    for (string metaMorpheme : metaMorphemeList) {
-        result = result + "+" + metaMorpheme;
+    for (const string& metaMorpheme : metaMorphemeList) {
+        result += "+" + metaMorpheme;
     }
     return result;
 }

@@ -16,12 +16,12 @@ private:
     string pos;
 public:
     State();
-    State(string name, bool startState, bool endState);
-    State(string name, bool startState, bool endState, string pos);
-    string getName();
-    string getPos();
-    bool isEndState();
-    string to_String();
+    State(const string& name, bool startState, bool endState);
+    State(const string& name, bool startState, bool endState, const string& pos);
+    string getName() const;
+    string getPos() const;
+    bool isEndState() const;
+    string to_String() const;
     bool operator==(const State &anotherState) const{
         return (name == anotherState.name);
     }

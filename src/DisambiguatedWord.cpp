@@ -12,8 +12,8 @@
  * @param name  Instances that will be a DisambiguatedWord.
  * @param parse {@link MorphologicalParse} of the {@link DisambiguatedWord}.
  */
-DisambiguatedWord::DisambiguatedWord(string name, MorphologicalParse parse) : Word(move(name)){
-    this->parse = move(parse);
+DisambiguatedWord::DisambiguatedWord(const string& name, const MorphologicalParse& parse) : Word(name){
+    this->parse = parse;
 }
 
 /**
@@ -21,6 +21,6 @@ DisambiguatedWord::DisambiguatedWord(string name, MorphologicalParse parse) : Wo
  *
  * @return MorphologicalParse.
  */
-MorphologicalParse DisambiguatedWord::getParse() {
+MorphologicalParse DisambiguatedWord::getParse() const{
     return parse;
 }

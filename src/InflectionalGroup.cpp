@@ -66,10 +66,11 @@ const MorphologicalTag InflectionalGroup::morphoTags[TAG_SIZE] = {MorphologicalT
  * @param tag String to get morphoTags from.
  * @return morphoTags if found, null otherwise.
  */
-MorphologicalTag InflectionalGroup::getMorphologicalTag(string tag) {
-    transform(tag.begin(),
-              tag.end(),
-              tag.begin(),
+MorphologicalTag InflectionalGroup::getMorphologicalTag(const string& tag) {
+    string _tag = tag;
+    transform(_tag.begin(),
+              _tag.end(),
+              _tag.begin(),
                    ::toupper);
     for (int j = 0; j < TAG_SIZE; j++) {
         string upperCase = tags[j];
@@ -77,7 +78,7 @@ MorphologicalTag InflectionalGroup::getMorphologicalTag(string tag) {
                   upperCase.end(),
                   upperCase.begin(),
                        ::toupper);
-        if (tag == upperCase) {
+        if (_tag == upperCase) {
             return morphoTags[j];
         }
     }
@@ -111,10 +112,10 @@ string InflectionalGroup::getTag(MorphologicalTag tag) {
  *
  * @param IG String input.
  */
-InflectionalGroup::InflectionalGroup(string IG) {
+InflectionalGroup::InflectionalGroup(const string& IG) {
     MorphologicalTag tag;
     string morphologicalTag;
-    string st = move(IG);
+    string st = IG;
     while (st.find_first_of('+') != -1) {
         morphologicalTag = st.substr(0, st.find_first_of('+'));
         tag = getMorphologicalTag(morphologicalTag);
@@ -132,7 +133,7 @@ InflectionalGroup::InflectionalGroup(string IG) {
  * @param index to get tag.
  * @return tag at input index.
  */
-MorphologicalTag InflectionalGroup::getTag(int index) {
+MorphologicalTag InflectionalGroup::getTag(int index) const{
     return IG.at(index);
 }
 
@@ -141,7 +142,7 @@ MorphologicalTag InflectionalGroup::getTag(int index) {
  *
  * @return the size of the G {@link vector}.
  */
-int InflectionalGroup::size() {
+int InflectionalGroup::size() const{
     return IG.size();
 }
 
@@ -150,10 +151,10 @@ int InflectionalGroup::size() {
  *
  * @return String result.
  */
-string InflectionalGroup::to_String() {
+string InflectionalGroup::to_String() const{
     string result = getTag(IG.at(0));
     for (int i = 1; i < IG.size(); i++) {
-        result = result + "+" + getTag(IG.at(i));
+        result += "+" + getTag(IG.at(i));
     }
     return result;
 }
@@ -164,7 +165,7 @@ string InflectionalGroup::to_String() {
  *
  * @return tag which holds the condition.
  */
-MorphologicalTag InflectionalGroup::containsCase() {
+MorphologicalTag InflectionalGroup::containsCase() const{
     for (MorphologicalTag tag : IG) {
         if (tag == MorphologicalTag::NOMINATIVE || tag == MorphologicalTag::ACCUSATIVE || tag == MorphologicalTag::DATIVE || tag == MorphologicalTag::LOCATIVE || tag == MorphologicalTag::ABLATIVE) {
             return tag;
@@ -179,7 +180,7 @@ MorphologicalTag InflectionalGroup::containsCase() {
  *
  * @return true if the tag is plural, false otherwise.
  */
-bool InflectionalGroup::containsPlural() {
+bool InflectionalGroup::containsPlural() const{
     for (MorphologicalTag tag : IG) {
         if (tag == MorphologicalTag::A1PL || tag == MorphologicalTag::A2PL || tag == MorphologicalTag::A3PL || tag == MorphologicalTag::P1PL || tag == MorphologicalTag::P2PL || tag == MorphologicalTag::P3PL) {
             return true;
@@ -195,7 +196,7 @@ bool InflectionalGroup::containsPlural() {
  * @param tag MorphologicalTag type input to search for.
  * @return true if tag matches with the tag in IG, false otherwise.
  */
-bool InflectionalGroup::containsTag(MorphologicalTag tag) {
+bool InflectionalGroup::containsTag(MorphologicalTag tag) const{
     for (MorphologicalTag currentTag : IG) {
         if (currentTag == tag) {
             return true;
@@ -210,7 +211,7 @@ bool InflectionalGroup::containsTag(MorphologicalTag tag) {
  *
  * @return true if it contains possessive tag, false otherwise.
  */
-bool InflectionalGroup::containsPossessive() {
+bool InflectionalGroup::containsPossessive() const{
     for (MorphologicalTag tag : IG) {
         if (tag == MorphologicalTag::P1PL || tag == MorphologicalTag::P1SG || tag == MorphologicalTag::P2PL || tag == MorphologicalTag::P2SG || tag == MorphologicalTag::P3PL || tag == MorphologicalTag::P3SG) {
             return true;

@@ -6,7 +6,35 @@
 #include "../src/FsmMorphologicalAnalyzer.h"
 
 TEST_CASE("TransitionTest") {
-    FsmMorphologicalAnalyzer fsm = FsmMorphologicalAnalyzer();
+    static FsmMorphologicalAnalyzer fsm = FsmMorphologicalAnalyzer();
+
+    SECTION("testNumberWithD") {
+        REQUIRE_FALSE(fsm.morphologicalAnalysis("3'tü").size() == 0);
+        REQUIRE_FALSE(fsm.morphologicalAnalysis("1'di").size() == 0);
+        REQUIRE_FALSE(fsm.morphologicalAnalysis("2'ydi").size() == 0);
+        REQUIRE_FALSE(fsm.morphologicalAnalysis("4'tü").size() == 0);
+        REQUIRE_FALSE(fsm.morphologicalAnalysis("5'ti").size() == 0);
+        REQUIRE_FALSE(fsm.morphologicalAnalysis("6'ydı").size() == 0);
+        REQUIRE_FALSE(fsm.morphologicalAnalysis("7'ydi").size() == 0);
+        REQUIRE_FALSE(fsm.morphologicalAnalysis("8'di").size() == 0);
+        REQUIRE_FALSE(fsm.morphologicalAnalysis("9'du").size() == 0);
+        REQUIRE_FALSE(fsm.morphologicalAnalysis("30'du").size() == 0);
+        REQUIRE_FALSE(fsm.morphologicalAnalysis("40'tı").size() == 0);
+        REQUIRE_FALSE(fsm.morphologicalAnalysis("60'tı").size() == 0);
+        REQUIRE_FALSE(fsm.morphologicalAnalysis("70'ti").size() == 0);
+        REQUIRE_FALSE(fsm.morphologicalAnalysis("50'ydi").size() == 0);
+    }
+
+    SECTION("testA") {
+        REQUIRE_FALSE(fsm.morphologicalAnalysis("alkole").size() == 0);
+        REQUIRE_FALSE(fsm.morphologicalAnalysis("anormale").size() == 0);
+        REQUIRE_FALSE(fsm.morphologicalAnalysis("sakala").size() == 0);
+        REQUIRE_FALSE(fsm.morphologicalAnalysis("kabala").size() == 0);
+        REQUIRE_FALSE(fsm.morphologicalAnalysis("faika").size() == 0);
+        REQUIRE_FALSE(fsm.morphologicalAnalysis("halika").size() == 0);
+        REQUIRE_FALSE(fsm.morphologicalAnalysis("kediye").size() == 0);
+        REQUIRE_FALSE(fsm.morphologicalAnalysis("eve").size() == 0);
+    }
 
     SECTION("testNumberWithAccusative") {
         REQUIRE_FALSE(fsm.morphologicalAnalysis("2'yi").size() == 0);
@@ -54,17 +82,6 @@ TEST_CASE("TransitionTest") {
         REQUIRE_FALSE(fsm.morphologicalAnalysis("çalkalıyor").size() == 0);
     }
 
-    SECTION("testA") {
-        REQUIRE_FALSE(fsm.morphologicalAnalysis("alkole").size() == 0);
-        REQUIRE_FALSE(fsm.morphologicalAnalysis("anormale").size() == 0);
-        REQUIRE_FALSE(fsm.morphologicalAnalysis("sakala").size() == 0);
-        REQUIRE_FALSE(fsm.morphologicalAnalysis("kabala").size() == 0);
-        REQUIRE_FALSE(fsm.morphologicalAnalysis("faika").size() == 0);
-        REQUIRE_FALSE(fsm.morphologicalAnalysis("halika").size() == 0);
-        REQUIRE_FALSE(fsm.morphologicalAnalysis("kediye").size() == 0);
-        REQUIRE_FALSE(fsm.morphologicalAnalysis("eve").size() == 0);
-    }
-
     SECTION("testC") {
         REQUIRE_FALSE(fsm.morphologicalAnalysis("gripçi").size() == 0);
         REQUIRE_FALSE(fsm.morphologicalAnalysis("güllaççı").size() == 0);
@@ -78,23 +95,6 @@ TEST_CASE("TransitionTest") {
         REQUIRE_FALSE(fsm.morphologicalAnalysis("üçer").size() == 0);
         REQUIRE_FALSE(fsm.morphologicalAnalysis("beşer").size() == 0);
         REQUIRE_FALSE(fsm.morphologicalAnalysis("dörder").size() == 0);
-    }
-
-    SECTION("testNumberWithD") {
-        REQUIRE_FALSE(fsm.morphologicalAnalysis("1'di").size() == 0);
-        REQUIRE_FALSE(fsm.morphologicalAnalysis("2'ydi").size() == 0);
-        REQUIRE_FALSE(fsm.morphologicalAnalysis("3'tü").size() == 0);
-        REQUIRE_FALSE(fsm.morphologicalAnalysis("4'tü").size() == 0);
-        REQUIRE_FALSE(fsm.morphologicalAnalysis("5'ti").size() == 0);
-        REQUIRE_FALSE(fsm.morphologicalAnalysis("6'ydı").size() == 0);
-        REQUIRE_FALSE(fsm.morphologicalAnalysis("7'ydi").size() == 0);
-        REQUIRE_FALSE(fsm.morphologicalAnalysis("8'di").size() == 0);
-        REQUIRE_FALSE(fsm.morphologicalAnalysis("9'du").size() == 0);
-        REQUIRE_FALSE(fsm.morphologicalAnalysis("30'du").size() == 0);
-        REQUIRE_FALSE(fsm.morphologicalAnalysis("40'tı").size() == 0);
-        REQUIRE_FALSE(fsm.morphologicalAnalysis("60'tı").size() == 0);
-        REQUIRE_FALSE(fsm.morphologicalAnalysis("70'ti").size() == 0);
-        REQUIRE_FALSE(fsm.morphologicalAnalysis("50'ydi").size() == 0);
     }
 
     SECTION("testD") {

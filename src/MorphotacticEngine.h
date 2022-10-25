@@ -10,12 +10,12 @@
 
 class MorphotacticEngine {
 public:
-    static string resolveD(TxtWord* root, string formation, string formationToCheck);
-    static string resolveA(TxtWord* root, string formation, bool rootWord, string formationToCheck);
-    static string resolveH(TxtWord* root, string formation, bool beginningOfSuffix, bool specialCaseTenseSuffix, bool rootWord, string formationToCheck);
-    static string resolveC(string formation, string formationToCheck);
-    static string resolveS(string formation);
-    static string resolveSh(string formation);
+    static string resolveD(TxtWord* root, const string& formation, const string& formationToCheck);
+    static string resolveA(TxtWord* root, const string& formation, bool rootWord, const string& formationToCheck);
+    static string resolveH(TxtWord* root, const string& formation, bool beginningOfSuffix, bool specialCaseTenseSuffix, bool rootWord, const string& formationToCheck);
+    static string resolveC(const string& formation, const string& formationToCheck);
+    static string resolveS(const string& formation);
+    static string resolveSh(const string& formation);
 };
 
 

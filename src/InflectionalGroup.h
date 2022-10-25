@@ -13,16 +13,16 @@ using namespace std;
 
 class InflectionalGroup {
 public:
-    static MorphologicalTag getMorphologicalTag(string tag);
+    static MorphologicalTag getMorphologicalTag(const string& tag);
     static string getTag(MorphologicalTag tag);
-    explicit InflectionalGroup(string IG);
-    MorphologicalTag getTag(int index);
-    int size();
-    string to_String();
-    MorphologicalTag containsCase();
-    bool containsPlural();
-    bool containsTag(MorphologicalTag tag);
-    bool containsPossessive();
+    explicit InflectionalGroup(const string& IG);
+    MorphologicalTag getTag(int index) const;
+    int size() const;
+    string to_String() const;
+    MorphologicalTag containsCase() const;
+    bool containsPlural() const;
+    bool containsTag(MorphologicalTag tag) const;
+    bool containsPossessive() const;
     static const int TAG_SIZE = 131;
     static const MorphologicalTag morphoTags[TAG_SIZE];
 private:

@@ -22,15 +22,15 @@ public:
     static const string metaMorphemes[META_MORPHEME_SIZE];
     static const MorphologicalTag morphotacticTags[META_MORPHEME_SIZE];
     MetamorphicParse();
-    static vector<MorphologicalTag> getMetaMorphemeTag(string tag);
-    static vector<MorphologicalTag> getMetaMorphemeTag(MorphologicalParse parse, string tag);
-    Word getWord();
-    explicit MetamorphicParse(string parse);
-    int size();
-    void addMetaMorphemeList(string newTacticSet);
+    static vector<MorphologicalTag> getMetaMorphemeTag(const string& tag);
+    static vector<MorphologicalTag> getMetaMorphemeTag(const MorphologicalParse& parse, const string& tag);
+    Word getWord() const;
+    explicit MetamorphicParse(const string& parse);
+    int size() const;
+    void addMetaMorphemeList(const string& newTacticSet);
     void removeMetaMorphemeFromIndex(int index);
-    string getMetaMorpheme(int index);
-    string to_string();
+    string getMetaMorpheme(int index) const;
+    string to_string() const;
 };
 
 #endif //MORPHOLOGICALANALYSIS_METAMORPHICPARSE_H

@@ -16,7 +16,7 @@ DisambiguationCorpus::DisambiguationCorpus() = default;
  *
  * @return An empty copy of the {@link DisambiguationCorpus}.
  */
-DisambiguationCorpus DisambiguationCorpus::emptyCopy() {
+DisambiguationCorpus DisambiguationCorpus::emptyCopy() const{
     return DisambiguationCorpus();
 }
 
@@ -27,7 +27,7 @@ DisambiguationCorpus DisambiguationCorpus::emptyCopy() {
  *
  * @param fileName File which will be read and parsed.
  */
-DisambiguationCorpus::DisambiguationCorpus(string fileName) {
+DisambiguationCorpus::DisambiguationCorpus(const string& fileName) {
     string line, word, parse;
     DisambiguatedWord* newWord;
     Sentence* newSentence = nullptr;
@@ -65,7 +65,7 @@ DisambiguationCorpus::DisambiguationCorpus(string fileName) {
  *
  * @param fileName File which will be filled with the sentences.
  */
-void DisambiguationCorpus::writeToFile(string fileName) {
+void DisambiguationCorpus::writeToFile(const string& fileName) {
     ofstream outputFile;
     outputFile.open(fileName, ofstream::out);
     outputFile << "<DOC>\t<DOC>+BDTag\n";
@@ -89,8 +89,8 @@ void DisambiguationCorpus::writeToFile(string fileName) {
  * @param fileName File which will be filled with the sentences.
  * @param format   Output format of the words to be written to the file.
  */
-void DisambiguationCorpus::writeToFile(string fileName, WordFormat format) {
+void DisambiguationCorpus::writeToFile(const string& fileName, WordFormat format) {
     if (format == WordFormat::SURFACE || format == WordFormat::LETTER_2 || format == WordFormat::LETTER_3 || format == WordFormat::LETTER_4) {
-        Corpus::writeToFile(move(fileName), format);
+        Corpus::writeToFile(fileName, format);
     }
 }

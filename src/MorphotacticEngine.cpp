@@ -5,18 +5,17 @@
 #include "MorphotacticEngine.h"
 #include "Language/TurkishLanguage.h"
 
-string MorphotacticEngine::resolveD(TxtWord* root, string formation, string formationToCheck) {
+string MorphotacticEngine::resolveD(TxtWord* root, const string& formation, const string& formationToCheck) {
     if (root->isAbbreviation()) {
         return formation + 'd';
     }
-    if (Word::lastPhoneme(formationToCheck) >= "0" && Word::lastPhoneme(formationToCheck) <= "9") {
-        if (Word::lastPhoneme(formationToCheck) == "3" ||
-            Word::lastPhoneme(formationToCheck) == "4" ||
-            Word::lastPhoneme(formationToCheck) == "5"){
+    string lastPhoneme = Word::lastPhoneme(formationToCheck);
+    if (lastPhoneme >= "0" && lastPhoneme <= "9") {
+        if (lastPhoneme == "3" || lastPhoneme == "4" || lastPhoneme == "5"){
             //3->3'tü, 5->5'ti, 4->4'tü
             return formation + 't';
         } else {
-            if (Word::lastPhoneme(formationToCheck) == "0"){
+            if (lastPhoneme == "0"){
                 if (Word::endsWith(root->getName(), "40") ||
                     Word::endsWith(root->getName(), "60") ||
                     Word::endsWith(root->getName(), "70"))
@@ -40,16 +39,17 @@ string MorphotacticEngine::resolveD(TxtWord* root, string formation, string form
     }
 }
 
-string MorphotacticEngine::resolveA(TxtWord *root, string formation, bool rootWord, string formationToCheck) {
+string MorphotacticEngine::resolveA(TxtWord *root, const string& formation, bool rootWord, const string& formationToCheck) {
     if (root->isAbbreviation()) {
         return formation + 'e';
     }
-    if (Word::lastVowel(formationToCheck) >= "0" && Word::lastVowel(formationToCheck) <= "9") {
-        if (Word::lastVowel(formationToCheck) == "6" || Word::lastVowel(formationToCheck) == "9"){
+    string lastVowel = Word::lastVowel(formationToCheck);
+    if (lastVowel >= "0" && lastVowel <= "9") {
+        if (lastVowel == "6" || lastVowel == "9"){
             //6'ya, 9'a
             return formation + 'a';
         } else {
-            if (Word::lastVowel(formationToCheck) == "0"){
+            if (lastVowel == "0"){
                 if (Word::endsWith(root->getName(), "10") ||
                     Word::endsWith(root->getName(), "30") ||
                     Word::endsWith(root->getName(), "40") ||
@@ -100,8 +100,8 @@ string MorphotacticEngine::resolveA(TxtWord *root, string formation, bool rootWo
     return formation;
 }
 
-string MorphotacticEngine::resolveH(TxtWord *root, string formation, bool beginningOfSuffix, bool specialCaseTenseSuffix,
-                            bool rootWord, string formationToCheck) {
+string MorphotacticEngine::resolveH(TxtWord *root, const string& formation, bool beginningOfSuffix, bool specialCaseTenseSuffix,
+                            bool rootWord, const string& formationToCheck) {
     if (root->isAbbreviation())
         return formation + 'i';
     if (beginningOfSuffix && TurkishLanguage::isVowel(Word::lastPhoneme(formationToCheck)) && !specialCaseTenseSuffix) {
@@ -192,7 +192,7 @@ string MorphotacticEngine::resolveH(TxtWord *root, string formation, bool beginn
  * @param formation {@link String} input.
  * @return resolved String.
  */
-string MorphotacticEngine::resolveC(string formation, string formationToCheck) {
+string MorphotacticEngine::resolveC(const string& formation, const string& formationToCheck) {
     if (TurkishLanguage::isSertSessiz(Word::lastPhoneme(formationToCheck))) {
         return formation + "ç";
     } else {
@@ -206,7 +206,7 @@ string MorphotacticEngine::resolveC(string formation, string formationToCheck) {
  * @param formation {@link String} input.
  * @return resolved String.
  */
-string MorphotacticEngine::resolveS(string formation) {
+string MorphotacticEngine::resolveS(const string& formation) {
     return formation + 's';
 }
 
@@ -218,7 +218,7 @@ string MorphotacticEngine::resolveS(string formation) {
  * @param formation {@link String} input.
  * @return resolved String.
  */
-string MorphotacticEngine::resolveSh(string formation) {
+string MorphotacticEngine::resolveSh(const string& formation) {
     if (TurkishLanguage::isVowel(Word::lastChar(formation))) {
         return formation + "ş";
     } else {

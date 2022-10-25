@@ -7,7 +7,7 @@
 
 TEST_CASE("FsmParseTest") {
     FsmParse parse1, parse2, parse3, parse4, parse5, parse6, parse7, parse8, parse9, parse10;
-    FsmMorphologicalAnalyzer fsm = FsmMorphologicalAnalyzer();
+    static FsmMorphologicalAnalyzer fsm = FsmMorphologicalAnalyzer();
 
     SECTION("FsmParseTest-testGetLastLemmaWithTag") {
         parse1 = fsm.morphologicalAnalysis("açılır").getFsmParse(0);

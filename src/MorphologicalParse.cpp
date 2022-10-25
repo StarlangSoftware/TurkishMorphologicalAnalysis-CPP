@@ -15,7 +15,7 @@ MorphologicalParse::MorphologicalParse() = default;
  *
  * @return root {@link Word}.
  */
-Word* MorphologicalParse::getWord() {
+Word* MorphologicalParse::getWord() const{
     return root;
 }
 
@@ -46,10 +46,10 @@ Word* MorphologicalParse::getWord() {
  *
  * @param parse String input.
  */
-MorphologicalParse::MorphologicalParse(string parse) {
+MorphologicalParse::MorphologicalParse(const string& parse) {
     int i;
     vector<string> iGs;
-    string st = move(parse);
+    string st = parse;
     while (st.find("^DB+") != string::npos) {
         iGs.emplace_back(st.substr(0, st.find("^DB+")));
         st = st.substr(st.find("^DB+") + 4, st.size());
@@ -87,7 +87,7 @@ MorphologicalParse::MorphologicalParse(string parse) {
  *
  * @param inflectionalGroups {@link vector} input.
  */
-MorphologicalParse::MorphologicalParse(vector<string> inflectionalGroups) {
+MorphologicalParse::MorphologicalParse(const vector<string>& inflectionalGroups) {
     int i;
     if (inflectionalGroups.at(0).find('+') != string::npos) {
         root = new Word(inflectionalGroups.at(0).substr(0, inflectionalGroups.at(0).find('+')));
@@ -104,7 +104,7 @@ MorphologicalParse::MorphologicalParse(vector<string> inflectionalGroups) {
  *
  * @return String that contains transition list.
  */
-string MorphologicalParse::getTransitionList() {
+string MorphologicalParse::getTransitionList() const{
     string result = inflectionalGroups.at(0).to_String();
     for (int i = 1; i < inflectionalGroups.size(); i++) {
         result.append("+");
@@ -121,7 +121,7 @@ string MorphologicalParse::getTransitionList() {
  * @param index Integer input.
  * @return corresponding item of inflectionalGroups at given index as a {@link String}.
  */
-string MorphologicalParse::getInflectionalGroupString(int index) {
+string MorphologicalParse::getInflectionalGroupString(int index) const{
     if (index == 0) {
         return root->getName() + "+" + inflectionalGroups.at(0).to_String();
     } else {
@@ -136,7 +136,7 @@ string MorphologicalParse::getInflectionalGroupString(int index) {
  * @param index Integer input.
  * @return InflectionalGroup at given index.
  */
-InflectionalGroup MorphologicalParse::getInflectionalGroup(int index) {
+InflectionalGroup MorphologicalParse::getInflectionalGroup(int index) const{
     return inflectionalGroups.at(index);
 }
 
@@ -145,7 +145,7 @@ InflectionalGroup MorphologicalParse::getInflectionalGroup(int index) {
  *
  * @return the last {@link InflectionalGroup} of inflectionalGroups {@link ArrayList}.
  */
-InflectionalGroup MorphologicalParse::getLastInflectionalGroup() {
+InflectionalGroup MorphologicalParse::getLastInflectionalGroup() const{
     return getInflectionalGroup(inflectionalGroups.size() - 1);
 }
 
@@ -156,11 +156,11 @@ InflectionalGroup MorphologicalParse::getLastInflectionalGroup() {
  * @param index Integer input.
  * @return the MorphologicalTag of the corresponding inflectional group, or null of invalid index inputs.
  */
-string MorphologicalParse::getTag(int index) {
+string MorphologicalParse::getTag(int index) const{
     int size = 1;
     if (index == 0)
         return root->getName();
-    for (InflectionalGroup group : inflectionalGroups) {
+    for (const InflectionalGroup& group : inflectionalGroups) {
         if (index < size + group.size()) {
             return InflectionalGroup::getTag(group.getTag(index - size));
         }
@@ -175,9 +175,9 @@ string MorphologicalParse::getTag(int index) {
  *
  * @return total size of the inflectionalGroups {@link ArrayList}.
  */
-int MorphologicalParse::tagSize() {
+int MorphologicalParse::tagSize() const{
     int size = 1;
-    for (InflectionalGroup group : inflectionalGroups) {
+    for (const InflectionalGroup& group : inflectionalGroups) {
         size += group.size();
     }
     return size;
@@ -188,7 +188,7 @@ int MorphologicalParse::tagSize() {
  *
  * @return the size of the inflectionalGroups {@link ArrayList}.
  */
-int MorphologicalParse::size() {
+int MorphologicalParse::size() const{
     return inflectionalGroups.size();
 }
 
@@ -197,7 +197,7 @@ int MorphologicalParse::size() {
  *
  * @return the first inflectional group of inflectionalGroups {@link ArrayList}.
  */
-InflectionalGroup MorphologicalParse::firstInflectionalGroup() {
+InflectionalGroup MorphologicalParse::firstInflectionalGroup() const{
     return inflectionalGroups.at(0);
 }
 
@@ -206,7 +206,7 @@ InflectionalGroup MorphologicalParse::firstInflectionalGroup() {
  *
  * @return the last inflectional group of inflectionalGroups {@link ArrayList}.
  */
-InflectionalGroup MorphologicalParse::lastInflectionalGroup() {
+InflectionalGroup MorphologicalParse::lastInflectionalGroup() const{
     return inflectionalGroups.at(inflectionalGroups.size() - 1);
 }
 
@@ -215,7 +215,7 @@ InflectionalGroup MorphologicalParse::lastInflectionalGroup() {
  *
  * @return root with the MorphologicalTag of the first inflectional as a new word.
  */
-Word* MorphologicalParse::getWordWithPos() {
+Word* MorphologicalParse::getWordWithPos() const{
     return new Word(root->getName() + "+" + InflectionalGroup::getTag(firstInflectionalGroup().getTag(0)));
 }
 
@@ -224,7 +224,7 @@ Word* MorphologicalParse::getWordWithPos() {
  *
  * @return the MorphologicalTag of the last inflectional group.
  */
-string MorphologicalParse::getPos() {
+string MorphologicalParse::getPos() const{
     return InflectionalGroup::getTag(lastInflectionalGroup().getTag(0));
 }
 
@@ -233,7 +233,7 @@ string MorphologicalParse::getPos() {
  *
  * @return the MorphologicalTag of the first inflectional group.
  */
-string MorphologicalParse::getRootPos() {
+string MorphologicalParse::getRootPos() const{
     return InflectionalGroup::getTag(firstInflectionalGroup().getTag(0));
 }
 
@@ -244,7 +244,7 @@ string MorphologicalParse::getRootPos() {
  * @return the MorphologicalTag of last inflectional group if it is one of the NOMINATIVE,
  * ACCUSATIVE, DATIVE, LOCATIVE or ABLATIVE cases, null otherwise.
  */
-string MorphologicalParse::lastIGContainsCase() {
+string MorphologicalParse::lastIGContainsCase() const{
     MorphologicalTag caseTag = lastInflectionalGroup().containsCase();
     if (caseTag != MorphologicalTag::NOTAG)
         return InflectionalGroup::getTag(caseTag);
@@ -259,7 +259,7 @@ string MorphologicalParse::lastIGContainsCase() {
  * @param tag {@link MorphologicalTag} type input.
  * @return true if the last inflectional group's MorphologicalTag matches with one of the tags in the IG {@link ArrayList}, false otherwise.
  */
-bool MorphologicalParse::lastIGContainsTag(MorphologicalTag tag) {
+bool MorphologicalParse::lastIGContainsTag(MorphologicalTag tag) const{
     return lastInflectionalGroup().containsTag(tag);
 }
 
@@ -269,7 +269,7 @@ bool MorphologicalParse::lastIGContainsTag(MorphologicalTag tag) {
  *
  * @return true if the last inflectional group contains one of the possessives: P1PL, P1SG, P2PL, P2SG, P3PL AND P3SG, false otherwise.
  */
-bool MorphologicalParse::lastIGContainsPossessive() {
+bool MorphologicalParse::lastIGContainsPossessive() const{
     return lastInflectionalGroup().containsPossessive();
 }
 
@@ -278,7 +278,7 @@ bool MorphologicalParse::lastIGContainsPossessive() {
  *
  * @return true if the character at first index o f root is an uppercase letter, false otherwise.
  */
-bool MorphologicalParse::isCapitalWord() {
+bool MorphologicalParse::isCapitalWord() const{
     return TurkishLanguage::isUppercase(Word::charAt(root->getName(), 0));
 }
 
@@ -287,7 +287,7 @@ bool MorphologicalParse::isCapitalWord() {
  *
  * @return true if the past of speech is NOUN, false otherwise.
  */
-bool MorphologicalParse::isNoun() {
+bool MorphologicalParse::isNoun() const{
     return getPos() == "NOUN";
 }
 
@@ -296,7 +296,7 @@ bool MorphologicalParse::isNoun() {
  *
  * @return true if the past of speech is VERB, false otherwise.
  */
-bool MorphologicalParse::isVerb() {
+bool MorphologicalParse::isVerb() const{
     return getPos() == "VERB";
 }
 
@@ -305,7 +305,7 @@ bool MorphologicalParse::isVerb() {
  *
  * @return true if the past of speech of root is VERB, false otherwise.
  */
-bool MorphologicalParse::isRootVerb() {
+bool MorphologicalParse::isRootVerb() const{
     return getRootPos() == "VERB";
 }
 
@@ -314,7 +314,7 @@ bool MorphologicalParse::isRootVerb() {
  *
  * @return true if the past of speech is ADJ, false otherwise.
  */
-bool MorphologicalParse::isAdjective() {
+bool MorphologicalParse::isAdjective() const{
     return getPos() == "ADJ";
 }
 
@@ -323,7 +323,7 @@ bool MorphologicalParse::isAdjective() {
  *
  * @return true if the first inflectional group's MorphologicalTag is a PROPERNOUN, false otherwise.
  */
-bool MorphologicalParse::isProperNoun() {
+bool MorphologicalParse::isProperNoun() const{
     return getInflectionalGroup(0).containsTag(MorphologicalTag::PROPERNOUN);
 }
 
@@ -332,7 +332,7 @@ bool MorphologicalParse::isProperNoun() {
  *
  * @return true if the first inflectional group's MorphologicalTag is a PUNCTUATION, false otherwise.
  */
-bool MorphologicalParse::isPunctuation() {
+bool MorphologicalParse::isPunctuation() const{
     return getInflectionalGroup(0).containsTag(MorphologicalTag::PUNCTUATION);
 }
 
@@ -341,7 +341,7 @@ bool MorphologicalParse::isPunctuation() {
  *
  * @return true if the first inflectional group's MorphologicalTag is a CARDINAL, false otherwise.
  */
-bool MorphologicalParse::isCardinal() {
+bool MorphologicalParse::isCardinal() const{
     return getInflectionalGroup(0).containsTag(MorphologicalTag::CARDINAL);
 }
 
@@ -350,7 +350,7 @@ bool MorphologicalParse::isCardinal() {
  *
  * @return true if the first inflectional group's MorphologicalTag is a ORDINAL, false otherwise.
  */
-bool MorphologicalParse::isOrdinal() {
+bool MorphologicalParse::isOrdinal() const{
     return getInflectionalGroup(0).containsTag(MorphologicalTag::ORDINAL);
 }
 
@@ -359,7 +359,7 @@ bool MorphologicalParse::isOrdinal() {
  *
  * @return true if the first inflectional group's MorphologicalTag is a REAL, false otherwise.
  */
-bool MorphologicalParse::isReal() {
+bool MorphologicalParse::isReal() const{
     return getInflectionalGroup(0).containsTag(MorphologicalTag::REAL);
 }
 
@@ -368,7 +368,7 @@ bool MorphologicalParse::isReal() {
  *
  * @return true if the first inflectional group's MorphologicalTag is a REAL or CARDINAL, false otherwise.
  */
-bool MorphologicalParse::isNumber() {
+bool MorphologicalParse::isNumber() const{
     return isReal() || isCardinal();
 }
 
@@ -377,7 +377,7 @@ bool MorphologicalParse::isNumber() {
  *
  * @return true if the first inflectional group's MorphologicalTag is a TIME, false otherwise.
  */
-bool MorphologicalParse::isTime() {
+bool MorphologicalParse::isTime() const{
     return getInflectionalGroup(0).containsTag(MorphologicalTag::TIME);
 }
 
@@ -386,7 +386,7 @@ bool MorphologicalParse::isTime() {
  *
  * @return true if the first inflectional group's MorphologicalTag is a DATE, false otherwise.
  */
-bool MorphologicalParse::isDate() {
+bool MorphologicalParse::isDate() const{
     return getInflectionalGroup(0).containsTag(MorphologicalTag::DATE);
 }
 
@@ -395,7 +395,7 @@ bool MorphologicalParse::isDate() {
  *
  * @return true if the first inflectional group's MorphologicalTag is a HASHTAG, false otherwise.
  */
-bool MorphologicalParse::isHashTag() {
+bool MorphologicalParse::isHashTag() const{
     return getInflectionalGroup(0).containsTag(MorphologicalTag::HASHTAG);
 }
 
@@ -404,7 +404,7 @@ bool MorphologicalParse::isHashTag() {
  *
  * @return true if the first inflectional group's MorphologicalTag is a EMAIL, false otherwise.
  */
-bool MorphologicalParse::isEmail() {
+bool MorphologicalParse::isEmail() const{
     return getInflectionalGroup(0).containsTag(MorphologicalTag::EMAIL);
 }
 
@@ -413,7 +413,7 @@ bool MorphologicalParse::isEmail() {
  *
  * @return true if the first inflectional group's MorphologicalTag is a PERCENT, false otherwise.
  */
-bool MorphologicalParse::isPercent() {
+bool MorphologicalParse::isPercent() const{
     return getInflectionalGroup(0).containsTag(MorphologicalTag::PERCENT);
 }
 
@@ -422,7 +422,7 @@ bool MorphologicalParse::isPercent() {
  *
  * @return true if the first inflectional group's MorphologicalTag is a FRACTION, false otherwise.
  */
-bool MorphologicalParse::isFraction() {
+bool MorphologicalParse::isFraction() const{
     return getInflectionalGroup(0).containsTag(MorphologicalTag::FRACTION);
 }
 
@@ -431,7 +431,7 @@ bool MorphologicalParse::isFraction() {
  *
  * @return true if the first inflectional group's MorphologicalTag is a RANGE, false otherwise.
  */
-bool MorphologicalParse::isRange() {
+bool MorphologicalParse::isRange() const{
     return getInflectionalGroup(0).containsTag(MorphologicalTag::RANGE);
 }
 
@@ -441,8 +441,8 @@ bool MorphologicalParse::isRange() {
  *
  * @return true if {@link InflectionalGroup}'s MorphologicalTags are from the agreement plural or possessive plural.
  */
-bool MorphologicalParse::isPlural() {
-    for (InflectionalGroup inflectionalGroup : inflectionalGroups)
+bool MorphologicalParse::isPlural() const{
+    for (const InflectionalGroup& inflectionalGroup : inflectionalGroups)
         if (inflectionalGroup.containsPlural()) {
             return true;
         }
@@ -454,7 +454,7 @@ bool MorphologicalParse::isPlural() {
  *
  * @return true if the root equals to the et, ol, or yap, and false otherwise.
  */
-bool MorphologicalParse::isAuxiliary() {
+bool MorphologicalParse::isAuxiliary() const{
     return root->getName() == "et" || root->getName() == "ol" || root->getName() == "yap";
 }
 
@@ -465,8 +465,8 @@ bool MorphologicalParse::isAuxiliary() {
  * @param tag checked tag
  * @return true if the input matches with on of the tags in the IG, false otherwise.
  */
-bool MorphologicalParse::containsTag(MorphologicalTag tag) {
-    for (InflectionalGroup inflectionalGroup : inflectionalGroups) {
+bool MorphologicalParse::containsTag(MorphologicalTag tag) const{
+    for (const InflectionalGroup& inflectionalGroup : inflectionalGroups) {
         if (inflectionalGroup.containsTag(tag)) {
             return true;
         }
@@ -479,7 +479,7 @@ bool MorphologicalParse::containsTag(MorphologicalTag tag) {
  *
  * @return Tree pos tag of the morphological analysis in string form.
  */
-string MorphologicalParse::getTreePos() {
+string MorphologicalParse::getTreePos() const{
     if (isProperNoun()){
         return "NP";
     } else {
@@ -562,7 +562,7 @@ string MorphologicalParse::getTreePos() {
     return "-XXX-";
 }
 
-string MorphologicalParse::getPronType(){
+string MorphologicalParse::getPronType() const{
     string lemma = root->getName();
     if (containsTag(MorphologicalTag::PERSONALPRONOUN)){
         return "Prs";
@@ -581,7 +581,7 @@ string MorphologicalParse::getPronType(){
     return "";
 }
 
-string MorphologicalParse::getNumType(){
+string MorphologicalParse::getNumType() const{
     string lemma = root->getName();
     if (containsTag(MorphologicalTag::CARDINAL) || containsTag(MorphologicalTag::NUMBER) || lemma == "kaç"){
         return "Card";
@@ -595,7 +595,7 @@ string MorphologicalParse::getNumType(){
     return "";
 }
 
-string MorphologicalParse::getReflex(){
+string MorphologicalParse::getReflex() const{
     string lemma = root->getName();
     if (lemma == "kendi"){
         return "Yes";
@@ -603,7 +603,7 @@ string MorphologicalParse::getReflex(){
     return "";
 }
 
-string MorphologicalParse::getNumber(){
+string MorphologicalParse::getNumber() const{
     if (containsTag(MorphologicalTag::A1SG) || containsTag(MorphologicalTag::A2SG) || containsTag(MorphologicalTag::A3SG)
         || containsTag(MorphologicalTag::P1SG) || containsTag(MorphologicalTag::P2SG) || containsTag(MorphologicalTag::P3SG)){
         return "Sing";
@@ -615,7 +615,7 @@ string MorphologicalParse::getNumber(){
     return "";
 }
 
-string MorphologicalParse::getCase(){
+string MorphologicalParse::getCase() const{
     if (containsTag(MorphologicalTag::ACCUSATIVE) || containsTag(MorphologicalTag::PCACCUSATIVE)){
         return "Acc";
     }
@@ -640,7 +640,7 @@ string MorphologicalParse::getCase(){
     return "";
 }
 
-string MorphologicalParse::getDefinite(){
+string MorphologicalParse::getDefinite() const{
     string lemma = root->getName();
     if (containsTag(MorphologicalTag::DETERMINER)){
         if (lemma == "bir" || lemma == "bazı" || lemma == "birkaç"){
@@ -653,7 +653,7 @@ string MorphologicalParse::getDefinite(){
     return "";
 }
 
-string MorphologicalParse::getDegree(){
+string MorphologicalParse::getDegree() const{
     string lemma = root->getName();
     if (lemma == "daha"){
         return "Cmp";
@@ -664,7 +664,7 @@ string MorphologicalParse::getDegree(){
     return "";
 }
 
-string MorphologicalParse::getPolarity(){
+string MorphologicalParse::getPolarity() const{
     if (containsTag(MorphologicalTag::POSITIVE)){
         return "Pos";
     }
@@ -674,7 +674,7 @@ string MorphologicalParse::getPolarity(){
     return "";
 }
 
-string MorphologicalParse::getPerson(){
+string MorphologicalParse::getPerson() const{
     if (containsTag(MorphologicalTag::A1SG) || containsTag(MorphologicalTag::A1PL)
         || containsTag(MorphologicalTag::P1SG) || containsTag(MorphologicalTag::P1PL)){
         return "1";
@@ -690,7 +690,7 @@ string MorphologicalParse::getPerson(){
     return "";
 }
 
-string MorphologicalParse::getVoice(){
+string MorphologicalParse::getVoice() const{
     if (containsTag(MorphologicalTag::PASSIVE)){
         return "Pass";
     }
@@ -706,7 +706,7 @@ string MorphologicalParse::getVoice(){
     return "";
 }
 
-string MorphologicalParse::getAspect(){
+string MorphologicalParse::getAspect() const{
     if (containsTag(MorphologicalTag::PASTTENSE) || containsTag(MorphologicalTag::NARRATIVE) || containsTag(MorphologicalTag::FUTURE)){
         return "Perf";
     }
@@ -725,7 +725,7 @@ string MorphologicalParse::getAspect(){
     return "";
 }
 
-string MorphologicalParse::getTense(){
+string MorphologicalParse::getTense() const{
     if (containsTag(MorphologicalTag::PASTTENSE)){
         return "Past";
     }
@@ -741,7 +741,7 @@ string MorphologicalParse::getTense(){
     return "";
 }
 
-string MorphologicalParse::getMood(){
+string MorphologicalParse::getMood() const{
     if (containsTag(MorphologicalTag::IMPERATIVE)){
         return "Imp";
     }
@@ -763,7 +763,7 @@ string MorphologicalParse::getMood(){
     return "";
 }
 
-string MorphologicalParse::getVerbForm(){
+string MorphologicalParse::getVerbForm() const{
     if (containsTag(MorphologicalTag::PASTPARTICIPLE) || containsTag(MorphologicalTag::FUTUREPARTICIPLE) || containsTag(MorphologicalTag::PRESENTPARTICIPLE)){
         return "Part";
     }
@@ -773,7 +773,7 @@ string MorphologicalParse::getVerbForm(){
     return "";
 }
 
-vector<string> MorphologicalParse::getUniversalDependencyFeatures(string uPos){
+vector<string> MorphologicalParse::getUniversalDependencyFeatures(const string& uPos) const{
     vector<string> featureList;
     string pronType = getPronType();
     if (!pronType.empty() && uPos != "ADJ" && uPos != "VERB" && uPos != "CCONJ"){
@@ -843,7 +843,7 @@ vector<string> MorphologicalParse::getUniversalDependencyFeatures(string uPos){
     return featureList;
 }
 
-string MorphologicalParse::getUniversalDependencyPos(){
+string MorphologicalParse::getUniversalDependencyPos() const{
     string lemma = root->getName();
     if (lemma == "değil"){
         return "AUX";
@@ -900,9 +900,9 @@ string MorphologicalParse::getUniversalDependencyPos(){
  *
  * @return result {@link String}.
  */
-string MorphologicalParse::to_string() {
+string MorphologicalParse::to_string() const{
     string result = root->getName() + "+" + inflectionalGroups.at(0).to_String();
     for (int i = 1; i < inflectionalGroups.size(); i++)
-        result = result + "^DB+" + inflectionalGroups.at(i).to_String();
+        result += "^DB+" + inflectionalGroups.at(i).to_String();
     return result;
 }

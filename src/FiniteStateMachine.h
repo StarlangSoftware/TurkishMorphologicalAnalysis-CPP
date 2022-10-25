@@ -18,13 +18,13 @@ private:
     map<State, vector<Transition>> transitions;
 public:
     FiniteStateMachine() = default;
-    explicit FiniteStateMachine(string fileName);
-    bool isValidTransition(string transition);
-    State getState(string name);
-    vector<State> getStates();
-    void addTransition(State fromState, State toState, string with, string withName);
-    void addTransition(State fromState, State toState, string with, string withName, string toPos);
-    vector<Transition> getTransitions(State state);
+    explicit FiniteStateMachine(const string& fileName);
+    bool isValidTransition(const string& transition);
+    State getState(const string& name) const;
+    vector<State> getStates() const;
+    void addTransition(const State& fromState, const State& toState, const string& with, const string& withName);
+    void addTransition(const State& fromState, const State& toState, const string& with, const string& withName, const string& toPos);
+    vector<Transition> getTransitions(const State& state) const;
 };
 
 

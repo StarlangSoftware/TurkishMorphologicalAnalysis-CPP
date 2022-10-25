@@ -12,8 +12,8 @@ class DisambiguatedWord : public Word {
 private:
     MorphologicalParse parse;
 public:
-    DisambiguatedWord(string name, MorphologicalParse parse);
-    MorphologicalParse getParse();
+    DisambiguatedWord(const string& name, const MorphologicalParse& parse);
+    MorphologicalParse getParse() const;
 };
 
 
