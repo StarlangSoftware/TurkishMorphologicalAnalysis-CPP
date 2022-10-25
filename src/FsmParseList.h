@@ -14,7 +14,7 @@ private:
 public:
     FsmParseList() = default;
     explicit FsmParseList(vector<FsmParse> fsmParses);
-    int size();
+    int size() const;
     FsmParse getFsmParse(int index) const;
     string rootWords() const;
     void reduceToParsesWithSameRootAndPos(Word* currentWithPos);

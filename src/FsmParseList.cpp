@@ -84,7 +84,7 @@ FsmParseList::FsmParseList(vector<FsmParse> fsmParses) {
  *
  * @return the size of fsmParses {@link vector}.
  */
-int FsmParseList::size() {
+int FsmParseList::size() const{
     return fsmParses.size();
 }
 
