@@ -95,7 +95,7 @@ FsmMorphologicalAnalyzer::getPossibleWords(const MorphologicalParse& morphologic
     int pluralIndex = -1;
     compoundWord = dictionaryTrie->getCompoundWordStartingWith(currentWord);
     if (!isRootVerb) {
-        if (Word::size(compoundWord->getName()) - Word::size(currentWord) < 3) {
+        if (compoundWord != nullptr && Word::size(compoundWord->getName()) - Word::size(currentWord) < 3) {
             result.emplace(compoundWord->getName());
         }
         result.emplace(currentWord);
