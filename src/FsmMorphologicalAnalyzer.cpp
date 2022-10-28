@@ -642,12 +642,12 @@ bool FsmMorphologicalAnalyzer::parseExists(vector<FsmParse>& fsmParse, const str
  */
 vector<FsmParse> FsmMorphologicalAnalyzer::parseWord(vector<FsmParse> fsmParse, int maxLength) const{
     vector<FsmParse> result;
+    vector<string> resultSuffixList;
     FsmParse currentFsmParse;
     TxtWord* root;
     State currentState;
     string currentSurfaceForm;
-    int i;
-    bool exists;
+    string currentSuffixList;
     while (!fsmParse.empty()) {
         currentFsmParse = fsmParse.at(0);
         fsmParse.erase(fsmParse.begin());
@@ -655,16 +655,11 @@ vector<FsmParse> FsmMorphologicalAnalyzer::parseWord(vector<FsmParse> fsmParse, 
         currentState = currentFsmParse.getFinalSuffix();
         currentSurfaceForm = currentFsmParse.getSurfaceForm();
         if (currentState.isEndState() && Word::size(currentSurfaceForm) <= maxLength) {
-            exists = false;
-            for (i = 0; i < result.size(); i++) {
-                if (currentFsmParse.getSuffixList() == result.at(i).getSuffixList()) {
-                    exists = true;
-                    break;
-                }
-            }
-            if (!exists) {
+            currentSuffixList = currentFsmParse.getSuffixList();
+            if (find(resultSuffixList.begin(), resultSuffixList.end(), currentSuffixList) == resultSuffixList.end()) {
                 currentFsmParse.constructInflectionalGroups();
                 result.push_back(currentFsmParse);
+                resultSuffixList.push_back(currentSuffixList);
             }
         }
         addNewParsesFromCurrentParse(currentFsmParse, fsmParse, maxLength, root);
@@ -682,12 +677,12 @@ vector<FsmParse> FsmMorphologicalAnalyzer::parseWord(vector<FsmParse> fsmParse, 
  */
 vector<FsmParse> FsmMorphologicalAnalyzer::parseWord(vector<FsmParse> fsmParse, const string& surfaceForm) const{
     vector<FsmParse> result;
+    vector<string> resultSuffixList;
     FsmParse currentFsmParse;
     TxtWord* root;
     State currentState;
     string currentSurfaceForm;
-    int i;
-    bool exists;
+    string currentSuffixList;
     while (!fsmParse.empty()) {
         currentFsmParse = fsmParse.at(0);
         fsmParse.erase(fsmParse.begin());
@@ -695,16 +690,11 @@ vector<FsmParse> FsmMorphologicalAnalyzer::parseWord(vector<FsmParse> fsmParse, 
         currentState = currentFsmParse.getFinalSuffix();
         currentSurfaceForm = currentFsmParse.getSurfaceForm();
         if (currentState.isEndState() && currentSurfaceForm == surfaceForm) {
-            exists = false;
-            for (i = 0; i < result.size(); i++) {
-                if (currentFsmParse.getSuffixList() == result.at(i).getSuffixList()) {
-                    exists = true;
-                    break;
-                }
-            }
-            if (!exists) {
+            currentSuffixList = currentFsmParse.getSuffixList();
+            if (find(resultSuffixList.begin(), resultSuffixList.end(), currentSuffixList) == resultSuffixList.end()) {
                 currentFsmParse.constructInflectionalGroups();
                 result.push_back(currentFsmParse);
+                resultSuffixList.push_back(currentSuffixList);
             }
         }
         addNewParsesFromCurrentParse(currentFsmParse, fsmParse, surfaceForm, root);
