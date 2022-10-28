@@ -13,7 +13,6 @@ private:
     State toState;
     string with;
     string withName;
-    string formationToCheck;
     string toPos;
     string withFirstChar() const;
     bool startWithVowelorConsonantDrops() const;
@@ -27,8 +26,8 @@ public:
     bool transitionPossible(const FsmParse& currentFsmParse) const;
     bool transitionPossible(TxtWord* root, const State& fromState) const;
     bool softenDuringSuffixation(TxtWord* root) const;
-    string makeTransition(TxtWord* root, const string& stem);
-    string makeTransition(TxtWord* root, const string& stem, const State& startState);
+    string makeTransition(TxtWord* root, const string& stem) const;
+    string makeTransition(TxtWord* root, const string& stem, const State& startState) const;
     string to_String() const;
     string getWith() const;
 };

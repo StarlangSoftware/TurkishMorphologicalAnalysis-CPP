@@ -306,7 +306,7 @@ bool FsmMorphologicalAnalyzer::isPossibleSubstring(const string& shortString, co
  * @param root     word to check properties and add to fsmParse according to them.
  * @param isProper is used to check a word is proper or not.
  */
-void FsmMorphologicalAnalyzer::initializeParseList(vector<FsmParse>& fsmParse, TxtWord *root, bool isProper) {
+void FsmMorphologicalAnalyzer::initializeParseList(vector<FsmParse>& fsmParse, TxtWord *root, bool isProper) const{
     FsmParse currentFsmParse;
     if (root->isPlural()) {
         currentFsmParse = FsmParse(root, finiteStateMachine.getState("NominalRootPlural"));
@@ -495,7 +495,7 @@ void FsmMorphologicalAnalyzer::initializeParseList(vector<FsmParse>& fsmParse, T
  * @param root the root form to generate initial parse list.
  * @param isProper    is used to check a word is proper or not.
  */
-void FsmMorphologicalAnalyzer::initializeParseListFromRoot(vector<FsmParse>& parseList, TxtWord *root, bool isProper) {
+void FsmMorphologicalAnalyzer::initializeParseListFromRoot(vector<FsmParse>& parseList, TxtWord *root, bool isProper) const{
     initializeParseList(parseList, root, isProper);
     if (root->obeysAndNotObeysVowelHarmonyDuringAgglutination()){
         TxtWord* newRoot = root->clone();
@@ -563,10 +563,10 @@ vector<FsmParse> FsmMorphologicalAnalyzer::initializeParseListFromSurfaceForm(co
  * @param root            TxtWord used to make transition.
  */
 void FsmMorphologicalAnalyzer::addNewParsesFromCurrentParse(const FsmParse& currentFsmParse, vector<FsmParse>& fsmParse,
-                                                            int maxLength, TxtWord *root) {
+                                                            int maxLength, TxtWord *root) const{
     State currentState = currentFsmParse.getFinalSuffix();
     string currentSurfaceForm = currentFsmParse.getSurfaceForm();
-    for (Transition currentTransition : finiteStateMachine.getTransitions(currentState)) {
+    for (const Transition& currentTransition : finiteStateMachine.getTransitions(currentState)) {
         if (currentTransition.transitionPossible(currentFsmParse) && (currentSurfaceForm != root->getName() || (currentSurfaceForm == root->getName() && currentTransition.transitionPossible(root, currentState)))) {
             string tmp = currentTransition.makeTransition(root, currentSurfaceForm, currentFsmParse.getStartState());
             if (Word::size(tmp) <= maxLength) {
@@ -590,10 +590,10 @@ void FsmMorphologicalAnalyzer::addNewParsesFromCurrentParse(const FsmParse& curr
  * @param root            TxtWord used to make transition.
  */
 void FsmMorphologicalAnalyzer::addNewParsesFromCurrentParse(const FsmParse& currentFsmParse, vector<FsmParse>& fsmParse,
-                                                            const string& surfaceForm, TxtWord *root) {
+                                                            const string& surfaceForm, TxtWord *root) const{
     State currentState = currentFsmParse.getFinalSuffix();
     string currentSurfaceForm = currentFsmParse.getSurfaceForm();
-    for (Transition currentTransition : finiteStateMachine.getTransitions(currentState)) {
+    for (const Transition& currentTransition : finiteStateMachine.getTransitions(currentState)) {
         if (currentTransition.transitionPossible(currentFsmParse.getSurfaceForm(), surfaceForm) && currentTransition.transitionPossible(currentFsmParse) && (currentSurfaceForm != root->getName() || (currentSurfaceForm == root->getName() && currentTransition.transitionPossible(root, currentState)))) {
             string tmp = currentTransition.makeTransition(root, currentSurfaceForm, currentFsmParse.getStartState());
             if ((Word::size(tmp) < Word::size(surfaceForm) && isPossibleSubstring(tmp, surfaceForm, root)) || (Word::size(tmp) == Word::size(surfaceForm) && (root->lastIdropsDuringSuffixation() || (tmp == surfaceForm)))) {
@@ -613,7 +613,7 @@ void FsmMorphologicalAnalyzer::addNewParsesFromCurrentParse(const FsmParse& curr
  * @param surfaceForm String to use during transition.
  * @return true when the currentState is end state and input surfaceForm id equal to currentSurfaceForm, otherwise false.
  */
-bool FsmMorphologicalAnalyzer::parseExists(vector<FsmParse>& fsmParse, const string& surfaceForm) {
+bool FsmMorphologicalAnalyzer::parseExists(vector<FsmParse>& fsmParse, const string& surfaceForm) const{
     FsmParse currentFsmParse;
     TxtWord* root;
     State currentState;
@@ -640,7 +640,7 @@ bool FsmMorphologicalAnalyzer::parseExists(vector<FsmParse>& fsmParse, const str
  * @param maxLength maximum length of the surfaceform.
  * @return result {@link ArrayList} which has the currentFsmParse.
  */
-vector<FsmParse> FsmMorphologicalAnalyzer::parseWord(vector<FsmParse> fsmParse, int maxLength) {
+vector<FsmParse> FsmMorphologicalAnalyzer::parseWord(vector<FsmParse> fsmParse, int maxLength) const{
     vector<FsmParse> result;
     FsmParse currentFsmParse;
     TxtWord* root;
@@ -680,7 +680,7 @@ vector<FsmParse> FsmMorphologicalAnalyzer::parseWord(vector<FsmParse> fsmParse, 
  * @param surfaceForm String to use during transition.
  * @return result {@link ArrayList} which has the currentFsmParse.
  */
-vector<FsmParse> FsmMorphologicalAnalyzer::parseWord(vector<FsmParse> fsmParse, const string& surfaceForm) {
+vector<FsmParse> FsmMorphologicalAnalyzer::parseWord(vector<FsmParse> fsmParse, const string& surfaceForm) const{
     vector<FsmParse> result;
     FsmParse currentFsmParse;
     TxtWord* root;

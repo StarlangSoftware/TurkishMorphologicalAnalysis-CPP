@@ -236,7 +236,7 @@ bool Transition::softenDuringSuffixation(TxtWord* root) const{
  * @param stem String input.
  * @return String type output that has the transition.
  */
-string Transition::makeTransition(TxtWord *root, const string& stem){
+string Transition::makeTransition(TxtWord *root, const string& stem) const{
     if (root->isVerb()) {
         return makeTransition(root, stem, State("VerbalRoot", true, false));
     } else {
@@ -244,9 +244,10 @@ string Transition::makeTransition(TxtWord *root, const string& stem){
     }
 }
 
-string Transition::makeTransition(TxtWord *root, const string& stem, const State& startState){
+string Transition::makeTransition(TxtWord *root, const string& stem, const State& startState) const{
     bool rootWord = root->getName() == stem || (root->getName() + "'") == stem;
     string formation = stem;
+    string formationToCheck;
     int i = 0;
     if (with == "0") {
         return stem;
@@ -262,7 +263,6 @@ string Transition::makeTransition(TxtWord *root, const string& stem, const State
             return "sana";
         }
     }
-    formationToCheck = stem;
     //---vowelEChangesToIDuringYSuffixation---
     //de->d(i)yor, ye->y(i)yor
     if (rootWord && withFirstChar() == "y" && root->vowelEChangesToIDuringYSuffixation() && (Word::charAt(with, 1) != "H" || root->getName() == "ye")) {
