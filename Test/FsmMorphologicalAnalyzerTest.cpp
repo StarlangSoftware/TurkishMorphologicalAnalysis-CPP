@@ -10,7 +10,7 @@
 
 TEST_CASE("testGenerateAllParses") {
     FsmMorphologicalAnalyzer fsm = FsmMorphologicalAnalyzer();
-    TxtDictionary dictionary = fsm.getDictionary();
+    TxtDictionary* dictionary = fsm.getDictionary();
     vector<string> testWords = {"açıkla", "yıldönümü", "resim",
                             "hal", "emlak", "git",
                             "kavur", "ye", "yemek", "göç",
@@ -23,7 +23,7 @@ TEST_CASE("testGenerateAllParses") {
     vector<string> parsesExpected;
     string line;
     for (auto & testWord : testWords) {
-        TxtWord* word = (TxtWord*) fsm.getDictionary().getWord(testWord);
+        auto* word = (TxtWord*) dictionary->getWord(testWord);
         parsesExpected.clear();
         ifstream inputFile;
         inputFile.open("parses/" + word->getName() + ".txt", ifstream :: in);
@@ -44,7 +44,7 @@ TEST_CASE("testGenerateAllParses") {
 
 TEST_CASE("FsmMorphologicalAnalyzerTest") {
     static FsmMorphologicalAnalyzer fsm = FsmMorphologicalAnalyzer();
-    static TxtDictionary dictionary = fsm.getDictionary();
+    static TxtDictionary* dictionary = fsm.getDictionary();
 
     SECTION("morphologicalAnalysisDataTimeNumber") {
         REQUIRE_FALSE(fsm.morphologicalAnalysis("3/4").size() == 0);
@@ -73,8 +73,8 @@ TEST_CASE("FsmMorphologicalAnalyzerTest") {
     }
 
     SECTION("morphologicalAnalysisProperNoun") {
-        for (int i = 0; i < dictionary.size(); i++) {
-            auto *word = (TxtWord *) dictionary.getWord(i);
+        for (int i = 0; i < dictionary->size(); i++) {
+            auto *word = (TxtWord *) dictionary->getWord(i);
             if (word->isProperNoun()) {
                 REQUIRE_FALSE(fsm.morphologicalAnalysis(Word::toUpperCase(word->getName())).size() == 0);
             }
@@ -82,8 +82,8 @@ TEST_CASE("FsmMorphologicalAnalyzerTest") {
     }
 
     SECTION("FsmMorphologicalAnalyzerTest-morphologicalAnalysisNounSoftenDuringSuffixation") {
-        for (int i = 0; i < dictionary.size(); i++) {
-            auto *word = (TxtWord *) dictionary.getWord(i);
+        for (int i = 0; i < dictionary->size(); i++) {
+            auto *word = (TxtWord *) dictionary->getWord(i);
             if (word->isNominal() && word->nounSoftenDuringSuffixation()) {
                 State transitionState = State("Possessive", false, false);
                 State startState = State("NominalRoot", true, false);
@@ -95,8 +95,8 @@ TEST_CASE("FsmMorphologicalAnalyzerTest") {
     }
 
     SECTION("morphologicalAnalysisVowelAChangesToIDuringYSuffixation") {
-        for (int i = 0; i < dictionary.size(); i++) {
-            auto *word = (TxtWord *) dictionary.getWord(i);
+        for (int i = 0; i < dictionary->size(); i++) {
+            auto *word = (TxtWord *) dictionary->getWord(i);
             if (word->isVerb() && word->vowelAChangesToIDuringYSuffixation()) {
                 State transitionState = State("VerbalStem", false, false);
                 State startState = State("VerbalRoot", true, false);
@@ -108,8 +108,8 @@ TEST_CASE("FsmMorphologicalAnalyzerTest") {
     }
 
     SECTION("morphologicalAnalysisIsPortmanteau") {
-        for (int i = 0; i < dictionary.size(); i++) {
-            auto *word = (TxtWord *) dictionary.getWord(i);
+        for (int i = 0; i < dictionary->size(); i++) {
+            auto *word = (TxtWord *) dictionary->getWord(i);
             if (word->isNominal() && word->isPortmanteau() && !word->isPlural() &&
                 !word->isPortmanteauFacedVowelEllipsis()) {
                 State transitionState = State("CompoundNounRoot", true, false);
@@ -152,8 +152,8 @@ TEST_CASE("FsmMorphologicalAnalyzerTest") {
     }
 
     SECTION("morphologicalAnalysisNotObeysVowelHarmonyDuringAgglutination") {
-        for (int i = 0; i < dictionary.size(); i++) {
-            auto *word = (TxtWord *) dictionary.getWord(i);
+        for (int i = 0; i < dictionary->size(); i++) {
+            auto *word = (TxtWord *) dictionary->getWord(i);
             if (word->isNominal() && word->notObeysVowelHarmonyDuringAgglutination()) {
                 State transitionState = State("Possessive", false, false);
                 State startState = State("NominalRoot", true, false);
@@ -165,8 +165,8 @@ TEST_CASE("FsmMorphologicalAnalyzerTest") {
     }
 
     SECTION("morphologicalAnalysisLastIdropsDuringSuffixation") {
-        for (int i = 0; i < dictionary.size(); i++) {
-            auto *word = (TxtWord *) dictionary.getWord(i);
+        for (int i = 0; i < dictionary->size(); i++) {
+            auto *word = (TxtWord *) dictionary->getWord(i);
             if (word->isNominal() && word->lastIdropsDuringSuffixation()) {
                 State transitionState = State("Possessive", false, false);
                 State startState = State("NominalRoot", true, false);
@@ -178,8 +178,8 @@ TEST_CASE("FsmMorphologicalAnalyzerTest") {
     }
 
     SECTION("morphologicalAnalysisVerbSoftenDuringSuffixation") {
-        for (int i = 0; i < dictionary.size(); i++) {
-            auto *word = (TxtWord *) dictionary.getWord(i);
+        for (int i = 0; i < dictionary->size(); i++) {
+            auto *word = (TxtWord *) dictionary->getWord(i);
             if (word->isVerb() && word->verbSoftenDuringSuffixation()) {
                 State transitionState = State("VerbalStem", false, false);
                 State startState = State("VerbalRoot", true, false);
@@ -191,8 +191,8 @@ TEST_CASE("FsmMorphologicalAnalyzerTest") {
     }
 
     SECTION("morphologicalAnalysisDuplicatesDuringSuffixation") {
-        for (int i = 0; i < dictionary.size(); i++) {
-            auto *word = (TxtWord *) dictionary.getWord(i);
+        for (int i = 0; i < dictionary->size(); i++) {
+            auto *word = (TxtWord *) dictionary->getWord(i);
             if (word->isNominal() && word->duplicatesDuringSuffixation()) {
                 State transitionState = State("Possessive", false, false);
                 State startState = State("NominalRoot", true, false);
@@ -204,8 +204,8 @@ TEST_CASE("FsmMorphologicalAnalyzerTest") {
     }
 
     SECTION("morphologicalAnalysisEndingKChangesIntoG") {
-        for (int i = 0; i < dictionary.size(); i++) {
-            auto *word = (TxtWord *) dictionary.getWord(i);
+        for (int i = 0; i < dictionary->size(); i++) {
+            auto *word = (TxtWord *) dictionary->getWord(i);
             if (word->isNominal() && word->endingKChangesIntoG()) {
                 State transitionState = State("Possessive", false, false);
                 State startState = State("NominalRoot", true, false);
@@ -217,8 +217,8 @@ TEST_CASE("FsmMorphologicalAnalyzerTest") {
     }
 
     SECTION("morphologicalAnalysisLastIdropsDuringPassiveSuffixation") {
-        for (int i = 0; i < dictionary.size(); i++) {
-            auto *word = (TxtWord *) dictionary.getWord(i);
+        for (int i = 0; i < dictionary->size(); i++) {
+            auto *word = (TxtWord *) dictionary->getWord(i);
             if (word->isVerb() && word->lastIdropsDuringPassiveSuffixation()) {
                 State transitionState = State("VerbalStem", false, false);
                 State startState = State("VerbalRoot", true, false);

@@ -5,6 +5,7 @@
 #include <set>
 #include <iostream>
 #include <fstream>
+#include <queue>
 #include "FsmMorphologicalAnalyzer.h"
 
 using namespace std;
@@ -17,9 +18,9 @@ using namespace std;
  * @param dictionary the dictionary file that will be used to generate dictionaryTrie.
  * @param cacheSize  the size of the LRUCache.
  */
-FsmMorphologicalAnalyzer::FsmMorphologicalAnalyzer(const string& fileName, TxtDictionary dictionary, int cacheSize) {
+FsmMorphologicalAnalyzer::FsmMorphologicalAnalyzer(const string& fileName, TxtDictionary* dictionary, int cacheSize) {
     finiteStateMachine = FiniteStateMachine(fileName);
-    dictionaryTrie = dictionary.prepareTrie();
+    dictionaryTrie = dictionary->prepareTrie();
     this->dictionary = dictionary;
     cache = LRUCache<string, FsmParseList>(cacheSize);
 }
@@ -31,7 +32,7 @@ FsmMorphologicalAnalyzer::FsmMorphologicalAnalyzer(const string& fileName, TxtDi
  * @param fileName           the file to read the finite state machine.
  * @param dictionaryFileName the file to read the dictionary.
  */
-FsmMorphologicalAnalyzer::FsmMorphologicalAnalyzer(const string& dictionaryFileName, const string& fileName) : FsmMorphologicalAnalyzer(fileName, TxtDictionary(dictionaryFileName, Comparator::TURKISH, "turkish_misspellings.txt")){
+FsmMorphologicalAnalyzer::FsmMorphologicalAnalyzer(const string& dictionaryFileName, const string& fileName) : FsmMorphologicalAnalyzer(fileName, new TxtDictionary(dictionaryFileName, Comparator::TURKISH, "turkish_misspellings.txt")){
 }
 
 void FsmMorphologicalAnalyzer::addSurfaceForms(const string& fileName) {
@@ -50,7 +51,7 @@ void FsmMorphologicalAnalyzer::addSurfaceForms(const string& fileName) {
  *
  * @return TxtDictionary type dictionary.
  */
-TxtDictionary FsmMorphologicalAnalyzer::getDictionary() const{
+TxtDictionary* FsmMorphologicalAnalyzer::getDictionary() const{
     return dictionary;
 }
 
@@ -100,7 +101,7 @@ FsmMorphologicalAnalyzer::getPossibleWords(const MorphologicalParse& morphologic
         }
         result.emplace(currentWord);
     }
-    currentRoot = (TxtWord*) dictionary.getWord(parse.getWord().getName());
+    currentRoot = (TxtWord*) dictionary->getWord(parse.getWord().getName());
     if (currentRoot == nullptr && compoundWord != nullptr) {
         currentRoot = compoundWord;
     }
@@ -562,7 +563,7 @@ vector<FsmParse> FsmMorphologicalAnalyzer::initializeParseListFromSurfaceForm(co
  * @param surfaceForm     String to use during transition.
  * @param root            TxtWord used to make transition.
  */
-void FsmMorphologicalAnalyzer::addNewParsesFromCurrentParse(const FsmParse& currentFsmParse, vector<FsmParse>& fsmParse,
+void FsmMorphologicalAnalyzer::addNewParsesFromCurrentParse(const FsmParse& currentFsmParse, deque<FsmParse>& fsmParse,
                                                             int maxLength, TxtWord *root) const{
     State currentState = currentFsmParse.getFinalSuffix();
     string currentSurfaceForm = currentFsmParse.getSurfaceForm();
@@ -589,7 +590,7 @@ void FsmMorphologicalAnalyzer::addNewParsesFromCurrentParse(const FsmParse& curr
  * @param surfaceForm     String to use during transition.
  * @param root            TxtWord used to make transition.
  */
-void FsmMorphologicalAnalyzer::addNewParsesFromCurrentParse(const FsmParse& currentFsmParse, vector<FsmParse>& fsmParse,
+void FsmMorphologicalAnalyzer::addNewParsesFromCurrentParse(const FsmParse& currentFsmParse, deque<FsmParse>& fsmParse,
                                                             const string& surfaceForm, TxtWord *root) const{
     State currentState = currentFsmParse.getFinalSuffix();
     string currentSurfaceForm = currentFsmParse.getSurfaceForm();
@@ -618,16 +619,17 @@ bool FsmMorphologicalAnalyzer::parseExists(vector<FsmParse>& fsmParse, const str
     TxtWord* root;
     State currentState;
     string currentSurfaceForm;
-    while (!fsmParse.empty()) {
-        currentFsmParse = fsmParse.at(0);
-        fsmParse.erase(fsmParse.begin());
+    deque<FsmParse> parseQueue = deque(fsmParse.begin(), fsmParse.end());
+    while (!parseQueue.empty()) {
+        currentFsmParse = parseQueue.front();
+        parseQueue.pop_front();
         root = (TxtWord*) currentFsmParse.getWord();
         currentState = currentFsmParse.getFinalSuffix();
         currentSurfaceForm = currentFsmParse.getSurfaceForm();
         if (currentState.isEndState() && currentSurfaceForm == surfaceForm) {
             return true;
         }
-        addNewParsesFromCurrentParse(currentFsmParse, fsmParse, surfaceForm, root);
+        addNewParsesFromCurrentParse(currentFsmParse, parseQueue, surfaceForm, root);
     }
     return false;
 }
@@ -648,9 +650,10 @@ vector<FsmParse> FsmMorphologicalAnalyzer::parseWord(vector<FsmParse> fsmParse, 
     State currentState;
     string currentSurfaceForm;
     string currentSuffixList;
-    while (!fsmParse.empty()) {
-        currentFsmParse = fsmParse.at(0);
-        fsmParse.erase(fsmParse.begin());
+    deque<FsmParse> parseQueue = deque(fsmParse.begin(), fsmParse.end());
+    while (!parseQueue.empty()) {
+        currentFsmParse = parseQueue.front();
+        parseQueue.pop_front();
         root = (TxtWord*) currentFsmParse.getWord();
         currentState = currentFsmParse.getFinalSuffix();
         currentSurfaceForm = currentFsmParse.getSurfaceForm();
@@ -662,7 +665,7 @@ vector<FsmParse> FsmMorphologicalAnalyzer::parseWord(vector<FsmParse> fsmParse, 
                 resultSuffixList.push_back(currentSuffixList);
             }
         }
-        addNewParsesFromCurrentParse(currentFsmParse, fsmParse, maxLength, root);
+        addNewParsesFromCurrentParse(currentFsmParse, parseQueue, maxLength, root);
     }
     return result;
 }
@@ -683,9 +686,10 @@ vector<FsmParse> FsmMorphologicalAnalyzer::parseWord(vector<FsmParse> fsmParse, 
     State currentState;
     string currentSurfaceForm;
     string currentSuffixList;
-    while (!fsmParse.empty()) {
-        currentFsmParse = fsmParse.at(0);
-        fsmParse.erase(fsmParse.begin());
+    deque<FsmParse> parseQueue = deque(fsmParse.begin(), fsmParse.end());
+    while (!parseQueue.empty()) {
+        currentFsmParse = parseQueue.front();
+        parseQueue.pop_front();
         root = (TxtWord*) currentFsmParse.getWord();
         currentState = currentFsmParse.getFinalSuffix();
         currentSurfaceForm = currentFsmParse.getSurfaceForm();
@@ -697,7 +701,7 @@ vector<FsmParse> FsmMorphologicalAnalyzer::parseWord(vector<FsmParse> fsmParse, 
                 resultSuffixList.push_back(currentSuffixList);
             }
         }
-        addNewParsesFromCurrentParse(currentFsmParse, fsmParse, surfaceForm, root);
+        addNewParsesFromCurrentParse(currentFsmParse, parseQueue, surfaceForm, root);
     }
     return result;
 }
@@ -775,7 +779,7 @@ Sentence* FsmMorphologicalAnalyzer::replaceWord(Sentence* original, const string
     } else {
         newRootWord = newWord;
     }
-    auto* newRootTxtWord = (TxtWord*) dictionary.getWord(newRootWord);
+    auto* newRootTxtWord = (TxtWord*) dictionary->getWord(newRootWord);
     FsmParseList* parseList = morphologicalAnalysis(*original);
     for (i = 0; i < original->wordCount(); i++){
         bool replaced = false;
@@ -1012,7 +1016,7 @@ FsmParseList *FsmMorphologicalAnalyzer::morphologicalAnalysis(Sentence& sentence
     auto* result = new FsmParseList[sentence.wordCount()];
     for (int i = 0; i < sentence.wordCount(); i++) {
         string originalForm = sentence.getWord(i)->getName();
-        string spellCorrectedForm = dictionary.getCorrectForm(originalForm);
+        string spellCorrectedForm = dictionary->getCorrectForm(originalForm);
         if (spellCorrectedForm.empty()){
             spellCorrectedForm = originalForm;
         }
@@ -1034,7 +1038,7 @@ FsmParseList *FsmMorphologicalAnalyzer::robustMorphologicalAnalysis(Sentence& se
     auto* result = new FsmParseList[sentence.wordCount()];
     for (int i = 0; i < sentence.wordCount(); i++) {
         string originalForm = sentence.getWord(i)->getName();
-        string spellCorrectedForm = dictionary.getCorrectForm(originalForm);
+        string spellCorrectedForm = dictionary->getCorrectForm(originalForm);
         if (spellCorrectedForm.empty()){
             spellCorrectedForm = originalForm;
         }
@@ -1215,8 +1219,8 @@ FsmParseList FsmMorphologicalAnalyzer::morphologicalAnalysis(const string& surfa
                                         } else {
                                             if (Word::isCapital(possibleRoot)) {
                                                 TxtWord* newWord = nullptr;
-                                                if (dictionary.getWord(Word::toLowerCase(surfaceForm)) != nullptr) {
-                                                    ((TxtWord*) dictionary.getWord(Word::toLowerCase(surfaceForm)))->addFlag("IS_OA");
+                                                if (dictionary->getWord(Word::toLowerCase(surfaceForm)) != nullptr) {
+                                                    ((TxtWord*) dictionary->getWord(Word::toLowerCase(surfaceForm)))->addFlag("IS_OA");
                                                 } else {
                                                     newWord = new TxtWord(Word::toLowerCase(surfaceForm), "IS_OA");
                                                     dictionaryTrie->addWord(Word::toLowerCase(surfaceForm), newWord);

@@ -20,7 +20,7 @@ private:
     Trie* dictionaryTrie;
     FiniteStateMachine finiteStateMachine;
     int MAX_DISTANCE = 2;
-    TxtDictionary dictionary;
+    TxtDictionary* dictionary;
     LRUCache<string, FsmParseList> cache;
     map<string, regex> mostUsedPatterns;
     set<string> parsedSurfaceForms;
@@ -28,8 +28,8 @@ private:
     void initializeParseList(vector<FsmParse>& fsmParse, TxtWord* root, bool isProper) const;
     void initializeParseListFromRoot(vector<FsmParse>& fsmParse, TxtWord* root, bool isProper) const;
     vector<FsmParse> initializeParseListFromSurfaceForm(const string& surfaceForm, bool isProper);
-    void addNewParsesFromCurrentParse(const FsmParse& currentFsmParse, vector<FsmParse>& fsmParse, int maxLength, TxtWord* root) const;
-    void addNewParsesFromCurrentParse(const FsmParse& currentFsmParse, vector<FsmParse>& fsmParse, const string& surfaceForm, TxtWord* root) const;
+    void addNewParsesFromCurrentParse(const FsmParse& currentFsmParse, deque<FsmParse>& fsmParse, int maxLength, TxtWord* root) const;
+    void addNewParsesFromCurrentParse(const FsmParse& currentFsmParse, deque<FsmParse>& fsmParse, const string& surfaceForm, TxtWord* root) const;
     bool parseExists(vector<FsmParse>& fsmParse, const string& surfaceForm) const;
     vector<FsmParse> parseWord(vector<FsmParse> fsmParse, int maxLength) const;
     vector<FsmParse> parseWord(vector<FsmParse> fsmParse, const string& surfaceForm) const;
@@ -44,10 +44,10 @@ private:
     bool isDate(const string& surfaceForm);
     bool patternMatches(const string& expr, const string& value);
 public:
-    explicit FsmMorphologicalAnalyzer(const string& fileName = "turkish_finite_state_machine.xml", TxtDictionary dictionary = TxtDictionary(), int cacheSize = 10000);
+    explicit FsmMorphologicalAnalyzer(const string& fileName = "turkish_finite_state_machine.xml", TxtDictionary* dictionary = new TxtDictionary(), int cacheSize = 10000);
     explicit FsmMorphologicalAnalyzer(const string& dictionaryFileName, const string& fileName = "turkish_finite_state_machine.xml");
     void addSurfaceForms(const string& fileName);
-    TxtDictionary getDictionary() const;
+    TxtDictionary* getDictionary() const;
     FiniteStateMachine getFiniteStateMachine() const;
     unordered_set<string> getPossibleWords(const MorphologicalParse& morphologicalParse, const MetamorphicParse& parse);
     vector<FsmParse> morphologicalAnalysis(TxtWord* root, const string& surfaceForm, const string& state);
