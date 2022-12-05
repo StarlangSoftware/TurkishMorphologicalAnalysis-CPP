@@ -32,7 +32,7 @@ FsmMorphologicalAnalyzer::FsmMorphologicalAnalyzer(const string& fileName, TxtDi
  * @param fileName           the file to read the finite state machine.
  * @param dictionaryFileName the file to read the dictionary.
  */
-FsmMorphologicalAnalyzer::FsmMorphologicalAnalyzer(const string& dictionaryFileName, const string& fileName) : FsmMorphologicalAnalyzer(fileName, new TxtDictionary(dictionaryFileName, Comparator::TURKISH, "turkish_misspellings.txt")){
+FsmMorphologicalAnalyzer::FsmMorphologicalAnalyzer(const string& dictionaryFileName, const string& fileName) : FsmMorphologicalAnalyzer(fileName, new TxtDictionary(dictionaryFileName, "turkish_misspellings.txt")){
 }
 
 void FsmMorphologicalAnalyzer::addSurfaceForms(const string& fileName) {
