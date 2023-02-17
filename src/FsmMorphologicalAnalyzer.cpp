@@ -976,6 +976,13 @@ bool FsmMorphologicalAnalyzer::isProperNoun(const string& surfaceForm) const{
     return (Word::charAt(surfaceForm, 0) >= "A" && Word::charAt(surfaceForm, 0) <= "Z") || Word::charAt(surfaceForm, 0) == "Ç" || Word::charAt(surfaceForm, 0) == "Ö" || Word::charAt(surfaceForm, 0) == "Ğ" || Word::charAt(surfaceForm, 0) == "Ü" || Word::charAt(surfaceForm, 0) == "Ş" || Word::charAt(surfaceForm, 0) == "İ"; // İ, Ü, Ğ, Ş, Ç, Ö
 }
 
+bool FsmMorphologicalAnalyzer::isCode(const string &surfaceForm) {
+    if (surfaceForm.empty()) {
+        return false;
+    }
+    return patternMatches(".*[0-9].*", surfaceForm) && patternMatches(".*[a-zA-ZçöğüşıÇÖĞÜŞİ].*", surfaceForm);
+}
+
 /**
  * The robustMorphologicalAnalysis is used to analyse surfaceForm String. First it gets the currentParse of the surfaceForm
  * then, if the size of the currentParse is 0, and given surfaceForm is a proper noun, it adds the surfaceForm
@@ -997,8 +1004,13 @@ FsmParseList FsmMorphologicalAnalyzer::robustMorphologicalAnalysis(const string&
             fsmParse.emplace_back(FsmParse(surfaceForm, finiteStateMachine.getState("ProperRoot")));
             return FsmParseList(parseWord(fsmParse, surfaceForm));
         } else {
-            fsmParse.emplace_back(FsmParse(surfaceForm, finiteStateMachine.getState("NominalRoot")));
-            return FsmParseList(parseWord(fsmParse, surfaceForm));
+            if (isCode(surfaceForm)){
+                fsmParse.emplace_back(FsmParse(surfaceForm, finiteStateMachine.getState("CodeRoot")));
+                return FsmParseList(parseWord(fsmParse, surfaceForm));
+            } else {
+                fsmParse.emplace_back(FsmParse(surfaceForm, finiteStateMachine.getState("NominalRoot")));
+                return FsmParseList(parseWord(fsmParse, surfaceForm));
+            }
         }
     } else {
         return currentParse;
@@ -1056,12 +1068,12 @@ FsmParseList *FsmMorphologicalAnalyzer::robustMorphologicalAnalysis(Sentence& se
  * @return true if surfaceForm matches with the regex.
  */
 bool FsmMorphologicalAnalyzer::isInteger(const string& surfaceForm){
-    if (!patternMatches("\\+?\\d+", surfaceForm)){
+    if (!patternMatches("[-+]?\\d+", surfaceForm)){
         return false;
     }
     int len = Word::size(surfaceForm);
     if (len < 10) {
-        return true;        //Most common scenario. Return after a single check.
+        return true;
     } else {
         if (len > 10) {
             return false;
@@ -1084,7 +1096,7 @@ bool FsmMorphologicalAnalyzer::isInteger(const string& surfaceForm){
  * @return true if surfaceForm matches with the regex.
  */
 bool FsmMorphologicalAnalyzer::isDouble(const string& surfaceForm) {
-    return patternMatches(R"(\+?(\d+)?\.\d*)", surfaceForm);
+    return patternMatches(R"((\+|-)?(\d+)?\.\d*)", surfaceForm);
 }
 
 /**

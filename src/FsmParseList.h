@@ -9,7 +9,7 @@
 class FsmParseList {
 private:
     vector<FsmParse> fsmParses;
-    static const string longestRootExceptions[230];
+    static const string longestRootExceptions[231];
     bool isLongestRootException(const FsmParse& fsmParse) const;
 public:
     FsmParseList() = default;

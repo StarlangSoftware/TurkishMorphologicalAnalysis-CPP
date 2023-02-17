@@ -10,7 +10,7 @@ struct fsmParseComparator{
     }
 };
 
-const string FsmParseList::longestRootExceptions[230] = {
+const string FsmParseList::longestRootExceptions[231] = {
         "acağı acak NOUN VERB", "acağım acak NOUN VERB", "acağımı acak NOUN VERB", "acağımız acak NOUN VERB", "acağın acak NOUN VERB",
         "acağına acak NOUN VERB", "acağını acak NOUN VERB", "acağının acak NOUN VERB", "acağınız acak NOUN VERB", "acağınıza acak NOUN VERB",
         "acağınızdır acak NOUN VERB", "acağınızı acak NOUN VERB", "acağınızın acak NOUN VERB", "acağız acak NOUN VERB", "acakları acak NOUN VERB",
@@ -25,7 +25,7 @@ const string FsmParseList::longestRootExceptions[230] = {
         "in i ADJ NOUN", "inde i ADJ NOUN", "ine i ADJ NOUN", "ini i ADJ NOUN", "inin i ADJ NOUN",
         "ılan ı NOUN VERB", "ılana ı NOUN VERB", "ılın ı NOUN VERB", "ılınca ı NOUN VERB", "la la VERB NOUN",
         "lar la VERB NOUN", "lardan la VERB NOUN", "lardandır la VERB NOUN", "lardır la VERB NOUN", "ları la VERB NOUN",
-        "larıdır la VERB NOUN", "larım la VERB NOUN", "larımdan la VERB NOUN", "larımız la VERB NOUN", "larımıza la VERB NOUN",
+        "larıdır la VERB NOUN", "larım la VERB NOUN", "larımda la VERB NOUN", "larımdan la VERB NOUN", "larımız la VERB NOUN", "larımıza la VERB NOUN",
         "larımızda la VERB NOUN", "larımızdan la VERB NOUN", "larımızdaydı la VERB NOUN", "larımızı la VERB NOUN", "larımızın la VERB NOUN",
         "larımızla la VERB NOUN", "ların la VERB NOUN", "larına la VERB NOUN", "larında la VERB NOUN", "larındaki la VERB NOUN",
         "larındakiler la VERB NOUN", "larındakilere la VERB NOUN", "larındakileri la VERB NOUN", "larındakilerin la VERB NOUN", "larından la VERB NOUN",

@@ -42,6 +42,7 @@ private:
     bool isTime(const string& surfaceForm);
     bool isRange(const string& surfaceForm);
     bool isDate(const string& surfaceForm);
+    bool isCode(const string& surfaceForm);
     bool patternMatches(const string& expr, const string& value);
 public:
     explicit FsmMorphologicalAnalyzer(const string& fileName = "turkish_finite_state_machine.xml", TxtDictionary* dictionary = new TxtDictionary(), int cacheSize = 10000);
