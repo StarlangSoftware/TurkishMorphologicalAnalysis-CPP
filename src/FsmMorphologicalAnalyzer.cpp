@@ -1002,16 +1002,14 @@ FsmParseList FsmMorphologicalAnalyzer::robustMorphologicalAnalysis(const string&
     if (currentParse.size() == 0) {
         if (isProperNoun(surfaceForm)) {
             fsmParse.emplace_back(FsmParse(surfaceForm, finiteStateMachine.getState("ProperRoot")));
-            return FsmParseList(parseWord(fsmParse, surfaceForm));
         } else {
             if (isCode(surfaceForm)){
                 fsmParse.emplace_back(FsmParse(surfaceForm, finiteStateMachine.getState("CodeRoot")));
-                return FsmParseList(parseWord(fsmParse, surfaceForm));
             } else {
                 fsmParse.emplace_back(FsmParse(surfaceForm, finiteStateMachine.getState("NominalRoot")));
-                return FsmParseList(parseWord(fsmParse, surfaceForm));
             }
         }
+        return FsmParseList(parseWord(fsmParse, surfaceForm));
     } else {
         return currentParse;
     }
