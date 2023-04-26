@@ -46,6 +46,15 @@ TEST_CASE("FsmMorphologicalAnalyzerTest") {
     static FsmMorphologicalAnalyzer fsm = FsmMorphologicalAnalyzer();
     static TxtDictionary* dictionary = fsm.getDictionary();
 
+    SECTION("morphologicalAnalysisSpecialProperNoun") {
+        REQUIRE_FALSE(fsm.morphologicalAnalysis("Times'ın").size() == 0);
+        REQUIRE_FALSE(fsm.morphologicalAnalysis("Times'dır").size() == 0);
+        REQUIRE_FALSE(fsm.morphologicalAnalysis("Times'mış").size() == 0);
+        REQUIRE_FALSE(fsm.morphologicalAnalysis("Twitter'ın").size() == 0);
+        REQUIRE_FALSE(fsm.morphologicalAnalysis("Twitter'dır").size() == 0);
+        REQUIRE_FALSE(fsm.morphologicalAnalysis("Twitter'mış").size() == 0);
+    }
+
     SECTION("morphologicalAnalysisDataTimeNumber") {
         REQUIRE_FALSE(fsm.morphologicalAnalysis("3/4").size() == 0);
         REQUIRE_FALSE(fsm.morphologicalAnalysis("3\\/4").size() == 0);
@@ -70,15 +79,6 @@ TEST_CASE("FsmMorphologicalAnalyzerTest") {
         REQUIRE_FALSE(fsm.morphologicalAnalysis("22:11:56").size() == 0);
         REQUIRE_FALSE(fsm.morphologicalAnalysis("45").size() == 0);
         REQUIRE_FALSE(fsm.morphologicalAnalysis("34.23").size() == 0);
-    }
-
-    SECTION("morphologicalAnalysisProperNoun") {
-        for (int i = 0; i < dictionary->size(); i++) {
-            auto *word = (TxtWord *) dictionary->getWord(i);
-            if (word->isProperNoun()) {
-                REQUIRE_FALSE(fsm.morphologicalAnalysis(Word::toUpperCase(word->getName())).size() == 0);
-            }
-        }
     }
 
     SECTION("FsmMorphologicalAnalyzerTest-morphologicalAnalysisNounSoftenDuringSuffixation") {
@@ -260,5 +260,14 @@ TEST_CASE("FsmMorphologicalAnalyzerTest") {
                                 "yemin billah ver")->to_string());
         REQUIRE("Şvesterine söyle kazağı güzelmiş" ==
                 fsm.replaceWord(new Sentence("Hemşirene söyle kazağı güzelmiş"), "hemşire", "şvester")->to_string());
+    }
+
+    SECTION("morphologicalAnalysisProperNoun") {
+        for (int i = 0; i < dictionary->size(); i++) {
+            auto *word = (TxtWord *) dictionary->getWord(i);
+            if (word->isProperNoun()) {
+                REQUIRE_FALSE(fsm.morphologicalAnalysis(Word::toUpperCase(word->getName())).size() == 0);
+            }
+        }
     }
 }

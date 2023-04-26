@@ -147,13 +147,13 @@ string MorphotacticEngine::resolveH(TxtWord *root, const string& formation, bool
     if (TurkishLanguage::isFrontRoundedVowel(Word::lastVowel(formationToCheck)) || (TurkishLanguage::isBackRoundedVowel(Word::lastVowel(formationToCheck)) && root->notObeysVowelHarmonyDuringAgglutination())) {
         return formation + "ü";
     }
-    if (TurkishLanguage::isFrontUnroundedVowel(Word::lastVowel(formationToCheck)) || (Word::lastVowel(formationToCheck) == "a" && root->notObeysVowelHarmonyDuringAgglutination())) {
+    if ((TurkishLanguage::isFrontUnroundedVowel(Word::lastVowel(formationToCheck)) && !root->notObeysVowelHarmonyDuringAgglutination()) || (Word::lastVowel(formationToCheck) == "a" && root->notObeysVowelHarmonyDuringAgglutination())) {
         return formation + 'i';
     }
     if (TurkishLanguage::isBackRoundedVowel(Word::lastVowel(formationToCheck))) {
         return formation + 'u';
     }
-    if (TurkishLanguage::isBackUnroundedVowel(Word::lastVowel(formationToCheck))) {
+    if (TurkishLanguage::isBackUnroundedVowel(Word::lastVowel(formationToCheck)) || (TurkishLanguage::isFrontUnroundedVowel(Word::lastVowel(formationToCheck)) && root->notObeysVowelHarmonyDuringAgglutination())) {
         return formation + "ı";
     }
     if (root->isNumeral() || root->isFraction() || root->isReal()) {
