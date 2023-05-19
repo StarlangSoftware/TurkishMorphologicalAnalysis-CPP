@@ -1229,11 +1229,12 @@ FsmParseList FsmMorphologicalAnalyzer::morphologicalAnalysis(const string& surfa
                                         } else {
                                             if (Word::isCapital(possibleRoot)) {
                                                 TxtWord* newWord = nullptr;
-                                                if (dictionary->getWord(Word::toLowerCase(surfaceForm)) != nullptr) {
-                                                    ((TxtWord*) dictionary->getWord(Word::toLowerCase(surfaceForm)))->addFlag("IS_OA");
+                                                string lowerCase = Word::toLowerCase(possibleRoot);
+                                                if (dictionary->getWord(lowerCase) != nullptr) {
+                                                    ((TxtWord*) dictionary->getWord(lowerCase))->addFlag("IS_OA");
                                                 } else {
-                                                    newWord = new TxtWord(Word::toLowerCase(surfaceForm), "IS_OA");
-                                                    dictionaryTrie->addWord(Word::toLowerCase(surfaceForm), newWord);
+                                                    newWord = new TxtWord(lowerCase, "IS_OA");
+                                                    dictionaryTrie->addWord(lowerCase, newWord);
                                                 }
                                                 fsmParse = analysis(Word::toLowerCase(surfaceForm), isProperNoun(surfaceForm));
                                                 if (fsmParse.empty() && newWord != nullptr) {

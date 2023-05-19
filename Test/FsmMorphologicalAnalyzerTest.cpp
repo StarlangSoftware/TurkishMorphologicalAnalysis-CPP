@@ -48,7 +48,7 @@ TEST_CASE("FsmMorphologicalAnalyzerTest") {
 
     SECTION("morphologicalAnalysisSpecialProperNoun") {
         REQUIRE_FALSE(fsm.morphologicalAnalysis("Times'ın").size() == 0);
-        REQUIRE_FALSE(fsm.morphologicalAnalysis("Times'dır").size() == 0);
+        REQUIRE_FALSE(fsm.morphologicalAnalysis("Times'tır").size() == 0);
         REQUIRE_FALSE(fsm.morphologicalAnalysis("Times'mış").size() == 0);
         REQUIRE_FALSE(fsm.morphologicalAnalysis("Twitter'ın").size() == 0);
         REQUIRE_FALSE(fsm.morphologicalAnalysis("Twitter'dır").size() == 0);
