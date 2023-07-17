@@ -46,6 +46,13 @@ TEST_CASE("FsmMorphologicalAnalyzerTest") {
     static FsmMorphologicalAnalyzer fsm = FsmMorphologicalAnalyzer();
     static TxtDictionary* dictionary = fsm.getDictionary();
 
+    SECTION("morphologicalAnalysisNewWords") {
+        REQUIRE_FALSE(fsm.robustMorphologicalAnalysis("googlecılardan").size() == 0);
+        REQUIRE_FALSE(fsm.robustMorphologicalAnalysis("zaptıraplaştırılmayana").size() == 0);
+        REQUIRE_FALSE(fsm.robustMorphologicalAnalysis("abzürtleşenmiş").size() == 0);
+        REQUIRE_FALSE(fsm.robustMorphologicalAnalysis("vışlığından").size() == 0);
+    }
+
     SECTION("morphologicalAnalysisSpecialProperNoun") {
         REQUIRE_FALSE(fsm.morphologicalAnalysis("Times'ın").size() == 0);
         REQUIRE_FALSE(fsm.morphologicalAnalysis("Times'tır").size() == 0);

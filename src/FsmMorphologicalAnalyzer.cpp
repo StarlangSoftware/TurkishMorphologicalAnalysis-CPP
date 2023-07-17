@@ -21,6 +21,7 @@ using namespace std;
 FsmMorphologicalAnalyzer::FsmMorphologicalAnalyzer(const string& fileName, TxtDictionary* dictionary, int cacheSize) {
     finiteStateMachine = FiniteStateMachine(fileName);
     dictionaryTrie = dictionary->prepareTrie();
+    prepareSuffixTrie();
     this->dictionary = dictionary;
     cache = LRUCache<string, FsmParseList>(cacheSize);
 }
@@ -33,6 +34,27 @@ FsmMorphologicalAnalyzer::FsmMorphologicalAnalyzer(const string& fileName, TxtDi
  * @param dictionaryFileName the file to read the dictionary.
  */
 FsmMorphologicalAnalyzer::FsmMorphologicalAnalyzer(const string& dictionaryFileName, const string& fileName) : FsmMorphologicalAnalyzer(fileName, new TxtDictionary(dictionaryFileName, "turkish_misspellings.txt")){
+}
+
+string FsmMorphologicalAnalyzer::reverseString(const string& s) const{
+    string result;
+    for (int i = s.size() - 1; i >= 0; i--){
+        result += Word::charAt(s, i);
+    }
+    return result;
+}
+
+void FsmMorphologicalAnalyzer::prepareSuffixTrie() {
+    ifstream inputFile;
+    string suffix;
+    suffixTrie = new Trie();
+    inputFile.open("suffixes.txt", ifstream :: in);
+    while (inputFile.good()) {
+        getline(inputFile, suffix);
+        string reverseSuffix = reverseString(suffix);
+        suffixTrie->addWord(reverseSuffix, new Word(reverseSuffix));
+    }
+    inputFile.close();
 }
 
 void FsmMorphologicalAnalyzer::addSurfaceForms(const string& fileName) {
@@ -983,6 +1005,33 @@ bool FsmMorphologicalAnalyzer::isCode(const string &surfaceForm) {
     return patternMatches(".*[0-9].*", surfaceForm) && patternMatches(".*[a-zA-ZçöğüşıÇÖĞÜŞİ].*", surfaceForm);
 }
 
+
+TxtWord *FsmMorphologicalAnalyzer::rootOfPossiblyNewWord(const string& surfaceForm) const{
+    unordered_set<Word*> words = suffixTrie->getWordsWithPrefix(reverseString(surfaceForm));
+    int maxLength = 0;
+    string longestWord;
+    for (Word* word : words){
+        if (word->getName().length() > maxLength){
+            longestWord = Word::substring(surfaceForm, 0, Word::size(surfaceForm) - Word::size(word->getName()));
+            maxLength = Word::size(word->getName());
+        }
+    }
+    if (maxLength != 0){
+        TxtWord* newWord;
+        if (Word::endsWith(longestWord, "ğ")){
+            longestWord = Word::substring(longestWord, 0, Word::size(longestWord) - 1) + "k";
+            newWord = new TxtWord(longestWord, "CL_ISIM");
+            newWord->addFlag("IS_SD");
+        } else {
+            newWord = new TxtWord(longestWord, "CL_ISIM");
+            newWord->addFlag("CL_FIIL");
+        }
+        dictionaryTrie->addWord(longestWord, newWord);
+        return newWord;
+    }
+    return nullptr;
+}
+
 /**
  * The robustMorphologicalAnalysis is used to analyse surfaceForm String. First it gets the currentParse of the surfaceForm
  * then, if the size of the currentParse is 0, and given surfaceForm is a proper noun, it adds the surfaceForm
@@ -1006,7 +1055,13 @@ FsmParseList FsmMorphologicalAnalyzer::robustMorphologicalAnalysis(const string&
             if (isCode(surfaceForm)){
                 fsmParse.emplace_back(FsmParse(surfaceForm, finiteStateMachine.getState("CodeRoot")));
             } else {
-                fsmParse.emplace_back(FsmParse(surfaceForm, finiteStateMachine.getState("NominalRoot")));
+                TxtWord* newRoot = rootOfPossiblyNewWord(surfaceForm);
+                if (newRoot != nullptr){
+                    fsmParse.emplace_back(FsmParse(newRoot, finiteStateMachine.getState("VerbalRoot")));
+                    fsmParse.emplace_back(FsmParse(newRoot, finiteStateMachine.getState("NominalRoot")));
+                } else {
+                    fsmParse.emplace_back(FsmParse(surfaceForm, finiteStateMachine.getState("NominalRoot")));
+                }
             }
         }
         return FsmParseList(parseWord(fsmParse, surfaceForm));
