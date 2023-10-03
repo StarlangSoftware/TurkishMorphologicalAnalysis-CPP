@@ -7,22 +7,22 @@
 #include "DisambiguatedWord.h"
 
 /**
- * Constructor which creates an {@link vector} of sentences and a {@link CounterHashMap} of wordList.
+ * Constructor which creates an vector of sentences and a CounterHashMap of wordList.
  */
 DisambiguationCorpus::DisambiguationCorpus() = default;
 
 /**
- * Constructor which creates a new empty copy of the {@link DisambiguationCorpus}.
+ * Constructor which creates a new empty copy of the DisambiguationCorpus.
  *
- * @return An empty copy of the {@link DisambiguationCorpus}.
+ * @return An empty copy of the DisambiguationCorpus.
  */
 DisambiguationCorpus DisambiguationCorpus::emptyCopy() const{
     return DisambiguationCorpus();
 }
 
 /**
- * Constructor which takes a file name {@link String} as an input and reads the file line by line. It takes each word of the line,
- * and creates a new {@link DisambiguatedWord} with current word and its {@link MorphologicalParse}. It also creates a new {@link Sentence}
+ * Constructor which takes a file name String as an input and reads the file line by line. It takes each word of the line,
+ * and creates a new DisambiguatedWord with current word and its MorphologicalParse. It also creates a new Sentence
  * when a new sentence starts, and adds each word to this sentence till the end of that sentence.
  *
  * @param fileName File which will be read and parsed.
@@ -60,7 +60,7 @@ DisambiguationCorpus::DisambiguationCorpus(const string& fileName) {
 }
 
 /**
- * The writeToFile method takes a {@link String} file name as an input and writes the elements of sentences {@link ArrayList}
+ * The writeToFile method takes a String file name as an input and writes the elements of sentences ArrayList
  * to this file with proper tags which indicates the beginnings and endings of the document and sentence.
  *
  * @param fileName File which will be filled with the sentences.
@@ -82,7 +82,7 @@ void DisambiguationCorpus::writeToFile(const string& fileName) {
 }
 
 /**
- * The writeToFile method which takes a file name {@link String} and a {@link WordFormat} as input simply implies the
+ * The writeToFile method which takes a file name String and a WordFormat as input simply implies the
  * output format of the words to be written to the file with given name. Word format can be surface, letter2, letter3, and letter4.
  * Surface form leaves the output as it is, and letterK divides the output as the substrings of length of K.
  *

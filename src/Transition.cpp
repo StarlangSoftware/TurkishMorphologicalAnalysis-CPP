@@ -7,10 +7,10 @@
 #include "MorphotacticEngine.h"
 
 /**
- * A constructor of {@link Transition} class which takes  a {@link State}, and two {@link String}s as input. Then it
+ * A constructor of Transition class which takes  a State, and two Strings as input. Then it
  * initializes toState, with and withName variables with given inputs.
  *
- * @param toState  {@link State} input.
+ * @param toState  State input.
  * @param with     String input.
  * @param withName String input.
  */
@@ -22,10 +22,10 @@ Transition::Transition(const State& toState, const string& with, const string& w
 }
 
 /**
- * Another constructor of {@link Transition} class which takes  a {@link State}, and three {@link String}s as input. Then it
+ * Another constructor of Transition class which takes  a State, and three Strings as input. Then it
  * initializes toState, with, withName and toPos variables with given inputs.
  *
- * @param toState  {@link State} input.
+ * @param toState  State input.
  * @param with     String input.
  * @param withName String input.
  * @param toPos    String input.
@@ -38,7 +38,7 @@ Transition::Transition(const State& toState, const string& with, const string& w
 }
 
 /**
- * Another constructor of {@link Transition} class which only takes a {@link String}s as an input. Then it
+ * Another constructor of Transition class which only takes a Strings as an input. Then it
  * initializes toState, withName and toPos variables as null and with variable with the given input.
  *
  * @param with String input.
@@ -68,7 +68,7 @@ string Transition::getToPos() const{
 }
 
 /**
- * The transitionPossible method takes two {@link String} as inputs; currentSurfaceForm and realSurfaceForm. If the
+ * The transitionPossible method takes two String as inputs; currentSurfaceForm and realSurfaceForm. If the
  * length of the given currentSurfaceForm is greater than the given realSurfaceForm, it directly returns true. If not,
  * it takes a substring from given realSurfaceForm with the size of currentSurfaceForm. Then checks for the characters of
  * with variable.
@@ -80,8 +80,8 @@ string Transition::getToPos() const{
  * If the character of with that makes transition is other than the ones above, it returns true if the substring
  * contains the same character as with.
  *
- * @param currentSurfaceForm {@link String} input.
- * @param realSurfaceForm    {@link String} input.
+ * @param currentSurfaceForm String input.
+ * @param realSurfaceForm    String input.
  * @return true when the transition is possible according to Turkish grammar, false otherwise.
  */
 bool Transition::transitionPossible(const string& currentSurfaceForm, const string& realSurfaceForm) const{
@@ -118,7 +118,7 @@ bool Transition::transitionPossible(const string& currentSurfaceForm, const stri
 }
 
 /**
- * The transitionPossible method takes a {@link FsmParse} currentFsmParse as an input. It then checks some special cases;
+ * The transitionPossible method takes a FsmParse currentFsmParse as an input. It then checks some special cases;
  *
  * @param currentFsmParse Parse to be checked
  * @return true if transition is possible false otherwise
@@ -206,7 +206,7 @@ bool Transition::startWithVowelorConsonantDrops() const{
 }
 
 /**
- * The softenDuringSuffixation method takes a {@link TxtWord} root as an input. It checks two cases; first case returns
+ * The softenDuringSuffixation method takes a TxtWord root as an input. It checks two cases; first case returns
  * true if the given root is nominal or adjective and has one of the flags "IS_SD, IS_B_SD, IS_SDD" and with variable
  * equals o one of the Strings "Hm, nDAn, ncA, nDA, yA, yHm, yHz, yH, nH, nA, nHn, H, sH, Hn, HnHz, HmHz".
  * <p>
@@ -214,7 +214,7 @@ bool Transition::startWithVowelorConsonantDrops() const{
  * "Hyor" or equals one of the Strings "yHs, yAn, yA, yAcAk, yAsH, yHncA, yHp, yAlH, yArAk, yAdur, yHver, yAgel, yAgor,
  * yAbil, yAyaz, yAkal, yAkoy, yAmA, yHcH, HCH, Hr, Hs, Hn, yHn", yHnHz, Ar, Hl").
  *
- * @param root {@link TxtWord} input.
+ * @param root TxtWord input.
  * @return true if there is softening during suffixation of the given root, false otherwise.
  */
 bool Transition::softenDuringSuffixation(TxtWord* root) const{
@@ -228,11 +228,11 @@ bool Transition::softenDuringSuffixation(TxtWord* root) const{
 }
 
 /**
- * The makeTransition method takes a {@link TxtWord} root and s {@link String} stem as inputs. If given root is a verb,
+ * The makeTransition method takes a TxtWord root and s String stem as inputs. If given root is a verb,
  * it makes transition with given root and stem with the verbal root state. If given root is not verb, it makes transition
  * with given root and stem and the nominal root state.
  *
- * @param root {@link TxtWord} input.
+ * @param root TxtWord input.
  * @param stem String input.
  * @return String type output that has the transition.
  */

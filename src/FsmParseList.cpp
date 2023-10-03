@@ -60,11 +60,11 @@ const string FsmParseList::longestRootExceptions[231] = {
         "unca un NOUN VERB", "ilen ile VERB VERB"};
 
 /**
- * A constructor of {@link FsmParseList} class which takes an {@link vector} fsmParses as an input. First it sorts
- * the items of the {@link vector} then loops through it, if the current item's transitions equal to the next item's
- * transitions, it removes the latter item. At the end, it assigns this {@link vector} to the fsmParses variable.
+ * A constructor of FsmParseList class which takes an vector fsmParses as an input. First it sorts
+ * the items of the vector then loops through it, if the current item's transitions equal to the next item's
+ * transitions, it removes the latter item. At the end, it assigns this vector to the fsmParses variable.
  *
- * @param fsmParses {@link FsmParse} type{@link vector} input.
+ * @param fsmParses FsmParse typevector input.
  */
 FsmParseList::FsmParseList(vector<FsmParse> fsmParses) {
     if (!fsmParses.empty()){
@@ -80,28 +80,28 @@ FsmParseList::FsmParseList(vector<FsmParse> fsmParses) {
 }
 
 /**
- * The size method returns the size of fsmParses {@link vector}.
+ * The size method returns the size of fsmParses vector.
  *
- * @return the size of fsmParses {@link vector}.
+ * @return the size of fsmParses vector.
  */
 int FsmParseList::size() const{
     return fsmParses.size();
 }
 
 /**
- * The getFsmParse method takes an integer index as an input and returns the item of fsmParses {@link vector} at given index.
+ * The getFsmParse method takes an integer index as an input and returns the item of fsmParses vector at given index.
  *
  * @param index Integer input.
- * @return the item of fsmParses {@link vector} at given index.
+ * @return the item of fsmParses vector at given index.
  */
 FsmParse FsmParseList::getFsmParse(int index) const{
     return fsmParses.at(index);
 }
 
 /**
- * The rootWords method gets the first item's root of fsmParses {@link vector} and uses it as currentRoot. Then loops through
+ * The rootWords method gets the first item's root of fsmParses vector and uses it as currentRoot. Then loops through
  * the fsmParses, if the current item's root does not equal to the currentRoot, it then assigns it as the currentRoot and
- * accumulates root words in a {@link String} result.
+ * accumulates root words in a String result.
  *
  * @return String result that has root words.
  */
@@ -117,11 +117,11 @@ string FsmParseList::rootWords() const{
 }
 
 /**
- * The reduceToParsesWithSameRootAndPos method takes a {@link Word} currentWithPos as an input and loops i times till
- * i equals to the size of the fsmParses {@link vector}. If the given currentWithPos does not equal to the ith item's
- * root and the MorphologicalTag of the first inflectional of fsmParses, it removes the ith item from the {@link vector}.
+ * The reduceToParsesWithSameRootAndPos method takes a Word currentWithPos as an input and loops i times till
+ * i equals to the size of the fsmParses vector. If the given currentWithPos does not equal to the ith item's
+ * root and the MorphologicalTag of the first inflectional of fsmParses, it removes the ith item from the vector.
  *
- * @param currentWithPos {@link Word} input.
+ * @param currentWithPos Word input.
  */
 void FsmParseList::reduceToParsesWithSameRootAndPos(Word* currentWithPos) {
     int i = 0;
@@ -160,7 +160,7 @@ FsmParse FsmParseList::getParseWithLongestRootWord() const{
 /**
  * The isLongestRootException method returns true if the longest root word belongs to an exceptional case, false otherwise.
  *
- * @param fsmParse {@link FsmParse} input.
+ * @param fsmParse FsmParse input.
  * @return true if the longest root belongs to an exceptional case, false otherwise.
  */
 bool FsmParseList::isLongestRootException(const FsmParse& fsmParse) const{
@@ -188,11 +188,11 @@ bool FsmParseList::isLongestRootException(const FsmParse& fsmParse) const{
 }
 
 /**
- * The reduceToParsesWithSameRoot method takes a {@link String} currentWithPos as an input and loops i times till
- * i equals to the size of the fsmParses {@link vector}. If the given currentRoot does not equal to the root of ith item of
- * fsmParses, it removes the ith item from the {@link vector}.
+ * The reduceToParsesWithSameRoot method takes a String currentWithPos as an input and loops i times till
+ * i equals to the size of the fsmParses vector. If the given currentRoot does not equal to the root of ith item of
+ * fsmParses, it removes the ith item from the vector.
  *
- * @param currentRoot {@link String} input.
+ * @param currentRoot String input.
  */
 void FsmParseList::reduceToParsesWithSameRoot(const string& currentRoot) {
     int i = 0;
@@ -206,15 +206,15 @@ void FsmParseList::reduceToParsesWithSameRoot(const string& currentRoot) {
 }
 
 /**
- * The constructParseListForDifferentRootWithPos method initially creates a result {@link ArrayList} then loops through the
- * fsmParses {@link ArrayList}. For the first iteration, it creates new {@link ArrayList} as initial, then adds the
- * first item od fsmParses to initial and also add this initial {@link ArrayList} to the result {@link ArrayList}.
+ * The constructParseListForDifferentRootWithPos method initially creates a result ArrayList then loops through the
+ * fsmParses ArrayList. For the first iteration, it creates new ArrayList as initial, then adds the
+ * first item od fsmParses to initial and also add this initial ArrayList to the result ArrayList.
  * For the following iterations, it checks whether the current item's root with the MorphologicalTag of the first inflectional
  * equal to the previous item's  root with the MorphologicalTag of the first inflectional. If so, it adds that item
- * to the result {@link ArrayList}, if not it creates new {@link ArrayList} as initial and adds the first item od fsmParses
- * to initial and also add this initial {@link ArrayList} to the result {@link ArrayList}.
+ * to the result ArrayList, if not it creates new ArrayList as initial and adds the first item od fsmParses
+ * to initial and also add this initial ArrayList to the result ArrayList.
  *
- * @return result {@link ArrayList} type of {@link FsmParseList}.
+ * @return result ArrayList type of FsmParseList.
  */
 vector<FsmParseList> FsmParseList::constructParseListForDifferentRootWithPos() const{
     vector<FsmParseList> result;
@@ -239,7 +239,7 @@ vector<FsmParseList> FsmParseList::constructParseListForDifferentRootWithPos() c
 }
 
 /**
- * The parsesWithoutPrefixAndSuffix method first creates a {@link String} array named analyses with the size of fsmParses {@link ArrayList}'s size.
+ * The parsesWithoutPrefixAndSuffix method first creates a String array named analyses with the size of fsmParses ArrayList's size.
  * <p>
  * If the size is just 1, it then returns the first item's transitionList, if it is greater than 1, loops through the fsmParses and
  * puts the transitionList of each item to the analyses array.
@@ -250,9 +250,9 @@ vector<FsmParseList> FsmParseList::constructParseListForDifferentRootWithPos() c
  * If the removeSuffix condition holds, it loops through the analyses array and takes each item's substring till the last + sign and updates that
  * item of analyses array with that substring.
  * <p>
- * It then removes the duplicate items of analyses array and returns a result {@link String} that has the accumulated items of analyses array.
+ * It then removes the duplicate items of analyses array and returns a result String that has the accumulated items of analyses array.
  *
- * @return result {@link String} that has the accumulated items of analyses array.
+ * @return result String that has the accumulated items of analyses array.
  */
 string FsmParseList::parsesWithoutPrefixAndSuffix() const{
     auto* analyses = new string[fsmParses.size()];
@@ -310,9 +310,9 @@ string FsmParseList::parsesWithoutPrefixAndSuffix() const{
 }
 
 /**
- * The overridden toString method loops through the fsmParses {@link ArrayList} and accumulates the items to a result {@link String}.
+ * The overridden toString method loops through the fsmParses ArrayList and accumulates the items to a result String.
  *
- * @return result {@link String} that has the items of fsmParses {@link ArrayList}.
+ * @return result String that has the items of fsmParses ArrayList.
  */
 string FsmParseList::to_String() const{
     string result;

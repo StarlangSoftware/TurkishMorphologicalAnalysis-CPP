@@ -5,19 +5,19 @@
 #include "DisambiguatedWord.h"
 
 /**
- * The constructor of {@link DisambiguatedWord} class which takes a {@link String} and a {@link MorphologicalParse}
- * as inputs. It creates a new {@link MorphologicalParse} with given MorphologicalParse. It generates a new instance with
- * given {@link String}.
+ * The constructor of DisambiguatedWord class which takes a String and a MorphologicalParse
+ * as inputs. It creates a new MorphologicalParse with given MorphologicalParse. It generates a new instance with
+ * given String.
  *
  * @param name  Instances that will be a DisambiguatedWord.
- * @param parse {@link MorphologicalParse} of the {@link DisambiguatedWord}.
+ * @param parse MorphologicalParse of the DisambiguatedWord.
  */
 DisambiguatedWord::DisambiguatedWord(const string& name, const MorphologicalParse& parse) : Word(name){
     this->parse = parse;
 }
 
 /**
- * Accessor for the {@link MorphologicalParse}.
+ * Accessor for the MorphologicalParse.
  *
  * @return MorphologicalParse.
  */

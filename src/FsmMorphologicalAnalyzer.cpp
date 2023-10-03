@@ -87,11 +87,11 @@ FiniteStateMachine FsmMorphologicalAnalyzer::getFiniteStateMachine() const{
 }
 
 /**
- * The getPossibleWords method takes {@link MorphologicalParse} and {@link MetamorphicParse} as input.
+ * The getPossibleWords method takes MorphologicalParse and MetamorphicParse as input.
  * First it determines whether the given morphologicalParse is the root verb and whether it contains a verb tag.
- * Then it creates new transition with -mak and creates a new {@link HashSet} result.
+ * Then it creates new transition with -mak and creates a new HashSet result.
  * <p>
- * It takes the given {@link MetamorphicParse} input as currentWord and if there is a compound word starting with the
+ * It takes the given MetamorphicParse input as currentWord and if there is a compound word starting with the
  * currentWord, it gets this compoundWord from dictionaryTrie. If there is a compoundWord and the difference of the
  * currentWord and compundWords is less than 3 than compoundWord is added to the result, otherwise currentWord is added.
  * <p>
@@ -99,9 +99,9 @@ FiniteStateMachine FsmMorphologicalAnalyzer::getFiniteStateMachine() const{
  * it directly adds the verb to result after making transition to currentRoot with currentWord String. Else, it creates a new
  * transition with -lar and make this transition then adds to the result.
  *
- * @param morphologicalParse {@link MorphologicalParse} type input.
- * @param parse              {@link MetamorphicParse} type input.
- * @return {@link HashSet} result.
+ * @param morphologicalParse MorphologicalParse type input.
+ * @param parse              MetamorphicParse type input.
+ * @return HashSet result.
  */
 unordered_set<string>
 FsmMorphologicalAnalyzer::getPossibleWords(const MorphologicalParse& morphologicalParse, const MetamorphicParse& parse) {
@@ -510,7 +510,7 @@ void FsmMorphologicalAnalyzer::initializeParseList(vector<FsmParse>& fsmParse, T
 }
 
 /**
- * The initializeParseListFromRoot method is used to create an {@link ArrayList} which consists of initial fsm parsings. First, traverses
+ * The initializeParseListFromRoot method is used to create an ArrayList which consists of initial fsm parsings. First, traverses
  * this HashSet and uses each word as a root and calls initializeParseList method with this root and ArrayList.
  * <p>
  *
@@ -552,8 +552,8 @@ void FsmMorphologicalAnalyzer::initializeParseListFromRoot(vector<FsmParse>& par
 }
 
 /**
- * The initializeRootList method is used to create an {@link ArrayList} which consists of initial fsm parsings. First,
- * it calls getWordsWithPrefix methods by using input String surfaceForm and generates a {@link HashSet}. Then, traverses
+ * The initializeRootList method is used to create an ArrayList which consists of initial fsm parsings. First,
+ * it calls getWordsWithPrefix methods by using input String surfaceForm and generates a HashSet. Then, traverses
  * this HashSet and uses each word as a root and calls initializeParseList method with this root and ArrayList.
  * <p>
  *
@@ -662,7 +662,7 @@ bool FsmMorphologicalAnalyzer::parseExists(vector<FsmParse>& fsmParse, const str
  *
  * @param fsmParse    an ArrayList of FsmParse
  * @param maxLength maximum length of the surfaceform.
- * @return result {@link ArrayList} which has the currentFsmParse.
+ * @return result ArrayList which has the currentFsmParse.
  */
 vector<FsmParse> FsmMorphologicalAnalyzer::parseWord(vector<FsmParse> fsmParse, int maxLength) const{
     vector<FsmParse> result;
@@ -698,7 +698,7 @@ vector<FsmParse> FsmMorphologicalAnalyzer::parseWord(vector<FsmParse> fsmParse, 
  *
  * @param fsmParse    an ArrayList of FsmParse
  * @param surfaceForm String to use during transition.
- * @return result {@link ArrayList} which has the currentFsmParse.
+ * @return result ArrayList which has the currentFsmParse.
  */
 vector<FsmParse> FsmMorphologicalAnalyzer::parseWord(vector<FsmParse> fsmParse, const string& surfaceForm) const{
     vector<FsmParse> result;
@@ -729,7 +729,7 @@ vector<FsmParse> FsmMorphologicalAnalyzer::parseWord(vector<FsmParse> fsmParse, 
 }
 
 /**
- * The morphologicalAnalysis with 3 inputs is used to initialize an {@link ArrayList} and add a new FsmParse
+ * The morphologicalAnalysis with 3 inputs is used to initialize an ArrayList and add a new FsmParse
  * with given root and state.
  *
  * @param root        TxtWord input.
@@ -761,7 +761,7 @@ vector<FsmParse> FsmMorphologicalAnalyzer::generateAllParses(TxtWord *root, int 
 }
 
 /**
- * The morphologicalAnalysis with 2 inputs is used to initialize an {@link ArrayList} and add a new FsmParse
+ * The morphologicalAnalysis with 2 inputs is used to initialize an ArrayList and add a new FsmParse
  * with given root. Then it calls initializeParseList method to initialize list with newly created ArrayList, input root,
  * and input surfaceForm.
  *
@@ -1035,8 +1035,8 @@ TxtWord *FsmMorphologicalAnalyzer::rootOfPossiblyNewWord(const string& surfaceFo
 /**
  * The robustMorphologicalAnalysis is used to analyse surfaceForm String. First it gets the currentParse of the surfaceForm
  * then, if the size of the currentParse is 0, and given surfaceForm is a proper noun, it adds the surfaceForm
- * whose state name is ProperRoot to an {@link ArrayList}, of it is not a proper noon, it adds the surfaceForm
- * whose state name is NominalRoot to the {@link ArrayList}.
+ * whose state name is ProperRoot to an ArrayList, of it is not a proper noon, it adds the surfaceForm
+ * whose state name is NominalRoot to the ArrayList.
  *
  * @param surfaceForm String to analyse.
  * @return FsmParseList type currentParse which holds morphological analysis of the surfaceForm.
@@ -1212,7 +1212,7 @@ bool FsmMorphologicalAnalyzer::morphologicalAnalysisExists(TxtWord *rootWord, co
 
 /**
  * The morphologicalAnalysis method is used to analyse a FsmParseList by comparing with the regex.
- * It creates an {@link ArrayList} fsmParse to hold the result of the analysis method. For each surfaceForm input,
+ * It creates an ArrayList fsmParse to hold the result of the analysis method. For each surfaceForm input,
  * it gets a substring and considers it as a possibleRoot. Then compares with the regex.
  * <p>
  * If the surfaceForm input string matches with Turkish chars like Ç, Ş, İ, Ü, Ö, it adds the surfaceForm to Trie with IS_OA tag.

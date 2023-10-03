@@ -10,23 +10,23 @@
 
 using namespace std;
 /**
- * A constructor of {@link FsmParse} class which takes a {@link Word} as an input and assigns it to root variable.
+ * A constructor of FsmParse class which takes a Word as an input and assigns it to root variable.
  *
- * @param root {@link Word} input.
+ * @param root Word input.
  */
 FsmParse::FsmParse(Word* root){
     this->root = root;
 }
 
 /**
- * Another constructor of {@link FsmParse} class which takes an {@link Integer} number and a {@link State} as inputs.
- * First, it creates a {@link TxtWord} with given number and adds flag to this number as IS_SAYI and initializes root variable with
- * number {@link TxtWord}. It also initializes form with root's name, pos and initialPos with given {@link State}'s POS, creates 4 new
- * {@link ArrayList} suffixList, formList, transitionList and withList and adds given {@link State} to suffixList, form to
+ * Another constructor of FsmParse class which takes an Integer number and a State as inputs.
+ * First, it creates a TxtWord with given number and adds flag to this number as IS_SAYI and initializes root variable with
+ * number TxtWord. It also initializes form with root's name, pos and initialPos with given State's POS, creates 4 new
+ * ArrayList suffixList, formList, transitionList and withList and adds given State to suffixList, form to
  * formList.
  *
- * @param number     {@link Integer} input.
- * @param startState {@link State} input.
+ * @param number     Integer input.
+ * @param startState State input.
  */
 FsmParse::FsmParse(int number, const State& startState) {
     auto* num = new TxtWord(std::to_string(number));
@@ -40,14 +40,14 @@ FsmParse::FsmParse(int number, const State& startState) {
 }
 
 /**
- * Another constructor of {@link FsmParse} class which takes a {@link Double} number and a {@link State} as inputs.
- * First, it creates a {@link TxtWord} with given number and adds flag to this number as IS_SAYI and initializes root variable with
- * number {@link TxtWord}. It also initializes form with root's name, pos and initialPos with given {@link State}'s POS, creates 4 new
- * {@link ArrayList} suffixList, formList, transitionList and withList and adds given {@link State} to suffixList, form to
+ * Another constructor of FsmParse class which takes a Double number and a State as inputs.
+ * First, it creates a TxtWord with given number and adds flag to this number as IS_SAYI and initializes root variable with
+ * number TxtWord. It also initializes form with root's name, pos and initialPos with given State's POS, creates 4 new
+ * ArrayList suffixList, formList, transitionList and withList and adds given State to suffixList, form to
  * formList.
  *
- * @param number     {@link Double} input.
- * @param startState {@link State} input.
+ * @param number     Double input.
+ * @param startState State input.
  */
 FsmParse::FsmParse(double number, const string& stringValue, const State& startState) {
     auto* num = new TxtWord(stringValue);
@@ -61,14 +61,14 @@ FsmParse::FsmParse(double number, const string& stringValue, const State& startS
 }
 
 /**
- * Another constructor of {@link FsmParse} class which takes a {@link String} punctuation and a {@link State} as inputs.
- * First, it creates a {@link TxtWord} with given punctuation and initializes root variable with this {@link TxtWord}.
- * It also initializes form with root's name, pos and initialPos with given {@link State}'s POS, creates 4 new
- * {@link ArrayList} suffixList, formList, transitionList and withList and adds given {@link State} to suffixList, form to
+ * Another constructor of FsmParse class which takes a String punctuation and a State as inputs.
+ * First, it creates a TxtWord with given punctuation and initializes root variable with this TxtWord.
+ * It also initializes form with root's name, pos and initialPos with given State's POS, creates 4 new
+ * ArrayList suffixList, formList, transitionList and withList and adds given State to suffixList, form to
  * formList.
  *
- * @param punctuation {@link String} input.
- * @param startState  {@link State} input.
+ * @param punctuation String input.
+ * @param startState  State input.
  */
 FsmParse::FsmParse(const string& punctuation, const State& startState) {
     this->root = new TxtWord(punctuation);
@@ -80,13 +80,13 @@ FsmParse::FsmParse(const string& punctuation, const State& startState) {
 }
 
 /**
- * Another constructor of {@link FsmParse} class which takes a {@link TxtWord} root and a {@link State} as inputs.
- * First, initializes root variable with this {@link TxtWord}. It also initializes form with root's name, pos and
- * initialPos with given {@link State}'s POS, creates 4 new {@link ArrayList} suffixList, formList, transitionList
- * and withList and adds given {@link State} to suffixList, form to formList.
+ * Another constructor of FsmParse class which takes a TxtWord root and a State as inputs.
+ * First, initializes root variable with this TxtWord. It also initializes form with root's name, pos and
+ * initialPos with given State's POS, creates 4 new ArrayList suffixList, formList, transitionList
+ * and withList and adds given State to suffixList, form to formList.
  *
- * @param root       {@link TxtWord} input.
- * @param startState {@link State} input.
+ * @param root       TxtWord input.
+ * @param startState State input.
  */
 FsmParse::FsmParse(TxtWord *root, const State& startState) {
     this->root = root;
@@ -98,10 +98,10 @@ FsmParse::FsmParse(TxtWord *root, const State& startState) {
 }
 
 /**
- * The constructInflectionalGroups method initially calls the transitionList method and assigns the resulting {@link String}
- * to the parse variable and creates a new {@link ArrayList} as iGs. If parse {@link String} contains a derivational boundary
+ * The constructInflectionalGroups method initially calls the transitionList method and assigns the resulting String
+ * to the parse variable and creates a new ArrayList as iGs. If parse String contains a derivational boundary
  * it adds the substring starting from the 0 to the index of derivational boundary to the iGs. If it does not contain a DB,
- * it directly adds parse to the iGs. Then, creates and initializes new {@link ArrayList} as inflectionalGroups and fills with
+ * it directly adds parse to the iGs. Then, creates and initializes new ArrayList as inflectionalGroups and fills with
  * the items of iGs.
  */
 void FsmParse::constructInflectionalGroups() {
@@ -138,11 +138,11 @@ string FsmParse::getPossesiveAgreement() const{
 }
 
 /**
- * The setAgreement method takes a {@link String} transitionName as an input and if it is one of the A1SG, A2SG, A3SG,
+ * The setAgreement method takes a String transitionName as an input and if it is one of the A1SG, A2SG, A3SG,
  * A1PL, A2PL or A3PL it assigns transitionName input to the verbAgreement variable. Or if it is ine of the PNON, P1SG, P2SG,P3SG,
  * P1PL, P2PL or P3PL it assigns transitionName input to the possesiveAgreement variable.
  *
- * @param transitionName {@link String} input.
+ * @param transitionName String input.
  */
 void FsmParse::setAgreement(const string& transitionName) {
     if (!transitionName.empty() && (transitionName == "A1SG" || transitionName == "A2SG" || transitionName == "A3SG" || transitionName == "A1PL" || transitionName == "A2PL" || transitionName == "A3PL")) {
@@ -159,7 +159,7 @@ void FsmParse::setAgreement(const string& transitionName) {
  * if the item at i-1 of transitionList is not null and contains a derivational boundary with _pos but not with ZERO,
  * it assigns the ith item of formList to lemma.
  *
- * @param _pos {@link String} input.
+ * @param _pos String input.
  * @return String output lemma.
  */
 string FsmParse::getLastLemmaWithTag(const string& _pos) const{
@@ -194,16 +194,16 @@ string FsmParse::getLastLemma() const{
 }
 
 /**
- * The addSuffix method takes 5 different inputs; {@link State} suffix, {@link String} _form, transition, with and toPos.
+ * The addSuffix method takes 5 different inputs; State suffix, String _form, transition, with and toPos.
  * If the pos of given input suffix is not null, it then assigns it to the pos variable. If the pos of the given suffix
  * is null but given toPos is not null than it assigns toPos to pos variable. At the end, it adds suffix to the suffixList,
  * _form to the formList, transition to the transitionList and if given with is not 0, it is also added to withList.
  *
- * @param suffix     {@link State} input.
- * @param _form       {@link String} input.
- * @param transition {@link String} input.
- * @param with       {@link String} input.
- * @param toPos      {@link String} input.
+ * @param suffix     State input.
+ * @param _form       String input.
+ * @param transition String input.
+ * @param with       String input.
+ * @param toPos      String input.
  */
 void FsmParse::addSuffix(const State& suffix, const string& _form, const string& transition, const string& with, const string& toPos) {
     if (!suffix.getPos().empty()) {
@@ -232,9 +232,9 @@ string FsmParse::getSurfaceForm() const{
 }
 
 /**
- * The getStartState method returns the first item of suffixList {@link ArrayList}.
+ * The getStartState method returns the first item of suffixList ArrayList.
  *
- * @return the first item of suffixList {@link ArrayList}.
+ * @return the first item of suffixList ArrayList.
  */
 State FsmParse::getStartState() const{
     return suffixList.at(0);
@@ -259,8 +259,8 @@ string FsmParse::getInitialPos() const{
 }
 
 /**
- * The setForm method takes a {@link String} name as an input and assigns it to the form variable, then it removes the first item
- * of formList {@link ArrayList} and adds the given name to the formList.
+ * The setForm method takes a String name as an input and assigns it to the form variable, then it removes the first item
+ * of formList ArrayList and adds the given name to the formList.
  *
  * @param name String input to set form.
  */
@@ -271,18 +271,18 @@ void FsmParse::setForm(const string& name) {
 }
 
 /**
- * The getFinalSuffix method returns the last item of suffixList {@link ArrayList}.
+ * The getFinalSuffix method returns the last item of suffixList ArrayList.
  *
- * @return the last item of suffixList {@link ArrayList}.
+ * @return the last item of suffixList ArrayList.
  */
 State FsmParse::getFinalSuffix() const{
     return suffixList.at(suffixList.size() - 1);
 }
 
 /**
- * The overridden clone method creates a new {@link FsmParse} abject with root variable and initializes variables form, pos,
- * initialPos, verbAgreement, possesiveAgreement, and also the {@link vector}s suffixList, formList, transitionList and withList.
- * Then returns newly created and cloned {@link FsmParse} object.
+ * The overridden clone method creates a new FsmParse abject with root variable and initializes variables form, pos,
+ * initialPos, verbAgreement, possesiveAgreement, and also the vectors suffixList, formList, transitionList and withList.
+ * Then returns newly created and cloned FsmParse object.
  *
  * @return FsmParse object.
  */
@@ -310,7 +310,7 @@ FsmParse FsmParse::clone() const{
  * If it is &lt;S&gt;, it returns &lt;S&gt;+BSTAG which indicates the beginning of a sentence.
  * If it is &lt;/S&gt;, it returns &lt;/S&gt;+ESTAG which indicates the ending of a sentence.
  *
- * @return corresponding tags of the headers and an empty {@link String} if any case does not match.
+ * @return corresponding tags of the headers and an empty String if any case does not match.
  */
 string FsmParse::headerTransition() const{
     if (formList.at(0) == "<DOC>") {
@@ -352,7 +352,7 @@ string FsmParse::headerTransition() const{
  * indicates a 3rd person plural agreement.
  * If it is one of the "nere, ne, kim, hangi", it returns +PRON+QUESP which indicates a question pronoun.
  *
- * @return corresponding transitions of pronouns and an empty {@link String} if any case does not match.
+ * @return corresponding transitions of pronouns and an empty String if any case does not match.
  */
 string FsmParse::pronounTransition() const{
     if (formList.at(0) == "kendi") {
@@ -389,7 +389,7 @@ string FsmParse::pronounTransition() const{
 }
 
 /**
- * The getTransitionList method first creates an empty {@link String} result, then gets the first item of suffixList and checks for cases;
+ * The getTransitionList method first creates an empty String result, then gets the first item of suffixList and checks for cases;
  * <p>
  * If it is one of the "NominalRoot, NominalRootNoPossesive, CompoundNounRoot, NominalRootPlural", it assigns concatenation of first
  * item of formList and +NOUN to the result String.
@@ -491,7 +491,7 @@ string FsmParse::pronounTransition() const{
  * If it starts with "Adjective", it assigns concatenation of first item of formList and +ADJ to the result String.
  * Ex : Güzel
  * <p>
- * At the end, it loops through the formList and concatenates each item with result {@link String}.
+ * At the end, it loops through the formList and concatenates each item with result String.
  *
  * @return String result accumulated with items of formList.
  */
@@ -636,9 +636,9 @@ string FsmParse::transitionlist() const{
 /**
  * The suffixList method gets the first items of suffixList and formList and concatenates them with parenthesis and
  * assigns a String result. Then, loops through the formList and it the current ith item is not equal to previous
- * item it accumulates ith items of formList and suffixList to the result {@link String}.
+ * item it accumulates ith items of formList and suffixList to the result String.
  *
- * @return result {@link String} accumulated with the items of formList and suffixList.
+ * @return result String accumulated with the items of formList and suffixList.
  */
 string FsmParse::getSuffixList() const{
     string result = suffixList.at(0).getName() + '(' + formList.at(0) + ')';
@@ -651,10 +651,10 @@ string FsmParse::getSuffixList() const{
 }
 
 /**
- * The withList method gets the root as a result {@link String} then loops through the withList and concatenates each item
- * with result {@link String}.
+ * The withList method gets the root as a result String then loops through the withList and concatenates each item
+ * with result String.
  *
- * @return result {@link String} accumulated with items of withList.
+ * @return result String accumulated with items of withList.
  */
 string FsmParse::getWithList() const{
     string result = root->getName();

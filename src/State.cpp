@@ -5,7 +5,7 @@
 #include "State.h"
 
 /**
- * First constructor of the {@link State} class which takes 3 parameters String name, boolean startState,
+ * First constructor of the State class which takes 3 parameters String name, boolean startState,
  * and boolean endState as input and initializes the private variables of the class also leaves pos as null.
  *
  * @param name       String input.
@@ -20,7 +20,7 @@ State::State(const string& name, bool startState, bool endState) {
 }
 
 /**
- * Second constructor of the {@link State} class which takes 4 parameters as input; String name, boolean startState,
+ * Second constructor of the State class which takes 4 parameters as input; String name, boolean startState,
  * boolean endState, and String pos and initializes the private variables of the class.
  *
  * @param name       String input.

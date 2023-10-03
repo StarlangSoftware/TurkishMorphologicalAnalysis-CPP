@@ -186,10 +186,10 @@ string MorphotacticEngine::resolveH(TxtWord *root, const string& formation, bool
 }
 
 /**
- * The resolveC method takes a {@link String} formation as an input. If the last phoneme is on of the "çfhkpsşt", it
+ * The resolveC method takes a String formation as an input. If the last phoneme is on of the "çfhkpsşt", it
  * concatenates given formation with 'ç', if not it concatenates given formation with 'c'.
  *
- * @param formation {@link String} input.
+ * @param formation String input.
  * @return resolved String.
  */
 string MorphotacticEngine::resolveC(const string& formation, const string& formationToCheck) {
@@ -201,9 +201,9 @@ string MorphotacticEngine::resolveC(const string& formation, const string& forma
 }
 
 /**
- * The resolveS method takes a {@link String} formation as an input. It then concatenates given formation with 's'.
+ * The resolveS method takes a String formation as an input. It then concatenates given formation with 's'.
  *
- * @param formation {@link String} input.
+ * @param formation String input.
  * @return resolved String.
  */
 string MorphotacticEngine::resolveS(const string& formation) {
@@ -211,11 +211,11 @@ string MorphotacticEngine::resolveS(const string& formation) {
 }
 
 /**
- * The resolveSh method takes a {@link String} formation as an input. If the last character is a vowel, it concatenates
+ * The resolveSh method takes a String formation as an input. If the last character is a vowel, it concatenates
  * given formation with ş, if the last character is not a vowel, and not 't' it directly returns given formation, but if it
  * is equal to 't', it transforms it to 'd'.
  *
- * @param formation {@link String} input.
+ * @param formation String input.
  * @return resolved String.
  */
 string MorphotacticEngine::resolveSh(const string& formation) {

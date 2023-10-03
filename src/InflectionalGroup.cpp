@@ -106,9 +106,9 @@ string InflectionalGroup::getTag(MorphologicalTag tag) {
 }
 
 /**
- * A constructor of {@link InflectionalGroup} class which initializes the IG {@link vector} by parsing given input
+ * A constructor of InflectionalGroup class which initializes the IG vector by parsing given input
  * String IG by + and calling the getMorphologicalTag method with these substrings. If getMorphologicalTag method returns
- * a tag, it adds this tag to the IG {@link vector}.
+ * a tag, it adds this tag to the IG vector.
  *
  * @param IG String input.
  */
@@ -128,7 +128,7 @@ InflectionalGroup::InflectionalGroup(const string& IG) {
 }
 
 /**
- * Another getTag method which takes index as an input and returns the corresponding tag from IG {@link vector}.
+ * Another getTag method which takes index as an input and returns the corresponding tag from IG vector.
  *
  * @param index to get tag.
  * @return tag at input index.
@@ -138,16 +138,16 @@ MorphologicalTag InflectionalGroup::getTag(int index) const{
 }
 
 /**
- * The size method returns the size of the G {@link vector}.
+ * The size method returns the size of the G vector.
  *
- * @return the size of the G {@link vector}.
+ * @return the size of the G vector.
  */
 int InflectionalGroup::size() const{
     return IG.size();
 }
 
 /**
- * Overridden toString method to return resulting tags in IG {@link vector}.
+ * Overridden toString method to return resulting tags in IG vector.
  *
  * @return String result.
  */
@@ -160,7 +160,7 @@ string InflectionalGroup::to_String() const{
 }
 
 /**
- * The containsCase method loops through the tags in IG {@link ArrayList} and finds out the tags of the NOMINATIVE,
+ * The containsCase method loops through the tags in IG ArrayList and finds out the tags of the NOMINATIVE,
  * ACCUSATIVE, DATIVE, LOCATIVE or ABLATIVE cases.
  *
  * @return tag which holds the condition.
@@ -175,7 +175,7 @@ MorphologicalTag InflectionalGroup::containsCase() const{
 }
 
 /**
- * The containsPlural method loops through the tags in IG {@link vector} and checks whether the tags are from
+ * The containsPlural method loops through the tags in IG vector and checks whether the tags are from
  * the agreement plural or possessive plural, i.e A1PL, A2PL, A3PL, P1PL, P2PL and P3PL.
  *
  * @return true if the tag is plural, false otherwise.
@@ -191,7 +191,7 @@ bool InflectionalGroup::containsPlural() const{
 
 /**
  * The containsTag method takes a MorphologicalTag type tag as an input and loops through the tags in
- * IG {@link vector} and returns true if the input matches with on of the tags in the IG.
+ * IG vector and returns true if the input matches with on of the tags in the IG.
  *
  * @param tag MorphologicalTag type input to search for.
  * @return true if tag matches with the tag in IG, false otherwise.
@@ -206,7 +206,7 @@ bool InflectionalGroup::containsTag(MorphologicalTag tag) const{
 }
 
 /**
- * The containsPossessive method loops through the tags in IG {@link ArrayList} and returns true if the tag in IG is
+ * The containsPossessive method loops through the tags in IG ArrayList and returns true if the tag in IG is
  * one of the possessives: P1PL, P1SG, P2PL, P2SG, P3PL AND P3SG.
  *
  * @return true if it contains possessive tag, false otherwise.

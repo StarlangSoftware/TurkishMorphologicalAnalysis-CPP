@@ -478,7 +478,7 @@ const MorphologicalTag MetamorphicParse::morphotacticTags[META_MORPHEME_SIZE] = 
 /**
  * The getMetaMorphemeTag method takes a String tag as an input and takes the first char of the tag. If first char
  * is a punctuation it gets a substring from the tag. And gets the meta morphemes of this tag then adds to the
- * result {@link vector}.
+ * result vector.
  *
  * @param tag String to get meta morphemes from.
  * @return vector type result which holds meta morphemes.
@@ -530,12 +530,12 @@ Word MetamorphicParse::getWord() const{
 }
 
 /**
- * An empty constructor of {@link MetamorphicParse} class.
+ * An empty constructor of MetamorphicParse class.
  */
 MetamorphicParse::MetamorphicParse() = default;
 
 /**
- * A constructor of {@link MetamorphicParse} class which creates an {@link vector} metaMorphemeList which has split words
+ * A constructor of MetamorphicParse class which creates an vector metaMorphemeList which has split words
  * according to +.
  *
  * @param parse String to parse.

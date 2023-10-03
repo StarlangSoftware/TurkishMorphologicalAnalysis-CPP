@@ -103,7 +103,7 @@ bool FiniteStateMachine::isValidTransition(const string& transition) {
 }
 
 /**
- * The getState method is used to loop through the states {@link ArrayList} and return the state whose name equal
+ * The getState method is used to loop through the states ArrayList and return the state whose name equal
  * to the given input name.
  *
  * @param name is used to compare with the state's actual name.
@@ -119,8 +119,8 @@ State FiniteStateMachine::getState(const string& name) const{
 }
 
 /**
- * The addTransition method creates a new {@link Transition} with given input parameters and adds the transition to
- * transitions {@link ArrayList}.
+ * The addTransition method creates a new Transition with given input parameters and adds the transition to
+ * transitions ArrayList.
  *
  * @param toState  State type input indicating the next state.
  * @param with     String input indicating with what the transition will be made.
@@ -137,8 +137,8 @@ void FiniteStateMachine::addTransition(const State& fromState, const State& toSt
 }
 
 /**
- * Another addTransition method which takes additional argument; toPos and. It creates a new {@link Transition}
- * with given input parameters and adds the transition to transitions {@link ArrayList}.
+ * Another addTransition method which takes additional argument; toPos and. It creates a new Transition
+ * with given input parameters and adds the transition to transitions ArrayList.
  *
  * @param toState  State type input indicating the next state.
  * @param with     String input indicating with what the transition will be made.
