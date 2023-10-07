@@ -1,6 +1,0 @@
-[requires]
-Corpus/1.0.0
-XmlParser/1.0.0
-
-[generators]
-cmake
