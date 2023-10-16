@@ -61,6 +61,7 @@ public:
     string getUniversalDependencyPos() const;
     string to_string() const;
 private:
+    void updateRootAndInflectionalGroups(const vector<string>& _inflectionalGroups);
     string getPronType() const;
     string getNumType() const;
     string getReflex() const;

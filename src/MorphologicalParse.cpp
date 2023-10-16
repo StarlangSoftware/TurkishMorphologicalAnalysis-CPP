@@ -47,7 +47,6 @@ Word* MorphologicalParse::getWord() const{
  * @param parse String input.
  */
 MorphologicalParse::MorphologicalParse(const string& parse) {
-    int i;
     vector<string> iGs;
     string st = parse;
     while (st.find("^DB+") != string::npos) {
@@ -59,42 +58,42 @@ MorphologicalParse::MorphologicalParse(const string& parse) {
         root = new Word("+");
         inflectionalGroups.emplace_back(InflectionalGroup("Punc"));
     } else {
-        if (iGs.at(0).find('+') != string::npos) {
-            root = new Word(iGs.at(0).substr(0, iGs.at(0).find('+')));
-            inflectionalGroups.emplace_back(InflectionalGroup(iGs.at(0).substr(iGs.at(0).find('+') + 1, iGs.at(0).size())));
-        } else {
-            root = new Word(iGs.at(0));
-        }
-        for (i = 1; i < iGs.size(); i++) {
-            inflectionalGroups.emplace_back(InflectionalGroup(iGs.at(i)));
-        }
+        updateRootAndInflectionalGroups(iGs);
     }
 }
 
 /**
  * Another constructor of MorphologicalParse class which takes an vector inflectionalGroups as an input.
- * First, it initializes inflectionalGroups ArrayList and if the first item of the vector has +, it gets
- * the substring from index 0 to + and assigns it as root, and by calling InflectionalGroup method with substring from index 0 to +,
- * it initializes the IG vector by parsing given input String IG by + and calling the getMorphologicalTag
- * method with these substrings. If getMorphologicalTag method returns a tag, it adds this tag to the IG vector
- * and also to the inflectionalGroups vector. However, if the first item does not contain +, it directly prints out
- * indicating that there is no root for that item of this Inflectional Group.
- * <p>
- * At the end, it loops through the items of inflectionalGroups and by calling InflectionalGroup method with these items
- * it initializes the IG vector by parsing given input String IG by + and calling the getMorphologicalTag
- * method with these substrings. If getMorphologicalTag method returns a tag, it adds this tag to the IG vector
- * and also to the inflectionalGroups vector.
  *
  * @param inflectionalGroups vector input.
  */
 MorphologicalParse::MorphologicalParse(const vector<string>& inflectionalGroups) {
+    updateRootAndInflectionalGroups(inflectionalGroups);
+}
+
+/**
+ * It initializes _inflectionalGroups ArrayList and if the first item of the vector has +, it gets
+ * the substring from index 0 to + and assigns it as root, and by calling InflectionalGroup method with substring from index 0 to +,
+ * it initializes the IG vector by parsing given input String IG by + and calling the getMorphologicalTag
+ * method with these substrings. If getMorphologicalTag method returns a tag, it adds this tag to the IG vector
+ * and also to the _inflectionalGroups vector. However, if the first item does not contain +, it directly prints out
+ * indicating that there is no root for that item of this Inflectional Group.
+ * <p>
+ * At the end, it loops through the items of _inflectionalGroups and by calling InflectionalGroup method with these items
+ * it initializes the IG vector by parsing given input String IG by + and calling the getMorphologicalTag
+ * method with these substrings. If getMorphologicalTag method returns a tag, it adds this tag to the IG vector
+ * and also to the _inflectionalGroups vector.
+ *
+ * @param _inflectionalGroups vector input.
+ */
+void MorphologicalParse::updateRootAndInflectionalGroups(const vector<string>& _inflectionalGroups) {
     int i;
-    if (inflectionalGroups.at(0).find('+') != string::npos) {
-        root = new Word(inflectionalGroups.at(0).substr(0, inflectionalGroups.at(0).find('+')));
-        this->inflectionalGroups.emplace_back(InflectionalGroup(inflectionalGroups.at(0).substr(inflectionalGroups.at(0).find('+') + 1, inflectionalGroups.at(0).size())));
+    if (_inflectionalGroups.at(0).find('+') != string::npos) {
+        root = new Word(_inflectionalGroups.at(0).substr(0, _inflectionalGroups.at(0).find('+')));
+        this->inflectionalGroups.emplace_back(InflectionalGroup(_inflectionalGroups.at(0).substr(_inflectionalGroups.at(0).find('+') + 1, _inflectionalGroups.at(0).size())));
     }
-    for (i = 1; i < inflectionalGroups.size(); i++) {
-        this->inflectionalGroups.emplace_back(InflectionalGroup(inflectionalGroups.at(i)));
+    for (i = 1; i < _inflectionalGroups.size(); i++) {
+        this->inflectionalGroups.emplace_back(InflectionalGroup(_inflectionalGroups.at(i)));
     }
 }
 
