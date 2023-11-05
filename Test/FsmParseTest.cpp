@@ -10,9 +10,9 @@ TEST_CASE("FsmParseTest") {
     static FsmMorphologicalAnalyzer fsm = FsmMorphologicalAnalyzer();
 
     SECTION("FsmParseTest-testGetLastLemmaWithTag") {
+        parse4 = fsm.morphologicalAnalysis("değerlendirmede").getFsmParse(0);
         parse1 = fsm.morphologicalAnalysis("açılır").getFsmParse(0);
         parse2 = fsm.morphologicalAnalysis("koparılarak").getFsmParse(0);
-        parse4 = fsm.morphologicalAnalysis("değerlendirmede").getFsmParse(0);
         parse5 = fsm.morphologicalAnalysis("soruşturmasının").getFsmParse(0);
         parse6 = fsm.morphologicalAnalysis("karşılaştırmalı").getFsmParse(0);
         REQUIRE("açıl" == parse1.getLastLemmaWithTag("VERB"));

@@ -619,7 +619,7 @@ void FsmMorphologicalAnalyzer::addNewParsesFromCurrentParse(const FsmParse& curr
     for (const Transition& currentTransition : finiteStateMachine.getTransitions(currentState)) {
         if (currentTransition.transitionPossible(currentFsmParse.getSurfaceForm(), surfaceForm) && currentTransition.transitionPossible(currentFsmParse) && (currentSurfaceForm != root->getName() || (currentSurfaceForm == root->getName() && currentTransition.transitionPossible(root, currentState)))) {
             string tmp = currentTransition.makeTransition(root, currentSurfaceForm, currentFsmParse.getStartState());
-            if ((Word::size(tmp) < Word::size(surfaceForm) && isPossibleSubstring(tmp, surfaceForm, root)) || (Word::size(tmp) == Word::size(surfaceForm) && (root->lastIdropsDuringSuffixation() || (tmp == surfaceForm)))) {
+            if ((Word::size(tmp) < Word::size(surfaceForm) && isPossibleSubstring(tmp, surfaceForm, root)) || (Word::size(tmp) == Word::size(surfaceForm) && (root->lastIdropsDuringSuffixation() || tmp == surfaceForm))) {
                 FsmParse newFsmParse = currentFsmParse.clone();
                 newFsmParse.addSuffix(currentTransition.getToState(), tmp, currentTransition.getWith(), currentTransition.to_String(), currentTransition.getToPos());
                 newFsmParse.setAgreement(currentTransition.getWith());
@@ -1011,7 +1011,7 @@ TxtWord *FsmMorphologicalAnalyzer::rootOfPossiblyNewWord(const string& surfaceFo
     int maxLength = 0;
     string longestWord;
     for (Word* word : words){
-        if (word->getName().length() > maxLength){
+        if (Word::size(word->getName()) > maxLength){
             longestWord = Word::substring(surfaceForm, 0, Word::size(surfaceForm) - Word::size(word->getName()));
             maxLength = Word::size(word->getName());
         }

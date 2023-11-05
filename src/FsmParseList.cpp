@@ -64,7 +64,7 @@ const string FsmParseList::longestRootExceptions[231] = {
  * the items of the vector then loops through it, if the current item's transitions equal to the next item's
  * transitions, it removes the latter item. At the end, it assigns this vector to the fsmParses variable.
  *
- * @param fsmParses FsmParse typevector input.
+ * @param fsmParses FsmParse type vector input.
  */
 FsmParseList::FsmParseList(vector<FsmParse> fsmParses) {
     if (!fsmParses.empty()){

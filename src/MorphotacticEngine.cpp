@@ -29,7 +29,7 @@ string MorphotacticEngine::resolveD(TxtWord* root, const string& formation, cons
             }
         }
     } else {
-        if (TurkishLanguage::isSertSessiz(Word::lastPhoneme(formationToCheck))) {
+        if (TurkishLanguage::isSertSessiz(lastPhoneme)) {
             //yap+DH->yaptı
             return formation + 't';
         } else {
@@ -66,7 +66,7 @@ string MorphotacticEngine::resolveA(TxtWord *root, const string& formation, bool
             }
         }
     }
-    if (TurkishLanguage::isBackVowel(Word::lastVowel(formationToCheck))) {
+    if (TurkishLanguage::isBackVowel(lastVowel)) {
         if (root->notObeysVowelHarmonyDuringAgglutination() && rootWord) {
             //alkole, anormale, ampule, tümamirali, spirali, sosyali
             return formation + 'e';
@@ -75,7 +75,7 @@ string MorphotacticEngine::resolveA(TxtWord *root, const string& formation, bool
             return formation + 'a';
         }
     }
-    if (TurkishLanguage::isFrontVowel(Word::lastVowel(formationToCheck))) {
+    if (TurkishLanguage::isFrontVowel(lastVowel)) {
         if (root->notObeysVowelHarmonyDuringAgglutination() && rootWord) {
             //sakala, kabala, eve, kediye
             return formation + 'a';
