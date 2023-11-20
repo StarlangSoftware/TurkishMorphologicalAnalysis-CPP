@@ -63,7 +63,8 @@ void FsmMorphologicalAnalyzer::addSurfaceForms(const string& fileName) {
     inputFile.open(fileName, ifstream :: in);
     while (inputFile.good()) {
         getline(inputFile, line);
-        parsedSurfaceForms.insert(line);
+        vector<string> items = TxtWord::split(line);
+        parsedSurfaceForms.emplace(items[0], items[1]);
     }
     inputFile.close();
 }
@@ -1229,8 +1230,10 @@ bool FsmMorphologicalAnalyzer::morphologicalAnalysisExists(TxtWord *rootWord, co
  */
 FsmParseList FsmMorphologicalAnalyzer::morphologicalAnalysis(const string& surfaceForm) {
     FsmParseList fsmParseList;
+    vector<FsmParse> parses;
     if (!parsedSurfaceForms.empty() && parsedSurfaceForms.find(Word::toLowerCase(surfaceForm)) != parsedSurfaceForms.end() && !isInteger(surfaceForm) && !isDouble(surfaceForm) && !isPercent(surfaceForm) && !isTime(surfaceForm) && !isRange(surfaceForm) && !isDate(surfaceForm)){
-        return FsmParseList(vector<FsmParse>());
+        parses.emplace_back(FsmParse(new Word(parsedSurfaceForms.find(Word::toLowerCase(surfaceForm))->second)));
+        return FsmParseList(parses);
     }
     if (cache.getCacheSize() > 0 && cache.contains(surfaceForm)) {
         return cache.get(surfaceForm);

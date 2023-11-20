@@ -24,7 +24,7 @@ private:
     TxtDictionary* dictionary;
     LRUCache<string, FsmParseList> cache;
     map<string, regex> mostUsedPatterns;
-    set<string> parsedSurfaceForms;
+    map<string, string> parsedSurfaceForms;
     bool isPossibleSubstring(const string& shortString, const string& longString, TxtWord* root) const;
     void initializeParseList(vector<FsmParse>& fsmParse, TxtWord* root, bool isProper) const;
     void initializeParseListFromRoot(vector<FsmParse>& fsmParse, TxtWord* root, bool isProper) const;
