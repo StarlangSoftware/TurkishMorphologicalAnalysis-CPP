@@ -170,6 +170,10 @@ vector<Transition> FiniteStateMachine::getTransitions(const State& state) const{
     }
 }
 
+/**
+ * the getStates method returns the states in the FiniteStateMachine.
+ * @return StateList.
+ */
 vector<State> FiniteStateMachine::getStates() const{
     return states;
 }

@@ -35,6 +35,11 @@ FsmMorphologicalAnalyzer::FsmMorphologicalAnalyzer(const string& fileName, TxtDi
 FsmMorphologicalAnalyzer::FsmMorphologicalAnalyzer(const string& dictionaryFileName, const string& fileName) : FsmMorphologicalAnalyzer(fileName, new TxtDictionary(dictionaryFileName, "turkish_misspellings.txt")){
 }
 
+/**
+ * Constructs and returns the reverse string of a given string.
+ * @param s String to be reversed.
+ * @return Reverse of a given string.
+ */
 string FsmMorphologicalAnalyzer::reverseString(const string& s) const{
     string result;
     for (int i = s.size() - 1; i >= 0; i--){
@@ -43,6 +48,11 @@ string FsmMorphologicalAnalyzer::reverseString(const string& s) const{
     return result;
 }
 
+/**
+ * Constructs the suffix trie from the input file suffixes.txt. suffixes.txt contains the most frequent 6000
+ * suffixes that a verb or a noun can take. The suffix trie is a trie that stores these suffixes in reverse form,
+ * which can be then used to match a given word for its possible suffix content.
+ */
 void FsmMorphologicalAnalyzer::prepareSuffixTrie() {
     ifstream inputFile;
     string suffix;
@@ -56,6 +66,11 @@ void FsmMorphologicalAnalyzer::prepareSuffixTrie() {
     inputFile.close();
 }
 
+/**
+ * Reads the file for correct surface forms and their most frequent root forms, in other words, the surface forms
+ * which have at least one morphological analysis in  Turkish.
+ * @param fileName Input file containing analyzable surface forms and their root forms.
+ */
 void FsmMorphologicalAnalyzer::addSurfaceForms(const string& fileName) {
     ifstream inputFile;
     string line;
@@ -973,6 +988,15 @@ vector<FsmParse> FsmMorphologicalAnalyzer::analysis(const string& surfaceForm, b
     return resultFsmParse;
 }
 
+/**
+ * This method uses cache idea to speed up pattern matching in Fsm. mostUsedPatterns stores the compiled forms of
+ * the previously used patterns. When Fsm tries to match a string to a pattern, first we check if it exists in
+ * mostUsedPatterns. If it exists, we directly use the compiled pattern to match the string. Otherwise, new pattern
+ * is compiled and put in the mostUsedPatterns.
+ * @param expr Pattern to check
+ * @param value String to match the pattern
+ * @return True if the string matches the pattern, false otherwise.
+ */
 bool FsmMorphologicalAnalyzer::patternMatches(const string& expr, const string& value){
     regex r;
     if (!mostUsedPatterns.contains(expr)){
@@ -998,6 +1022,12 @@ bool FsmMorphologicalAnalyzer::isProperNoun(const string& surfaceForm) const{
     return (Word::charAt(surfaceForm, 0) >= "A" && Word::charAt(surfaceForm, 0) <= "Z") || Word::charAt(surfaceForm, 0) == "Ç" || Word::charAt(surfaceForm, 0) == "Ö" || Word::charAt(surfaceForm, 0) == "Ğ" || Word::charAt(surfaceForm, 0) == "Ü" || Word::charAt(surfaceForm, 0) == "Ş" || Word::charAt(surfaceForm, 0) == "İ"; // İ, Ü, Ğ, Ş, Ç, Ö
 }
 
+/**
+ * The isCode method takes surfaceForm String as input and checks if it consists of both letters and numbers
+ *
+ * @param surfaceForm String to check for code-like word.
+ * @return True if it is a code-like word, return false otherwise.
+ */
 bool FsmMorphologicalAnalyzer::isCode(const string &surfaceForm) {
     if (surfaceForm.empty()) {
         return false;
@@ -1006,6 +1036,19 @@ bool FsmMorphologicalAnalyzer::isCode(const string &surfaceForm) {
 }
 
 
+/**
+ * Identifies a possible new root word for a given surface form. It also adds the new root form to the dictionary
+ * for further usage. The method first searches the suffix trie for the reverse string of the surface form. This
+ * way, it can identify if the word has a suffix that is in the most frequently used suffix list. Since a word can
+ * have multiple possible suffixes, the method identifies the longest suffix and returns the substring of the
+ * surface form tht does not contain the suffix. Let say the word is 'googlelaştırdık', it will identify 'tık' as
+ * a suffix and will return 'googlelaştır' as a possible root form. Another example will be 'homelesslerimizle', it
+ * will identify 'lerimizle' as suffix and will return 'homeless' as a possible root form. If the root word ends
+ * with 'ğ', it is replacesd with 'k'. 'morfolojikliğini' will return 'morfolojikliğ' then which will be replaced
+ * with 'morfolojiklik'.
+ * @param surfaceForm Surface form for which we will identify a possible new root form.
+ * @return Possible new root form.
+ */
 TxtWord *FsmMorphologicalAnalyzer::rootOfPossiblyNewWord(const string& surfaceForm) const{
     unordered_set<Word*> words = suffixTrie->getWordsWithPrefix(reverseString(surfaceForm));
     int maxLength = 0;
@@ -1182,18 +1225,39 @@ bool FsmMorphologicalAnalyzer::isNumber(const string& surfaceForm) const{
     return word.empty() && count > 1;
 }
 
+/**
+ * Checks if a given surface form matches to a percent value. It should be something like %4, %45, %4.3 or %56.786
+ * @param surfaceForm Surface form to be checked.
+ * @return True if the surface form is in percent form
+ */
 bool FsmMorphologicalAnalyzer::isPercent(const string& surfaceForm){
     return patternMatches(R"(%(\d\d|\d))", surfaceForm) || patternMatches(R"(%(\d\d|\d)\.\d+)", surfaceForm);
 }
 
+/**
+ * Checks if a given surface form matches to a time form. It should be something like 3:34, 12:56 etc.
+ * @param surfaceForm Surface form to be checked.
+ * @return True if the surface form is in time form
+ */
 bool FsmMorphologicalAnalyzer::isTime(const string& surfaceForm) {
     return patternMatches(R"((\d\d|\d):(\d\d|\d):(\d\d|\d))", surfaceForm) || patternMatches(R"((\d\d|\d):(\d\d|\d))", surfaceForm);
 }
 
+/**
+ * Checks if a given surface form matches to a range form. It should be something like 123-1400 or 12:34-15:78 or
+ * 3.45-4.67.
+ * @param surfaceForm Surface form to be checked.
+ * @return True if the surface form is in range form
+ */
 bool FsmMorphologicalAnalyzer::isRange(const string& surfaceForm) {
     return patternMatches("\\d+-\\d+", surfaceForm) || patternMatches(R"((\d\d|\d):(\d\d|\d)-(\d\d|\d):(\d\d|\d))", surfaceForm) || patternMatches(R"((\d\d|\d)\.(\d\d|\d)-(\d\d|\d)\.(\d\d|\d))", surfaceForm);
 }
 
+/**
+ * Checks if a given surface form matches to a date form. It should be something like 3/10/2023 or 2.3.2012
+ * @param surfaceForm Surface form to be checked.
+ * @return True if the surface form is in date form
+ */
 bool FsmMorphologicalAnalyzer::isDate(const string& surfaceForm) {
     return patternMatches(R"((\d\d|\d)/(\d\d|\d)/\d+)", surfaceForm) || patternMatches(R"((\d\d|\d)\.(\d\d|\d)\.\d+)", surfaceForm);
 }
