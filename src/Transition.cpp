@@ -432,6 +432,7 @@ string Transition::makeTransition(TxtWord *root, const string& stem, const State
                     } else {
                         formation = MorphotacticEngine::resolveH(root, formation, i == 1, false, rootWord, formationToCheck);
                     }
+                    rootWord = false;
                 } else {
                     if (withChars[i] == "C"){
                         formation = MorphotacticEngine::resolveC(formation, formationToCheck);

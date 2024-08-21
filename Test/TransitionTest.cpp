@@ -27,7 +27,7 @@ TEST_CASE("TransitionTest") {
 
     SECTION("testA") {
         REQUIRE_FALSE(fsm.morphologicalAnalysis("alkole").size() == 0);
-        REQUIRE_FALSE(fsm.morphologicalAnalysis("saatini").size() == 0);
+        REQUIRE_FALSE(fsm.morphologicalAnalysis("saatinizi").size() == 0);
         REQUIRE_FALSE(fsm.morphologicalAnalysis("anormale").size() == 0);
         REQUIRE_FALSE(fsm.morphologicalAnalysis("sakala").size() == 0);
         REQUIRE_FALSE(fsm.morphologicalAnalysis("kabala").size() == 0);
