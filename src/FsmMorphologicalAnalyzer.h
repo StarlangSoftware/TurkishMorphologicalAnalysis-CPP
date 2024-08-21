@@ -47,7 +47,7 @@ private:
     bool patternMatches(const string& expr, const string& value);
     string reverseString(const string& s) const;
     void prepareSuffixTrie();
-    TxtWord* rootOfPossiblyNewWord(const string& surfaceForm) const;
+    vector<TxtWord*> rootOfPossiblyNewWord(const string& surfaceForm) const;
 public:
     explicit FsmMorphologicalAnalyzer(const string& fileName = "turkish_finite_state_machine.xml", TxtDictionary* dictionary = new TxtDictionary(), int cacheSize = 10000);
     explicit FsmMorphologicalAnalyzer(const string& dictionaryFileName, const string& fileName = "turkish_finite_state_machine.xml");

@@ -1049,30 +1049,24 @@ bool FsmMorphologicalAnalyzer::isCode(const string &surfaceForm) {
  * @param surfaceForm Surface form for which we will identify a possible new root form.
  * @return Possible new root form.
  */
-TxtWord *FsmMorphologicalAnalyzer::rootOfPossiblyNewWord(const string& surfaceForm) const{
+vector<TxtWord*> FsmMorphologicalAnalyzer::rootOfPossiblyNewWord(const string& surfaceForm) const{
     unordered_set<Word*> words = suffixTrie->getWordsWithPrefix(reverseString(surfaceForm));
-    int maxLength = 0;
-    string longestWord;
+    vector<TxtWord*> candidateList;
     for (Word* word : words){
-        if (Word::size(word->getName()) > maxLength){
-            longestWord = Word::substring(surfaceForm, 0, Word::size(surfaceForm) - Word::size(word->getName()));
-            maxLength = Word::size(word->getName());
-        }
-    }
-    if (maxLength != 0){
+        string candidateWord = Word::substring(surfaceForm, 0, Word::size(surfaceForm) - Word::size(word->getName()));
         TxtWord* newWord;
-        if (Word::endsWith(longestWord, "ğ")){
-            longestWord = Word::substring(longestWord, 0, Word::size(longestWord) - 1) + "k";
-            newWord = new TxtWord(longestWord, "CL_ISIM");
+        if (Word::endsWith(candidateWord, "ğ")){
+            candidateWord = Word::substring(candidateWord, 0, Word::size(candidateWord) - 1) + "k";
+            newWord = new TxtWord(candidateWord, "CL_ISIM");
             newWord->addFlag("IS_SD");
         } else {
-            newWord = new TxtWord(longestWord, "CL_ISIM");
+            newWord = new TxtWord(candidateWord, "CL_ISIM");
             newWord->addFlag("CL_FIIL");
         }
-        dictionaryTrie->addWord(longestWord, newWord);
-        return newWord;
+        candidateList.emplace_back(newWord);
+        dictionaryTrie->addWord(candidateWord, newWord);
     }
-    return nullptr;
+    return candidateList;
 }
 
 /**
@@ -1094,19 +1088,18 @@ FsmParseList FsmMorphologicalAnalyzer::robustMorphologicalAnalysis(const string&
     if (currentParse.size() == 0) {
         if (isProperNoun(surfaceForm)) {
             fsmParse.emplace_back(FsmParse(surfaceForm, finiteStateMachine.getState("ProperRoot")));
-        } else {
-            if (isCode(surfaceForm)){
-                fsmParse.emplace_back(FsmParse(surfaceForm, finiteStateMachine.getState("CodeRoot")));
-            } else {
-                TxtWord* newRoot = rootOfPossiblyNewWord(surfaceForm);
-                if (newRoot != nullptr){
-                    fsmParse.emplace_back(FsmParse(newRoot, finiteStateMachine.getState("VerbalRoot")));
-                    fsmParse.emplace_back(FsmParse(newRoot, finiteStateMachine.getState("NominalRoot")));
-                } else {
-                    fsmParse.emplace_back(FsmParse(surfaceForm, finiteStateMachine.getState("NominalRoot")));
-                }
+        }
+        if (isCode(surfaceForm)){
+            fsmParse.emplace_back(FsmParse(surfaceForm, finiteStateMachine.getState("CodeRoot")));
+        }
+        vector<TxtWord*> newCadidateList = rootOfPossiblyNewWord(surfaceForm);
+        if (!newCadidateList.empty()) {
+            for (TxtWord *word: newCadidateList) {
+                fsmParse.emplace_back(FsmParse(word, finiteStateMachine.getState("VerbalRoot")));
+                fsmParse.emplace_back(FsmParse(word, finiteStateMachine.getState("NominalRoot")));
             }
         }
+        fsmParse.emplace_back(FsmParse(surfaceForm, finiteStateMachine.getState("NominalRoot")));
         return FsmParseList(parseWord(fsmParse, surfaceForm));
     } else {
         return currentParse;
