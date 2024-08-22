@@ -686,3 +686,19 @@ string FsmParse::replaceRootWord(TxtWord* newRoot) const{
 string FsmParse::to_String() const{
     return transitionlist();
 }
+
+/**
+ * In order to morphologically parse special proper nouns in Turkish, whose affixes obeys not the original but their
+ * pronunciations, the morphologicalAnalysis method replaces the original word with its pronunciation and do the
+ * rest. This method reverts it back, that is it restores its original form by replacing the pronunciations in the
+ * parses with the original form.
+ * @param original Original form of the proper noun.
+ * @param pronunciation Pronunciation of the proper noun.
+ */
+void FsmParse::restoreOriginalForm(string original, string pronunciation){
+    root = new TxtWord(original, "IS_OA");
+    form = original + Word::substring(form, pronunciation.length());
+    for (int i = 0; i < formList.size(); i++) {
+        formList[i] = original + Word::substring(formList[i], pronunciation.length());
+    }
+}

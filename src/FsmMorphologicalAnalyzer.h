@@ -25,6 +25,7 @@ private:
     LRUCache<string, FsmParseList> cache;
     map<string, regex> mostUsedPatterns;
     map<string, string> parsedSurfaceForms;
+    map<string, string> pronunciations;
     bool isPossibleSubstring(const string& shortString, const string& longString, TxtWord* root) const;
     void initializeParseList(vector<FsmParse>& fsmParse, TxtWord* root, bool isProper) const;
     void initializeParseListFromRoot(vector<FsmParse>& fsmParse, TxtWord* root, bool isProper) const;
@@ -52,6 +53,7 @@ public:
     explicit FsmMorphologicalAnalyzer(const string& fileName = "turkish_finite_state_machine.xml", TxtDictionary* dictionary = new TxtDictionary(), int cacheSize = 10000);
     explicit FsmMorphologicalAnalyzer(const string& dictionaryFileName, const string& fileName = "turkish_finite_state_machine.xml");
     void addSurfaceForms(const string& fileName);
+    void addPronunciations(const string& fileName);
     TxtDictionary* getDictionary() const;
     FiniteStateMachine getFiniteStateMachine() const;
     unordered_set<string> getPossibleWords(const MorphologicalParse& morphologicalParse, const MetamorphicParse& parse);

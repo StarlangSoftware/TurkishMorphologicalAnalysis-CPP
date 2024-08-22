@@ -23,6 +23,7 @@ FsmMorphologicalAnalyzer::FsmMorphologicalAnalyzer(const string& fileName, TxtDi
     prepareSuffixTrie();
     this->dictionary = dictionary;
     cache = LRUCache<string, FsmParseList>(cacheSize);
+    addPronunciations("pronunciations.txt");
 }
 
 /**
@@ -72,15 +73,15 @@ void FsmMorphologicalAnalyzer::prepareSuffixTrie() {
  * @param fileName Input file containing analyzable surface forms and their root forms.
  */
 void FsmMorphologicalAnalyzer::addSurfaceForms(const string& fileName) {
-    ifstream inputFile;
-    string line;
-    inputFile.open(fileName, ifstream :: in);
-    while (inputFile.good()) {
-        getline(inputFile, line);
-        vector<string> items = TxtWord::split(line);
-        parsedSurfaceForms.emplace(items[0], items[1]);
-    }
-    inputFile.close();
+    parsedSurfaceForms = Word::readHashMap(fileName);
+}
+
+/**
+ * Reads the file for foreign words and their pronunciations.
+ * @param fileName Input file containing foreign words and their pronunciations.
+ */
+void FsmMorphologicalAnalyzer::addPronunciations(const string& fileName) {
+    pronunciations = Word::readHashMap(fileName);
 }
 
 /**
@@ -1287,17 +1288,21 @@ bool FsmMorphologicalAnalyzer::morphologicalAnalysisExists(TxtWord *rootWord, co
 FsmParseList FsmMorphologicalAnalyzer::morphologicalAnalysis(const string& surfaceForm) {
     FsmParseList fsmParseList;
     vector<FsmParse> parses;
-    if (!parsedSurfaceForms.empty() && parsedSurfaceForms.find(Word::toLowerCase(surfaceForm)) != parsedSurfaceForms.end() && !isInteger(surfaceForm) && !isDouble(surfaceForm) && !isPercent(surfaceForm) && !isTime(surfaceForm) && !isRange(surfaceForm) && !isDate(surfaceForm)){
-        parses.emplace_back(FsmParse(new Word(parsedSurfaceForms.find(Word::toLowerCase(surfaceForm))->second)));
+    TxtWord* newWord = nullptr;
+    string lowerCased = Word::toLowerCase(surfaceForm);
+    string possibleRootLowerCased = "", pronunciation = "";
+    bool isRootReplaced = false;
+    if (!parsedSurfaceForms.empty() && parsedSurfaceForms.find(lowerCased) != parsedSurfaceForms.end() && !isInteger(surfaceForm) && !isDouble(surfaceForm) && !isPercent(surfaceForm) && !isTime(surfaceForm) && !isRange(surfaceForm) && !isDate(surfaceForm)){
+        parses.emplace_back(FsmParse(new Word(parsedSurfaceForms.find(lowerCased)->second)));
         return FsmParseList(parses);
     }
     if (cache.getCacheSize() > 0 && cache.contains(surfaceForm)) {
         return cache.get(surfaceForm);
     }
     if (patternMatches("(\\w|Ç|Ş|İ|Ü|Ö)\\.", surfaceForm)) {
-        dictionaryTrie->addWord(Word::toLowerCase(surfaceForm), new TxtWord(Word::toLowerCase(surfaceForm), "IS_OA"));
+        dictionaryTrie->addWord(lowerCased, new TxtWord(lowerCased, "IS_OA"));
     }
-    vector<FsmParse> defaultFsmParse = analysis(Word::toLowerCase(surfaceForm), isProperNoun(surfaceForm));
+    vector<FsmParse> defaultFsmParse = analysis(lowerCased, isProperNoun(surfaceForm));
     if (!defaultFsmParse.empty()) {
         fsmParseList = FsmParseList(defaultFsmParse);
         if (cache.getCacheSize() > 0){
@@ -1311,49 +1316,57 @@ FsmParseList FsmMorphologicalAnalyzer::morphologicalAnalysis(const string& surfa
         if (!possibleRoot.empty()) {
             if (possibleRoot.find('/') != string::npos || possibleRoot.find("\\/") != string::npos) {
                 dictionaryTrie->addWord(possibleRoot, new TxtWord(possibleRoot, "IS_KESIR"));
-                fsmParse = analysis(Word::toLowerCase(surfaceForm), isProperNoun(surfaceForm));
+                fsmParse = analysis(lowerCased, isProperNoun(surfaceForm));
             } else {
                 if (isDate(possibleRoot)) {
                     dictionaryTrie->addWord(possibleRoot, new TxtWord(possibleRoot, "IS_DATE"));
-                    fsmParse = analysis(Word::toLowerCase(surfaceForm), isProperNoun(surfaceForm));
+                    fsmParse = analysis(lowerCased, isProperNoun(surfaceForm));
                 } else {
                     if (patternMatches("\\d+/\\d+", possibleRoot)) {
                         dictionaryTrie->addWord(possibleRoot, new TxtWord(possibleRoot, "IS_KESIR"));
-                        fsmParse = analysis(Word::toLowerCase(surfaceForm), isProperNoun(surfaceForm));
+                        fsmParse = analysis(lowerCased, isProperNoun(surfaceForm));
                     } else {
                         if (isPercent(possibleRoot)) {
                             dictionaryTrie->addWord(possibleRoot, new TxtWord(possibleRoot, "IS_PERCENT"));
-                            fsmParse = analysis(Word::toLowerCase(surfaceForm), isProperNoun(surfaceForm));
+                            fsmParse = analysis(lowerCased, isProperNoun(surfaceForm));
                         } else {
                             if (isTime(possibleRoot)) {
                                 dictionaryTrie->addWord(possibleRoot, new TxtWord(possibleRoot, "IS_ZAMAN"));
-                                fsmParse = analysis(Word::toLowerCase(surfaceForm), isProperNoun(surfaceForm));
+                                fsmParse = analysis(lowerCased, isProperNoun(surfaceForm));
                             } else {
                                 if (isRange(possibleRoot)) {
                                     dictionaryTrie->addWord(possibleRoot, new TxtWord(possibleRoot, "IS_RANGE"));
-                                    fsmParse = analysis(Word::toLowerCase(surfaceForm), isProperNoun(surfaceForm));
+                                    fsmParse = analysis(lowerCased, isProperNoun(surfaceForm));
                                 } else {
                                     if (isInteger(possibleRoot)) {
                                         dictionaryTrie->addWord(possibleRoot, new TxtWord(possibleRoot, "IS_SAYI"));
-                                        fsmParse = analysis(Word::toLowerCase(surfaceForm), isProperNoun(surfaceForm));
+                                        fsmParse = analysis(lowerCased, isProperNoun(surfaceForm));
                                     } else {
                                         if (isDouble(possibleRoot)) {
                                             dictionaryTrie->addWord(possibleRoot, new TxtWord(possibleRoot, "IS_REELSAYI"));
-                                            fsmParse = analysis(Word::toLowerCase(surfaceForm), isProperNoun(surfaceForm));
+                                            fsmParse = analysis(lowerCased, isProperNoun(surfaceForm));
                                         } else {
                                             if (Word::isCapital(possibleRoot)) {
-                                                TxtWord* newWord = nullptr;
-                                                string lowerCase = Word::toLowerCase(possibleRoot);
-                                                if (dictionary->getWord(lowerCase) != nullptr) {
-                                                    ((TxtWord*) dictionary->getWord(lowerCase))->addFlag("IS_OA");
+                                                possibleRootLowerCased = Word::toLowerCase(possibleRoot);
+                                                if (pronunciations.contains(possibleRootLowerCased)){
+                                                    isRootReplaced = true;
+                                                    pronunciation = pronunciations.at(possibleRootLowerCased);
+                                                    if (dictionary->getWord(pronunciation) != nullptr) {
+                                                        ((TxtWord*) dictionary->getWord(pronunciation))->addFlag("IS_OA");
+                                                    } else {
+                                                        newWord = new TxtWord(pronunciation, "IS_OA");
+                                                        dictionaryTrie->addWord(pronunciation, newWord);
+                                                    }
+                                                    string replacedWord = pronunciation + Word::substring(lowerCased,possibleRootLowerCased.length());
+                                                    fsmParse = analysis(replacedWord, isProperNoun(surfaceForm));
                                                 } else {
-                                                    newWord = new TxtWord(lowerCase, "IS_OA");
-                                                    dictionaryTrie->addWord(lowerCase, newWord);
-                                                }
-                                                fsmParse = analysis(Word::toLowerCase(surfaceForm), isProperNoun(surfaceForm));
-                                                if (fsmParse.empty() && newWord != nullptr) {
-                                                    newWord->addFlag("IS_KIS");
-                                                    fsmParse = analysis(Word::toLowerCase(surfaceForm), isProperNoun(surfaceForm));
+                                                    if (dictionary->getWord(possibleRootLowerCased) != nullptr) {
+                                                        ((TxtWord*) dictionary->getWord(possibleRootLowerCased))->addFlag("IS_OA");
+                                                    } else {
+                                                        newWord = new TxtWord(possibleRootLowerCased, "IS_OA");
+                                                        dictionaryTrie->addWord(possibleRootLowerCased, newWord);
+                                                    }
+                                                    fsmParse = analysis(lowerCased, isProperNoun(surfaceForm));
                                                 }
                                             }
                                         }
@@ -1364,6 +1377,11 @@ FsmParseList FsmMorphologicalAnalyzer::morphologicalAnalysis(const string& surfa
                     }
                 }
             }
+        }
+    }
+    if (isRootReplaced){
+        for (FsmParse& parse: fsmParse){
+            parse.restoreOriginalForm(possibleRootLowerCased, pronunciation);
         }
     }
     fsmParseList = FsmParseList(fsmParse);
