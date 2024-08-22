@@ -54,6 +54,7 @@ TEST_CASE("FsmMorphologicalAnalyzerTest") {
     }
 
     SECTION("morphologicalAnalysisSpecialProperNoun") {
+        REQUIRE_FALSE(fsm.morphologicalAnalysis("TL").size() == 0);
         REQUIRE_FALSE(fsm.morphologicalAnalysis("Won'u").size() == 0);
         REQUIRE_FALSE(fsm.morphologicalAnalysis("SPK'ya").size() == 0);
         REQUIRE_FALSE(fsm.morphologicalAnalysis("Slack'in").size() == 0);

@@ -304,6 +304,7 @@ string Transition::makeTransition(TxtWord *root, const string& stem, const State
             //karasu->karasuyu, özsu->özsuyu, ağırsu->ağırsuyu, akarsu->akarsuyu, bengisu->bengisuyu
             if (rootWord && root->showsSuRegularities() && startWithVowelorConsonantDrops() && !Word::startsWith(with, "y")) {
                 formation = stem + 'y';
+                i = 1;
                 formationToCheck = formation;
             } else {
                 if (rootWord && root->duplicatesDuringSuffixation() && !Word::startsWith(startState.getName(), "VerbalRoot") && TurkishLanguage::isConsonantDrop(Word::charAt(with, 0))) {

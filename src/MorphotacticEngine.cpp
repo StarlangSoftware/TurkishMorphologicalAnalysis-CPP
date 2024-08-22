@@ -229,6 +229,9 @@ string MorphotacticEngine::resolveH(TxtWord *root, const string& formation, bool
             }
         }
     }
+    if (Word::lastVowel(formationToCheck) == "0"){
+        return formation + 'i';
+    }
     return formation;
 }
 

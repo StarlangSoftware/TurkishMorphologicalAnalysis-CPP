@@ -135,6 +135,13 @@ TEST_CASE("TransitionTest") {
     SECTION("testShowsSuRegularities") {
         REQUIRE_FALSE(fsm.morphologicalAnalysis("karasuyu").size() == 0);
         REQUIRE_FALSE(fsm.morphologicalAnalysis("suyu").size() == 0);
+        REQUIRE_FALSE(fsm.morphologicalAnalysis("suymuş").size() == 0);
+        REQUIRE_FALSE(fsm.morphologicalAnalysis("suyuymuş").size() == 0);
+        REQUIRE_FALSE(fsm.morphologicalAnalysis("suyla").size() == 0);
+        REQUIRE_FALSE(fsm.morphologicalAnalysis("suyuyla").size() == 0);
+        REQUIRE_FALSE(fsm.morphologicalAnalysis("suydu").size() == 0);
+        REQUIRE_FALSE(fsm.morphologicalAnalysis("suyuydu").size() == 0);
+        REQUIRE_FALSE(fsm.morphologicalAnalysis("suyuna").size() == 0);
     }
 
     SECTION("testDuplicatesDuringSuffixation") {
