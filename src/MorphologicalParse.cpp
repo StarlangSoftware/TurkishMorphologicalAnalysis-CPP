@@ -569,11 +569,25 @@ string MorphologicalParse::getTreePos() const{
  */
 string MorphologicalParse::getPronType() const{
     string lemma = root->getName();
-    if (containsTag(MorphologicalTag::PERSONALPRONOUN)){
+    if (containsTag(MorphologicalTag::DETERMINER)){
+        return "Art";
+    }
+    if (lemma == "kendi" || containsTag(MorphologicalTag::PERSONALPRONOUN)){
         return "Prs";
     }
     if (lemma == "birbiri" || lemma == "birbirleri"){
         return "Rcp";
+    }
+    if (lemma == "birçoğu" || lemma == "hep" || lemma == "kimse"
+        || lemma == "bazı" || lemma == "biri" || lemma == "çoğu"
+        || lemma == "hepsi" || lemma == "diğeri" || lemma == "tümü"
+        || lemma == "herkes" || lemma == "kimi" || lemma == "öbür"
+        || lemma == "öteki" || lemma == "birkaçı" || lemma == "topu"
+        || lemma == "başkası"){
+        return "Ind";
+    }
+    if (lemma == "hiçbiri"){
+        return "Neg";
     }
     if (lemma == "kim" || lemma == "nere" || lemma == "ne"
         || lemma == "hangi" || lemma == "nasıl" || lemma == "kaç"
@@ -593,14 +607,17 @@ string MorphologicalParse::getPronType() const{
  */
 string MorphologicalParse::getNumType() const{
     string lemma = root->getName();
-    if (containsTag(MorphologicalTag::CARDINAL) || containsTag(MorphologicalTag::NUMBER) || lemma == "kaç"){
-        return "Card";
+    if (lemma == "%" || containsTag(MorphologicalTag::TIME)){
+        return "Ord";
     }
     if (containsTag(MorphologicalTag::ORDINAL) || lemma == "kaçıncı"){
         return "Ord";
     }
     if (containsTag(MorphologicalTag::DISTRIBUTIVE)){
         return "Dist";
+    }
+    if (containsTag(MorphologicalTag::CARDINAL) || containsTag(MorphologicalTag::NUMBER) || lemma == "kaç"){
+        return "Card";
     }
     return "";
 }
@@ -635,6 +652,21 @@ string MorphologicalParse::getNumber() const{
 }
 
 /**
+ * Returns the possessive agreement of the parse for the universal dependency feature [Pos].
+ * @return "Sing" if the possessive agreement of the parse is singular (contains P1SG, P2SG, P3SG); "Plur" if the
+ * possessive agreement of the parse is plural (contains P1PL, P2PL, P3PL).
+ */
+string MorphologicalParse::getPossessiveNumber() const{
+    if (containsTag(MorphologicalTag::P1SG) || containsTag(MorphologicalTag::P2SG) || containsTag(MorphologicalTag::P3SG)){
+        return "Sing";
+    }
+    if (containsTag(MorphologicalTag::P1PL) || containsTag(MorphologicalTag::P2PL) || containsTag(MorphologicalTag::P3PL)){
+        return "Plur";
+    }
+    return "";
+}
+
+/**
  * Returns the case marking of the parse for the universal dependency feature case.
  * @return "Acc" for accusative marker; "Dat" for dative marker; "Gen" for genitive marker; "Loc" for locative
  * marker; "Ins" for instrumentative marker; "Abl" for ablative marker; "Nom" for nominative marker.
@@ -658,6 +690,9 @@ string MorphologicalParse::getCase() const{
     if (containsTag(MorphologicalTag::ABLATIVE) || containsTag(MorphologicalTag::PCABLATIVE)){
         return "Abl";
     }
+    if (containsTag(MorphologicalTag::EQUATIVE)){
+        return "Equ";
+    }
     if (containsTag(MorphologicalTag::NOMINATIVE) || containsTag(MorphologicalTag::PCNOMINATIVE)){
         return "Nom";
     }
@@ -672,10 +707,12 @@ string MorphologicalParse::getCase() const{
 string MorphologicalParse::getDefinite() const{
     string lemma = root->getName();
     if (containsTag(MorphologicalTag::DETERMINER)){
-        if (lemma == "bir" || lemma == "bazı" || lemma == "birkaç"){
+        if (lemma == "bir" || lemma == "bazı" || lemma == "birkaç" ||
+        lemma == "birçok" || lemma == "kimi"){
             return "Ind";
         }
-        if (lemma == "her" || lemma == "bu" || lemma == "şu" || lemma == "o" || lemma == "bütün"){
+        if (lemma == "her" || lemma == "bu" || lemma == "şu" ||
+        lemma == "o" || lemma == "bütün" || lemma == "hangi"){
             return "Def";
         }
     }
@@ -702,6 +739,9 @@ string MorphologicalParse::getDegree() const{
  * @return "Pos" for positive polarity containing tag POS; "Neg" for negative polarity containing tag NEG.
  */
 string MorphologicalParse::getPolarity() const{
+    if (root->getName() == "değil"){
+        return "Neg";
+    }
     if (containsTag(MorphologicalTag::POSITIVE)){
         return "Pos";
     }
@@ -732,12 +772,32 @@ string MorphologicalParse::getPerson() const{
 }
 
 /**
+ * Returns the person of the possessive agreement of the parse for the universal dependency feature [pos].
+ * @return "1" for first person; "2" for second person; "3" for third person.
+ */
+string MorphologicalParse::getPossessivePerson() const{
+    if (containsTag(MorphologicalTag::P1SG) || containsTag(MorphologicalTag::P1PL)){
+        return "1";
+    }
+    if (containsTag(MorphologicalTag::P2SG) || containsTag(MorphologicalTag::P2PL)){
+        return "2";
+    }
+    if (containsTag(MorphologicalTag::P3SG) || containsTag(MorphologicalTag::P3PL)){
+        return "3";
+    }
+    return "";
+}
+
+/**
  * Returns the voice of the verb parse for the universal dependency feature voice.
  * @return "CauPass" if the verb parse is both causative and passive; "Pass" if the verb parse is only passive;
  * "Rcp" if the verb parse is reciprocal; "Cau" if the verb parse is only causative; "Rfl" if the verb parse is
  * reflexive.
  */
 string MorphologicalParse::getVoice() const{
+    if (containsTag(MorphologicalTag::CAUSATIVE) && containsTag(MorphologicalTag::PASSIVE)){
+        return "CauPass";
+    }
     if (containsTag(MorphologicalTag::PASSIVE)){
         return "Pass";
     }
@@ -783,14 +843,14 @@ string MorphologicalParse::getAspect() const{
  * past tenses.
  */
 string MorphologicalParse::getTense() const{
-    if (containsTag(MorphologicalTag::PASTTENSE)){
+    if (containsTag(MorphologicalTag::NARRATIVE) && containsTag(MorphologicalTag::PASTTENSE)){
+        return "Pqp";
+    }
+    if (containsTag(MorphologicalTag::PASTTENSE) || containsTag(MorphologicalTag::NARRATIVE)){
         return "Past";
     }
     if (containsTag(MorphologicalTag::FUTURE)){
         return "Fut";
-    }
-    if (containsTag(MorphologicalTag::NARRATIVE) && containsTag(MorphologicalTag::PASTTENSE)){
-        return "Pqp";
     }
     if (!containsTag(MorphologicalTag::PASTTENSE) && !containsTag(MorphologicalTag::FUTURE)){
         return "Pres";
@@ -812,6 +872,30 @@ string MorphologicalParse::getTense() const{
  * simple necessitative; "Pot" for simple potential; "Gen" for simple suffix of a general modality.
  */
 string MorphologicalParse::getMood() const{
+    if ((containsTag(MorphologicalTag::COPULA) || containsTag(MorphologicalTag::AORIST)) && containsTag(MorphologicalTag::NECESSITY) && containsTag(MorphologicalTag::ABLE)){
+        return "GenNecPot";
+    }
+    if ((containsTag(MorphologicalTag::COPULA) || containsTag(MorphologicalTag::AORIST)) && containsTag(MorphologicalTag::CONDITIONAL) && containsTag(MorphologicalTag::ABLE)){
+        return "CndGenPot";
+    }
+    if ((containsTag(MorphologicalTag::COPULA) || containsTag(MorphologicalTag::AORIST)) && containsTag(MorphologicalTag::NECESSITY)){
+        return "GenNec";
+    }
+    if ((containsTag(MorphologicalTag::COPULA) || containsTag(MorphologicalTag::AORIST)) && containsTag(MorphologicalTag::ABLE)){
+        return "GenPot";
+    }
+    if (containsTag(MorphologicalTag::NECESSITY) && containsTag(MorphologicalTag::ABLE)){
+        return "NecPot";
+    }
+    if (containsTag(MorphologicalTag::DESIRE) && containsTag(MorphologicalTag::ABLE)){
+        return "DesPot";
+    }
+    if (containsTag(MorphologicalTag::CONDITIONAL) && containsTag(MorphologicalTag::ABLE)){
+        return "CndPot";
+    }
+    if (containsTag(MorphologicalTag::CONDITIONAL) && (containsTag(MorphologicalTag::COPULA) || containsTag(MorphologicalTag::AORIST))){
+        return "CndGen";
+    }
     if (containsTag(MorphologicalTag::IMPERATIVE)){
         return "Imp";
     }
@@ -827,8 +911,17 @@ string MorphologicalParse::getMood() const{
     if (containsTag(MorphologicalTag::NECESSITY)){
         return "Nec";
     }
-    if (containsTag(MorphologicalTag::PASTTENSE) || containsTag(MorphologicalTag::PROGRESSIVE1) || containsTag(MorphologicalTag::FUTURE)){
+    if (containsTag(MorphologicalTag::ABLE)){
+        return "Pot";
+    }
+    if (containsTag(MorphologicalTag::PASTTENSE) || containsTag(MorphologicalTag::NARRATIVE) || containsTag(MorphologicalTag::PROGRESSIVE1) || containsTag(MorphologicalTag::PROGRESSIVE2) || containsTag(MorphologicalTag::FUTURE)){
         return "Ind";
+    }
+    if ((containsTag(MorphologicalTag::COPULA) || containsTag(MorphologicalTag::AORIST))){
+        return "Gen";
+    }
+    if (containsTag(MorphologicalTag::ZERO) && !containsTag(MorphologicalTag::A3PL)){
+        return "Gen";
     }
     return "";
 }
@@ -842,8 +935,30 @@ string MorphologicalParse::getVerbForm() const{
     if (containsTag(MorphologicalTag::PASTPARTICIPLE) || containsTag(MorphologicalTag::FUTUREPARTICIPLE) || containsTag(MorphologicalTag::PRESENTPARTICIPLE)){
         return "Part";
     }
+    if (containsTag(MorphologicalTag::INFINITIVE) || containsTag(MorphologicalTag::INFINITIVE2)){
+        return "Vnoun";
+    }
     if (containsTag(MorphologicalTag::SINCEDOINGSO) || containsTag(MorphologicalTag::WITHOUTHAVINGDONESO) || containsTag(MorphologicalTag::WITHOUTBEINGABLETOHAVEDONESO) || containsTag(MorphologicalTag::BYDOINGSO) || containsTag(MorphologicalTag::AFTERDOINGSO) || containsTag(MorphologicalTag::INFINITIVE3)){
         return "Conv";
+    }
+    if (containsTag(MorphologicalTag::COPULA) || containsTag(MorphologicalTag::ABLE) || containsTag(MorphologicalTag::AORIST) || containsTag(MorphologicalTag::PROGRESSIVE2)
+        || containsTag(MorphologicalTag::DESIRE) || containsTag(MorphologicalTag::NECESSITY) || containsTag(MorphologicalTag::CONDITIONAL) || containsTag(MorphologicalTag::IMPERATIVE) || containsTag(MorphologicalTag::OPTATIVE)
+        || containsTag(MorphologicalTag::PASTTENSE) || containsTag(MorphologicalTag::NARRATIVE) || containsTag(MorphologicalTag::PROGRESSIVE1) || containsTag(MorphologicalTag::FUTURE)
+        || (containsTag(MorphologicalTag::ZERO) && !containsTag(MorphologicalTag::A3PL))){
+        return "Fin";
+    }
+    return "";
+}
+
+string MorphologicalParse::getEvident() const{
+    if (containsTag(MorphologicalTag::NARRATIVE)){
+        return "Nfh";
+    } else {
+        if (containsTag(MorphologicalTag::COPULA) || containsTag(MorphologicalTag::ABLE) || containsTag(MorphologicalTag::AORIST) || containsTag(MorphologicalTag::PROGRESSIVE2)
+            || containsTag(MorphologicalTag::DESIRE) || containsTag(MorphologicalTag::NECESSITY) || containsTag(MorphologicalTag::CONDITIONAL) || containsTag(MorphologicalTag::IMPERATIVE) || containsTag(MorphologicalTag::OPTATIVE)
+            || containsTag(MorphologicalTag::PASTTENSE) || containsTag(MorphologicalTag::NARRATIVE) || containsTag(MorphologicalTag::PROGRESSIVE1) || containsTag(MorphologicalTag::FUTURE)) {
+            return "Fh";
+        }
     }
     return "";
 }
@@ -857,28 +972,41 @@ string MorphologicalParse::getVerbForm() const{
 vector<string> MorphologicalParse::getUniversalDependencyFeatures(const string& uPos) const{
     vector<string> featureList;
     string pronType = getPronType();
-    if (!pronType.empty() && uPos != "ADJ" && uPos != "VERB" && uPos != "CCONJ"){
+    if (!pronType.empty() && uPos != "NOUN" && uPos != "ADJ"
+    && uPos != "VERB" && uPos != "PROPN" && uPos != "CCONJ"){
         featureList.emplace_back("PronType=" + pronType);
     }
     string numType = getNumType();
-    if (!numType.empty() && uPos != "VERB"){
+    if (!numType.empty() && uPos != "VERB" && uPos != "NOUN" && uPos != "ADV"){
         featureList.emplace_back("NumType=" + numType);
     }
     string reflex = getReflex();
-    if (!reflex.empty()){
+    if (!reflex.empty() && uPos != "ADJ" && uPos != "VERB"){
         featureList.emplace_back("Reflex=" + reflex);
     }
     string degree = getDegree();
-    if (!degree.empty()){
+    if (!degree.empty() && uPos != "ADJ"){
         featureList.emplace_back("Degree=" + degree);
     }
-    if (isNoun() || isVerb()){
+    if (isNoun() || isVerb() || root->getName() == "mi" || (!pronType.empty() && pronType != "Art")){
         string number = getNumber();
         if (!number.empty()){
             featureList.emplace_back("Number=" + number);
         }
+        string possessiveNumber = getPossessiveNumber();
+        if (!possessiveNumber.empty()){
+            featureList.emplace_back("Number[psor]=" + possessiveNumber);
+        }
+        string person = getPerson();
+        if (!person.empty() && uPos != "PROPN"){
+            featureList.emplace_back("Person=" + person);
+        }
+        string possessivePerson = getPossessivePerson();
+        if (!possessivePerson.empty() && uPos != "PROPN"){
+            featureList.emplace_back("Person[psor]=" + possessivePerson);
+        }
     }
-    if (isNoun()) {
+    if (isNoun() || (!pronType.empty() && pronType != "Art")) {
         string case_ = getCase();
         if (!case_.empty()){
             featureList.emplace_back("Case=" + case_);
@@ -890,21 +1018,17 @@ vector<string> MorphologicalParse::getUniversalDependencyFeatures(const string& 
             featureList.emplace_back("Definite=" + definite);
         }
     }
-    if (isVerb()){
+    if (isVerb() || root->getName() == "mi"){
         string polarity = getPolarity();
         if (!polarity.empty()){
             featureList.emplace_back("Polarity=" + polarity);
         }
-        string person = getPerson();
-        if (!person.empty() && uPos != "PROPN"){
-            featureList.emplace_back("Person=" + person);
-        }
         string voice = getVoice();
-        if (!voice.empty()){
+        if (!voice.empty() && root->getName() != "mi"){
             featureList.emplace_back("Voice=" + voice);
         }
         string aspect = getAspect();
-        if (!aspect.empty() && uPos != "PROPN"){
+        if (!aspect.empty() && uPos != "PROPN" && root->getName() != "mi"){
             featureList.emplace_back("Aspect=" + aspect);
         }
         string tense = getTense();
@@ -912,12 +1036,16 @@ vector<string> MorphologicalParse::getUniversalDependencyFeatures(const string& 
             featureList.emplace_back("Tense=" + tense);
         }
         string mood = getMood();
-        if (!mood.empty() && uPos != "PROPN"){
+        if (!mood.empty() && uPos != "PROPN" && root->getName() != "mi"){
             featureList.emplace_back("Mood=" + mood);
         }
         string verbForm = getVerbForm();
         if (!verbForm.empty()){
             featureList.emplace_back("VerbForm=" + verbForm);
+        }
+        string evident = getEvident();
+        if (!evident.empty()){
+            featureList.emplace_back("Evident=" + evident);
         }
     }
     sort(featureList.begin(), featureList.end());

@@ -66,16 +66,19 @@ private:
     string getNumType() const;
     string getReflex() const;
     string getNumber() const;
+    string getPossessiveNumber() const;
     string getCase() const;
     string getDefinite() const;
     string getDegree() const;
     string getPolarity() const;
     string getPerson() const;
+    string getPossessivePerson() const;
     string getVoice() const;
     string getAspect() const;
     string getTense() const;
     string getMood() const;
     string getVerbForm() const;
+    string getEvident() const;
 };
 
 
