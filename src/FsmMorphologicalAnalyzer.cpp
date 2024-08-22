@@ -1346,7 +1346,8 @@ FsmParseList FsmMorphologicalAnalyzer::morphologicalAnalysis(const string& surfa
                                             dictionaryTrie->addWord(possibleRoot, new TxtWord(possibleRoot, "IS_REELSAYI"));
                                             fsmParse = analysis(lowerCased, isProperNoun(surfaceForm));
                                         } else {
-                                            if (Word::isCapital(possibleRoot)) {
+                                            string uppercaseLetters = "QXW";
+                                            if (Word::isCapital(possibleRoot) || uppercaseLetters.find(Word::substring(possibleRoot, 0, 1)) != string::npos) {
                                                 possibleRootLowerCased = Word::toLowerCase(possibleRoot);
                                                 if (pronunciations.contains(possibleRootLowerCased)){
                                                     isRootReplaced = true;
