@@ -15,8 +15,8 @@ public:
     DisambiguationCorpus();
     DisambiguationCorpus emptyCopy() const;
     explicit DisambiguationCorpus(const string& fileName);
-    void writeToFile(const string& fileName);
-    void writeToFile(const string& fileName, WordFormat format);
+    void writeToFile(const string& fileName) const;
+    void writeToFile(const string& fileName, WordFormat format) const;
 };
 
 

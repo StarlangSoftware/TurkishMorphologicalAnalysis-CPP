@@ -3,6 +3,9 @@
 //
 
 #include "MorphotacticEngine.h"
+
+#include <StringUtils.h>
+
 #include "Language/TurkishLanguage.h"
 
 /**
@@ -28,9 +31,9 @@ string MorphotacticEngine::resolveD(TxtWord* root, const string& formation, cons
             return formation + 't';
         } else {
             if (lastPhoneme == "0"){
-                if (Word::endsWith(root->getName(), "40") ||
-                    Word::endsWith(root->getName(), "60") ||
-                    Word::endsWith(root->getName(), "70"))
+                if (StringUtils::endsWith(root->getName(), "40") ||
+                    StringUtils::endsWith(root->getName(), "60") ||
+                    StringUtils::endsWith(root->getName(), "70"))
                     //40->40'tı, 60->60'tı, 70->70'ti
                     return formation + 't';
                 else
@@ -77,11 +80,11 @@ string MorphotacticEngine::resolveA(TxtWord *root, const string& formation, bool
             return formation + 'a';
         } else {
             if (lastVowel == "0"){
-                if (Word::endsWith(root->getName(), "10") ||
-                    Word::endsWith(root->getName(), "30") ||
-                    Word::endsWith(root->getName(), "40") ||
-                    Word::endsWith(root->getName(), "60") ||
-                    Word::endsWith(root->getName(), "90"))
+                if (StringUtils::endsWith(root->getName(), "10") ||
+                    StringUtils::endsWith(root->getName(), "30") ||
+                    StringUtils::endsWith(root->getName(), "40") ||
+                    StringUtils::endsWith(root->getName(), "60") ||
+                    StringUtils::endsWith(root->getName(), "90"))
                     //10'a, 30'a, 40'a, 60'a, 90'a
                     return formation + 'a';
                 else
@@ -112,13 +115,13 @@ string MorphotacticEngine::resolveA(TxtWord *root, const string& formation, bool
         }
     }
     if (root->isNumeral() || root->isFraction() || root->isReal()) {
-        if (Word::endsWith(root->getName(), "6") ||
-            Word::endsWith(root->getName(), "9") ||
-            Word::endsWith(root->getName(), "10") ||
-            Word::endsWith(root->getName(), "30") ||
-            Word::endsWith(root->getName(), "40") ||
-            Word::endsWith(root->getName(), "60") ||
-            Word::endsWith(root->getName(), "90")) {
+        if (StringUtils::endsWith(root->getName(), "6") ||
+            StringUtils::endsWith(root->getName(), "9") ||
+            StringUtils::endsWith(root->getName(), "10") ||
+            StringUtils::endsWith(root->getName(), "30") ||
+            StringUtils::endsWith(root->getName(), "40") ||
+            StringUtils::endsWith(root->getName(), "60") ||
+            StringUtils::endsWith(root->getName(), "90")) {
             return formation + 'a';
         } else {
             return formation + 'e';
@@ -204,22 +207,22 @@ string MorphotacticEngine::resolveH(TxtWord *root, const string& formation, bool
         return formation + "ı";
     }
     if (root->isNumeral() || root->isFraction() || root->isReal()) {
-        if (Word::endsWith(root->getName(), "6") ||
-            Word::endsWith(root->getName(), "40") ||
-            Word::endsWith(root->getName(), "60") ||
-            Word::endsWith(root->getName(), "90")) {
+        if (StringUtils::endsWith(root->getName(), "6") ||
+            StringUtils::endsWith(root->getName(), "40") ||
+            StringUtils::endsWith(root->getName(), "60") ||
+            StringUtils::endsWith(root->getName(), "90")) {
             //6'yı, 40'ı, 60'ı
             return formation + "ı";
         } else {
-            if (Word::endsWith(root->getName(), "3") ||
-                Word::endsWith(root->getName(), "4") ||
-                Word::endsWith(root->getName(), "00")) {
+            if (StringUtils::endsWith(root->getName(), "3") ||
+                StringUtils::endsWith(root->getName(), "4") ||
+                StringUtils::endsWith(root->getName(), "00")) {
                 //3'ü, 4'ü, 100'ü
                 return formation + "ü";
             } else {
-                if (Word::endsWith(root->getName(), "9") ||
-                    Word::endsWith(root->getName(), "10") ||
-                    Word::endsWith(root->getName(), "30")) {
+                if (StringUtils::endsWith(root->getName(), "9") ||
+                    StringUtils::endsWith(root->getName(), "10") ||
+                    StringUtils::endsWith(root->getName(), "30")) {
                     //9'u, 10'u, 30'u
                     return formation + 'u';
                 } else {

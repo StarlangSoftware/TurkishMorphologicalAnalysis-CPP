@@ -3,8 +3,7 @@
 //
 
 #include "FsmParse.h"
-
-#include <utility>
+#include <StringUtils.h>
 #include "Dictionary/TxtWord.h"
 #include "Transition.h"
 
@@ -113,9 +112,9 @@ void FsmParse::constructInflectionalGroups() {
         parse = parse.substr(parse.find("^DB+") + 4, parse.size());
     }
     iGs.emplace_back(parse);
-    inflectionalGroups.emplace_back(InflectionalGroup(iGs.at(0).substr(iGs.at(0).find('+') + 1)));
+    inflectionalGroups.emplace_back(iGs.at(0).substr(iGs.at(0).find('+') + 1));
     for (i = 1; i < iGs.size(); i++) {
-        inflectionalGroups.emplace_back(InflectionalGroup(iGs.at(i)));
+        inflectionalGroups.emplace_back(iGs.at(i));
     }
 }
 
@@ -500,7 +499,7 @@ string FsmParse::transitionlist() const{
     if (suffixList.at(0).getName() == "NominalRoot" || suffixList.at(0).getName() == "NominalRootNoPossesive" || suffixList.at(0).getName() == "CompoundNounRoot" || suffixList.at(0).getName() == "NominalRootPlural") {
         result = formList.at(0) + "+NOUN";
     } else {
-        if (Word::startsWith(suffixList.at(0).getName(), "VerbalRoot") || suffixList.at(0).getName() == "PassiveHn") {
+        if (StringUtils::startsWith(suffixList.at(0).getName(), "VerbalRoot") || suffixList.at(0).getName() == "PassiveHn") {
             result = formList.at(0) + "+VERB";
         } else {
             if (suffixList.at(0).getName() == "CardinalRoot") {
@@ -586,13 +585,13 @@ string FsmParse::transitionlist() const{
                                                                                                     }
                                                                                                 }
                                                                                             } else {
-                                                                                                if (Word::startsWith(suffixList.at(0).getName(), "PronounRoot")) {
+                                                                                                if (StringUtils::startsWith(suffixList.at(0).getName(), "PronounRoot")) {
                                                                                                     result = pronounTransition();
                                                                                                 } else {
                                                                                                     if (suffixList.at(0).getName() == "OrdinalRoot") {
                                                                                                         result = formList.at(0) + "+NUM+ORD";
                                                                                                     } else {
-                                                                                                        if (Word::startsWith(suffixList.at(0).getName(), "Adjective")) {
+                                                                                                        if (StringUtils::startsWith(suffixList.at(0).getName(), "Adjective")) {
                                                                                                             result = formList.at(0) + "+ADJ";
                                                                                                         }
                                                                                                     }
@@ -622,7 +621,7 @@ string FsmParse::transitionlist() const{
     }
     for (const string &transition : transitionList) {
         if (!transition.empty()) {
-            if (!Word::startsWith(transition, "^")) {
+            if (!StringUtils::startsWith(transition, "^")) {
                 result.append("+");
                 result.append(transition);
             } else {
@@ -695,7 +694,7 @@ string FsmParse::to_String() const{
  * @param original Original form of the proper noun.
  * @param pronunciation Pronunciation of the proper noun.
  */
-void FsmParse::restoreOriginalForm(string original, string pronunciation){
+void FsmParse::restoreOriginalForm(const string &original, const string &pronunciation){
     root = new TxtWord(original, "IS_OA");
     form = original + Word::substring(form, pronunciation.length());
     for (int i = 0; i < formList.size(); i++) {

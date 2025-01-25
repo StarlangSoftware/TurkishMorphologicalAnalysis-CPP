@@ -6,6 +6,8 @@
 #include "catch.hpp"
 #include <fstream>
 #include <sstream>
+#include <StringUtils.h>
+
 #include "../src/FsmMorphologicalAnalyzer.h"
 
 TEST_CASE("testGenerateAllParses") {
@@ -30,7 +32,7 @@ TEST_CASE("testGenerateAllParses") {
         while (inputFile.good()) {
             getline(inputFile, line);
             if (!line.empty()){
-                parsesExpected.push_back(Word::split(line)[1]);
+                parsesExpected.push_back(StringUtils::split(line)[1]);
             }
         }
         inputFile.close();

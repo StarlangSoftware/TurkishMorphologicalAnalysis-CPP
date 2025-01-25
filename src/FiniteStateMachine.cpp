@@ -91,9 +91,9 @@ FiniteStateMachine::FiniteStateMachine(const string& fileName) {
  * @param transition is used to compare with the actual transition of a state.
  * @return true when the actual transition equals to the transition input, false otherwise.
  */
-bool FiniteStateMachine::isValidTransition(const string& transition) {
+bool FiniteStateMachine::isValidTransition(const string& transition) const {
     for (const auto& state : transitions) {
-        for (Transition transition1 : state.second) {
+        for (const Transition& transition1 : state.second) {
             if (!transition1.to_String().empty() && transition1.to_String() == transition) {
                 return true;
             }
@@ -122,6 +122,7 @@ State FiniteStateMachine::getState(const string& name) const{
  * The addTransition method creates a new Transition with given input parameters and adds the transition to
  * transitions ArrayList.
  *
+ * @param fromState  State type input indicating the next state.
  * @param toState  State type input indicating the next state.
  * @param with     String input indicating with what the transition will be made.
  * @param withName String input.

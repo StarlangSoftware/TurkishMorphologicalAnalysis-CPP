@@ -3,6 +3,9 @@
 //
 
 #include "Transition.h"
+
+#include <StringUtils.h>
+
 #include "Language/TurkishLanguage.h"
 #include "MorphotacticEngine.h"
 
@@ -124,7 +127,7 @@ bool Transition::transitionPossible(const string& currentSurfaceForm, const stri
  * @return true if transition is possible false otherwise
  */
 bool Transition::transitionPossible(const FsmParse& currentFsmParse) const{
-    if (with == "Ar" && Word::endsWith(currentFsmParse.getSurfaceForm(), "l") && currentFsmParse.getWord()->getName() != currentFsmParse.getSurfaceForm()) {
+    if (with == "Ar" && StringUtils::endsWith(currentFsmParse.getSurfaceForm(), "l") && currentFsmParse.getWord()->getName() != currentFsmParse.getSurfaceForm()) {
         return false;
     }
     if (!currentFsmParse.getVerbAgreement().empty() && !currentFsmParse.getPossesiveAgreement().empty() && !withName.empty()) {
@@ -228,7 +231,7 @@ bool Transition::softenDuringSuffixation(TxtWord* root) const{
     if ((root->isNominal() || root->isAdjective()) && root->nounSoftenDuringSuffixation() && (with == "Hm" || with == "nDAn" || with == "ncA" || with == "nDA" || with == "yA" || with == "yHm" || with == "yHz" || with == "yH" || with == "nH" || with == "nA" || with == "nHn" || with == "H" || with == "sH" || with == "Hn" || with == "HnHz" || with == "HmHz")) {
         return true;
     }
-    if (root->isVerb() && root->verbSoftenDuringSuffixation() && (Word::startsWith(with, "Hyor") || with == "yHs" || with == "yAn" || with == "yA" || Word::startsWith(with, "yAcAk") || with == "yAsH" || with == "yHncA" || with == "yHp" || with == "yAlH" || with == "yArAk" || with == "yAdur" || with == "yHver" || with == "yAgel" || with == "yAgor" || with == "yAbil" || with == "yAyaz" || with == "yAkal" || with == "yAkoy" || with == "yAmA" || with == "yHcH" || with == "HCH" || Word::startsWith(with, "Hr") || with == "Hs" || with == "Hn" || with == "yHn" || with == "yHnHz" || Word::startsWith(with, "Ar") || with == "Hl")) {
+    if (root->isVerb() && root->verbSoftenDuringSuffixation() && (StringUtils::startsWith(with, "Hyor") || with == "yHs" || with == "yAn" || with == "yA" || StringUtils::startsWith(with, "yAcAk") || with == "yAsH" || with == "yHncA" || with == "yHp" || with == "yAlH" || with == "yArAk" || with == "yAdur" || with == "yHver" || with == "yAgel" || with == "yAgor" || with == "yAbil" || with == "yAyaz" || with == "yAkal" || with == "yAkoy" || with == "yAmA" || with == "yHcH" || with == "HCH" || StringUtils::startsWith(with, "Hr") || with == "Hs" || with == "Hn" || with == "yHn" || with == "yHnHz" || StringUtils::startsWith(with, "Ar") || with == "Hl")) {
         return true;
     }
     return false;
@@ -302,12 +305,12 @@ string Transition::makeTransition(TxtWord *root, const string& stem, const State
         } else {
             //---showsSuRegularities---
             //karasu->karasuyu, özsu->özsuyu, ağırsu->ağırsuyu, akarsu->akarsuyu, bengisu->bengisuyu
-            if (rootWord && root->showsSuRegularities() && startWithVowelorConsonantDrops() && !Word::startsWith(with, "y")) {
+            if (rootWord && root->showsSuRegularities() && startWithVowelorConsonantDrops() && !StringUtils::startsWith(with, "y")) {
                 formation = stem + 'y';
                 i = 1;
                 formationToCheck = formation;
             } else {
-                if (rootWord && root->duplicatesDuringSuffixation() && !Word::startsWith(startState.getName(), "VerbalRoot") && TurkishLanguage::isConsonantDrop(Word::charAt(with, 0))) {
+                if (rootWord && root->duplicatesDuringSuffixation() && !StringUtils::startsWith(startState.getName(), "VerbalRoot") && TurkishLanguage::isConsonantDrop(Word::charAt(with, 0))) {
                     //---duplicatesDuringSuffixation---
                     if (softenDuringSuffixation(root)) {
                         //--extra softenDuringSuffixation
@@ -327,7 +330,7 @@ string Transition::makeTransition(TxtWord *root, const string& stem, const State
                     }
                     formationToCheck = formation;
                 } else {
-                    if (rootWord && root->lastIdropsDuringSuffixation() && !Word::startsWith(startState.getName(), "VerbalRoot") && !Word::startsWith(startState.getName(), "ProperRoot") && startWithVowelorConsonantDrops()) {
+                    if (rootWord && root->lastIdropsDuringSuffixation() && !StringUtils::startsWith(startState.getName(), "VerbalRoot") && !StringUtils::startsWith(startState.getName(), "ProperRoot") && startWithVowelorConsonantDrops()) {
                         //---lastIdropsDuringSuffixation---
                         if (softenDuringSuffixation(root)) {
                             //---softenDuringSuffixation---
@@ -400,7 +403,7 @@ string Transition::makeTransition(TxtWord *root, const string& stem, const State
         }
     }
     string* withChars = Word::allCharacters(with);
-    if (TurkishLanguage::isConsonantDrop(withFirstChar()) && !TurkishLanguage::isVowel(Word::lastChar(stem)) && (root->isNumeral() || root->isReal() || root->isFraction() || root->isTime() || root->isDate() || root->isPercent() || root->isRange()) && (Word::endsWith(root->getName(), "1") || Word::endsWith(root->getName(), "3") || Word::endsWith(root->getName(), "4") || Word::endsWith(root->getName(), "5") || Word::endsWith(root->getName(), "8") || Word::endsWith(root->getName(), "9") || Word::endsWith(root->getName(), "10") || Word::endsWith(root->getName(), "30") || Word::endsWith(root->getName(), "40") || Word::endsWith(root->getName(), "60") || Word::endsWith(root->getName(), "70") || Word::endsWith(root->getName(), "80") || Word::endsWith(root->getName(), "90") || Word::endsWith(root->getName(), "00"))) {
+    if (TurkishLanguage::isConsonantDrop(withFirstChar()) && !TurkishLanguage::isVowel(Word::lastChar(stem)) && (root->isNumeral() || root->isReal() || root->isFraction() || root->isTime() || root->isDate() || root->isPercent() || root->isRange()) && (StringUtils::endsWith(root->getName(), "1") || StringUtils::endsWith(root->getName(), "3") || StringUtils::endsWith(root->getName(), "4") || StringUtils::endsWith(root->getName(), "5") || StringUtils::endsWith(root->getName(), "8") || StringUtils::endsWith(root->getName(), "9") || StringUtils::endsWith(root->getName(), "10") || StringUtils::endsWith(root->getName(), "30") || StringUtils::endsWith(root->getName(), "40") || StringUtils::endsWith(root->getName(), "60") || StringUtils::endsWith(root->getName(), "70") || StringUtils::endsWith(root->getName(), "80") || StringUtils::endsWith(root->getName(), "90") || StringUtils::endsWith(root->getName(), "00"))) {
         if (withChars[0] == "'") {
             formation = formation + '\'';
             i = 2;
@@ -429,7 +432,7 @@ string Transition::makeTransition(TxtWord *root, const string& stem, const State
             } else {
                 if (withChars[i] == "H"){
                     if (withChars[0] != "'") {
-                        formation = MorphotacticEngine::resolveH(root, formation, i == 0, Word::startsWith(with, "Hyor"), rootWord, formationToCheck);
+                        formation = MorphotacticEngine::resolveH(root, formation, i == 0, StringUtils::startsWith(with, "Hyor"), rootWord, formationToCheck);
                     } else {
                         formation = MorphotacticEngine::resolveH(root, formation, i == 1, false, rootWord, formationToCheck);
                     }

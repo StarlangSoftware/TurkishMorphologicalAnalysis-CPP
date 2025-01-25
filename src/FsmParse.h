@@ -48,7 +48,7 @@ public:
     string getWithList() const;
     string replaceRootWord(TxtWord* newRoot) const;
     string to_String() const;
-    void restoreOriginalForm(string original, string pronunciation);
+    void restoreOriginalForm(const string &original, const string &pronunciation);
 /**
  * The overridden compareTo metgod takes an {@link Object} as an input and if it is an instance of the {@link FsmParse}
  * class it returns the result of comparison of the items of transitionList with input {@link Object}.

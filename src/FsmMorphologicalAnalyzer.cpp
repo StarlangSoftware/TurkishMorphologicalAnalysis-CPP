@@ -7,6 +7,8 @@
 #include <queue>
 #include "FsmMorphologicalAnalyzer.h"
 
+#include <StringUtils.h>
+
 using namespace std;
 
 /**
@@ -73,7 +75,7 @@ void FsmMorphologicalAnalyzer::prepareSuffixTrie() {
  * @param fileName Input file containing analyzable surface forms and their root forms.
  */
 void FsmMorphologicalAnalyzer::addSurfaceForms(const string& fileName) {
-    parsedSurfaceForms = Word::readHashMap(fileName);
+    parsedSurfaceForms = StringUtils::readHashMap(fileName);
 }
 
 /**
@@ -81,7 +83,7 @@ void FsmMorphologicalAnalyzer::addSurfaceForms(const string& fileName) {
  * @param fileName Input file containing foreign words and their pronunciations.
  */
 void FsmMorphologicalAnalyzer::addPronunciations(const string& fileName) {
-    pronunciations = Word::readHashMap(fileName);
+    pronunciations = StringUtils::readHashMap(fileName);
 }
 
 /**
@@ -120,7 +122,7 @@ FiniteStateMachine FsmMorphologicalAnalyzer::getFiniteStateMachine() const{
  * @return HashSet result.
  */
 unordered_set<string>
-FsmMorphologicalAnalyzer::getPossibleWords(const MorphologicalParse& morphologicalParse, const MetamorphicParse& parse) {
+FsmMorphologicalAnalyzer::getPossibleWords(const MorphologicalParse& morphologicalParse, const MetamorphicParse& parse) const {
     bool isRootVerb = morphologicalParse.getRootPos() == "VERB";
     bool containsVerb = morphologicalParse.containsTag(MorphologicalTag::VERB);
     Transition verbTransition = Transition("mAk");
@@ -577,7 +579,7 @@ void FsmMorphologicalAnalyzer::initializeParseListFromRoot(vector<FsmParse>& par
  * @param isProper    is used to check a word is proper or not.
  * @return initialFsmParse ArrayList.
  */
-vector<FsmParse> FsmMorphologicalAnalyzer::initializeParseListFromSurfaceForm(const string& surfaceForm, bool isProper) {
+vector<FsmParse> FsmMorphologicalAnalyzer::initializeParseListFromSurfaceForm(const string& surfaceForm, bool isProper) const {
     TxtWord* root;
     vector<FsmParse> initialFsmParse;
     if (surfaceForm.empty()) {
@@ -598,7 +600,7 @@ vector<FsmParse> FsmMorphologicalAnalyzer::initializeParseListFromSurfaceForm(co
  *
  * @param currentFsmParse FsmParse type input.
  * @param fsmParse        an ArrayList of FsmParse.
- * @param surfaceForm     String to use during transition.
+ * @param maxLength     String to use during transition.
  * @param root            TxtWord used to make transition.
  */
 void FsmMorphologicalAnalyzer::addNewParsesFromCurrentParse(const FsmParse& currentFsmParse, deque<FsmParse>& fsmParse,
@@ -753,9 +755,9 @@ vector<FsmParse> FsmMorphologicalAnalyzer::parseWord(vector<FsmParse> fsmParse, 
  * @param state       String input.
  * @return parseWord method with newly populated FsmParse ArrayList and input surfaceForm.
  */
-vector<FsmParse> FsmMorphologicalAnalyzer::morphologicalAnalysis(TxtWord *root, const string& surfaceForm, const string& state) {
+vector<FsmParse> FsmMorphologicalAnalyzer::morphologicalAnalysis(TxtWord *root, const string& surfaceForm, const string& state) const {
     vector<FsmParse> initialFsmParse;
-    initialFsmParse.emplace_back(FsmParse(root, finiteStateMachine.getState(state)));
+    initialFsmParse.emplace_back(root, finiteStateMachine.getState(state));
     return parseWord(initialFsmParse, surfaceForm);
 }
 
@@ -767,7 +769,7 @@ vector<FsmParse> FsmMorphologicalAnalyzer::morphologicalAnalysis(TxtWord *root, 
  * @param maxLength Maximum length of the surface form.
  * @return parseWord method with newly populated FsmParse ArrayList and maximum length.
  */
-vector<FsmParse> FsmMorphologicalAnalyzer::generateAllParses(TxtWord *root, int maxLength) {
+vector<FsmParse> FsmMorphologicalAnalyzer::generateAllParses(TxtWord *root, int maxLength) const {
     vector<FsmParse> initialFsmParse;
     if (root->isProperNoun()){
         initializeParseListFromRoot(initialFsmParse, root, true);
@@ -785,7 +787,7 @@ vector<FsmParse> FsmMorphologicalAnalyzer::generateAllParses(TxtWord *root, int 
  * @param surfaceForm String input to use for parsing.
  * @return parseWord method with newly populated FsmParse ArrayList and input surfaceForm.
  */
-vector<FsmParse> FsmMorphologicalAnalyzer::morphologicalAnalysis(TxtWord *root, const string& surfaceForm) {
+vector<FsmParse> FsmMorphologicalAnalyzer::morphologicalAnalysis(TxtWord *root, const string& surfaceForm) const {
     vector<FsmParse> initialFsmParse;
     initializeParseListFromRoot(initialFsmParse, root, isProperNoun(surfaceForm));
     return parseWord(initialFsmParse, surfaceForm);
@@ -806,13 +808,13 @@ Sentence* FsmMorphologicalAnalyzer::replaceWord(Sentence* original, const string
     bool previousWordMultiple = previousWord.find(' ') != std::string::npos;
     bool newWordMultiple = newWord.find(' ') != std::string::npos;
     if (previousWordMultiple){
-        previousWordSplitted = Word::split(previousWord);
+        previousWordSplitted = StringUtils::split(previousWord);
         lastWord = previousWordSplitted[previousWordSplitted.size() - 1];
     } else {
         lastWord = previousWord;
     }
     if (newWordMultiple){
-        newWordSplitted = Word::split(newWord);
+        newWordSplitted = StringUtils::split(newWord);
         newRootWord = newWordSplitted[newWordSplitted.size() - 1];
     } else {
         newRootWord = newWord;
@@ -954,7 +956,7 @@ vector<FsmParse> FsmMorphologicalAnalyzer::analysis(const string& surfaceForm, b
         initialFsmParse.push_back(fsmParse);
         return initialFsmParse;
     }
-    if (Word::startsWith(surfaceForm, "#")) {
+    if (StringUtils::startsWith(surfaceForm, "#")) {
         fsmParse = FsmParse(surfaceForm, State(("Hashtag"), true, true));
         fsmParse.constructInflectionalGroups();
         initialFsmParse.push_back(fsmParse);
@@ -1056,7 +1058,7 @@ vector<TxtWord*> FsmMorphologicalAnalyzer::rootOfPossiblyNewWord(const string& s
     for (Word* word : words){
         string candidateWord = Word::substring(surfaceForm, 0, Word::size(surfaceForm) - Word::size(word->getName()));
         TxtWord* newWord;
-        if (Word::endsWith(candidateWord, "ğ")){
+        if (StringUtils::endsWith(candidateWord, "ğ")){
             candidateWord = Word::substring(candidateWord, 0, Word::size(candidateWord) - 1) + "k";
             newWord = new TxtWord(candidateWord, "CL_ISIM");
             newWord->addFlag("IS_SD");
@@ -1088,19 +1090,19 @@ FsmParseList FsmMorphologicalAnalyzer::robustMorphologicalAnalysis(const string&
     currentParse = morphologicalAnalysis(surfaceForm);
     if (currentParse.size() == 0) {
         if (isProperNoun(surfaceForm)) {
-            fsmParse.emplace_back(FsmParse(surfaceForm, finiteStateMachine.getState("ProperRoot")));
+            fsmParse.emplace_back(surfaceForm, finiteStateMachine.getState("ProperRoot"));
         }
         if (isCode(surfaceForm)){
-            fsmParse.emplace_back(FsmParse(surfaceForm, finiteStateMachine.getState("CodeRoot")));
+            fsmParse.emplace_back(surfaceForm, finiteStateMachine.getState("CodeRoot"));
         }
         vector<TxtWord*> newCadidateList = rootOfPossiblyNewWord(surfaceForm);
         if (!newCadidateList.empty()) {
             for (TxtWord *word: newCadidateList) {
-                fsmParse.emplace_back(FsmParse(word, finiteStateMachine.getState("VerbalRoot")));
-                fsmParse.emplace_back(FsmParse(word, finiteStateMachine.getState("NominalRoot")));
+                fsmParse.emplace_back(word, finiteStateMachine.getState("VerbalRoot"));
+                fsmParse.emplace_back(word, finiteStateMachine.getState("NominalRoot"));
             }
         }
-        fsmParse.emplace_back(FsmParse(surfaceForm, finiteStateMachine.getState("NominalRoot")));
+        fsmParse.emplace_back(surfaceForm, finiteStateMachine.getState("NominalRoot"));
         return FsmParseList(parseWord(fsmParse, surfaceForm));
     } else {
         return currentParse;
@@ -1205,7 +1207,7 @@ bool FsmMorphologicalAnalyzer::isNumber(const string& surfaceForm) const{
     while (!word.empty()) {
         found = false;
         for (const string &number : numbers) {
-            if (Word::startsWith(word, number)) {
+            if (StringUtils::startsWith(word, number)) {
                 found = true;
                 count++;
                 word = Word::substring(word, Word::size(number));
@@ -1290,7 +1292,7 @@ FsmParseList FsmMorphologicalAnalyzer::morphologicalAnalysis(const string& surfa
     vector<FsmParse> parses;
     TxtWord* newWord = nullptr;
     string lowerCased = Word::toLowerCase(surfaceForm);
-    string possibleRootLowerCased = "", pronunciation = "";
+    string possibleRootLowerCased, pronunciation;
     bool isRootReplaced = false;
     if (!parsedSurfaceForms.empty() && parsedSurfaceForms.find(lowerCased) != parsedSurfaceForms.end() && !isInteger(surfaceForm) && !isDouble(surfaceForm) && !isPercent(surfaceForm) && !isTime(surfaceForm) && !isRange(surfaceForm) && !isDate(surfaceForm)){
         parses.emplace_back(FsmParse(new Word(parsedSurfaceForms.find(lowerCased)->second)));

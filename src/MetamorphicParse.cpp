@@ -3,6 +3,7 @@
 //
 
 #include "MetamorphicParse.h"
+#include "StringUtils.h"
 
 /**
  * metaMorphemes that can be used.
@@ -545,7 +546,7 @@ MetamorphicParse::MetamorphicParse(const string& parse){
     if (parse == "+") {
         root = Word("+");
     } else {
-        vector<string> words = Word::split(parse, "+");
+        vector<string> words = StringUtils::split(parse, "+");
         root = Word(words[0]);
         for (i = 1; i < words.size(); i++)
             metaMorphemeList.emplace_back(words[i]);
@@ -567,7 +568,7 @@ int MetamorphicParse::size() const{
  * @param newTacticSet String to add the metaMorphemeList.
  */
 void MetamorphicParse::addMetaMorphemeList(const string& newTacticSet) {
-    vector<string> tactics = Word::split(newTacticSet, "+");
+    vector<string> tactics = StringUtils::split(newTacticSet, "+");
     metaMorphemeList.insert(metaMorphemeList.end(), tactics.begin(), tactics.end());
 }
 

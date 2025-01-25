@@ -19,7 +19,7 @@ private:
 public:
     FiniteStateMachine() = default;
     explicit FiniteStateMachine(const string& fileName);
-    bool isValidTransition(const string& transition);
+    bool isValidTransition(const string& transition) const;
     State getState(const string& name) const;
     vector<State> getStates() const;
     void addTransition(const State& fromState, const State& toState, const string& with, const string& withName);

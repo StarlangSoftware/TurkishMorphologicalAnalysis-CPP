@@ -29,7 +29,7 @@ private:
     bool isPossibleSubstring(const string& shortString, const string& longString, TxtWord* root) const;
     void initializeParseList(vector<FsmParse>& fsmParse, TxtWord* root, bool isProper) const;
     void initializeParseListFromRoot(vector<FsmParse>& fsmParse, TxtWord* root, bool isProper) const;
-    vector<FsmParse> initializeParseListFromSurfaceForm(const string& surfaceForm, bool isProper);
+    vector<FsmParse> initializeParseListFromSurfaceForm(const string& surfaceForm, bool isProper) const;
     void addNewParsesFromCurrentParse(const FsmParse& currentFsmParse, deque<FsmParse>& fsmParse, int maxLength, TxtWord* root) const;
     void addNewParsesFromCurrentParse(const FsmParse& currentFsmParse, deque<FsmParse>& fsmParse, const string& surfaceForm, TxtWord* root) const;
     bool parseExists(vector<FsmParse>& fsmParse, const string& surfaceForm) const;
@@ -56,10 +56,10 @@ public:
     void addPronunciations(const string& fileName);
     TxtDictionary* getDictionary() const;
     FiniteStateMachine getFiniteStateMachine() const;
-    unordered_set<string> getPossibleWords(const MorphologicalParse& morphologicalParse, const MetamorphicParse& parse);
-    vector<FsmParse> morphologicalAnalysis(TxtWord* root, const string& surfaceForm, const string& state);
-    vector<FsmParse> generateAllParses(TxtWord* root, int maxLength);
-    vector<FsmParse> morphologicalAnalysis(TxtWord* root, const string& surfaceForm);
+    unordered_set<string> getPossibleWords(const MorphologicalParse& morphologicalParse, const MetamorphicParse& parse) const;
+    vector<FsmParse> morphologicalAnalysis(TxtWord* root, const string& surfaceForm, const string& state) const;
+    vector<FsmParse> generateAllParses(TxtWord* root, int maxLength) const;
+    vector<FsmParse> morphologicalAnalysis(TxtWord* root, const string& surfaceForm) const;
     Sentence* replaceWord(Sentence* original, const string& previousWord, const string& newWord);
     bool isProperNoun(const string& surfaceForm) const;
     FsmParseList robustMorphologicalAnalysis(const string& surfaceForm);

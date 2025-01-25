@@ -4,6 +4,9 @@
 
 #include <fstream>
 #include "DisambiguationCorpus.h"
+
+#include <StringUtils.h>
+
 #include "DisambiguatedWord.h"
 
 /**
@@ -35,7 +38,7 @@ DisambiguationCorpus::DisambiguationCorpus(const string& fileName) {
     inputFile.open(fileName, ifstream::in);
     while (inputFile.good()){
         getline(inputFile, line);
-        vector<string> tokens = Word::split(line, "\t");
+        vector<string> tokens = StringUtils::split(line, "\t");
         word = tokens.at(0);
         parse = tokens.at(1);
         if (!word.empty() && !parse.empty()){
@@ -65,7 +68,7 @@ DisambiguationCorpus::DisambiguationCorpus(const string& fileName) {
  *
  * @param fileName File which will be filled with the sentences.
  */
-void DisambiguationCorpus::writeToFile(const string& fileName) {
+void DisambiguationCorpus::writeToFile(const string& fileName) const {
     ofstream outputFile;
     outputFile.open(fileName, ofstream::out);
     outputFile << "<DOC>\t<DOC>+BDTag\n";
@@ -89,7 +92,7 @@ void DisambiguationCorpus::writeToFile(const string& fileName) {
  * @param fileName File which will be filled with the sentences.
  * @param format   Output format of the words to be written to the file.
  */
-void DisambiguationCorpus::writeToFile(const string& fileName, WordFormat format) {
+void DisambiguationCorpus::writeToFile(const string& fileName, WordFormat format) const {
     if (format == WordFormat::SURFACE || format == WordFormat::LETTER_2 || format == WordFormat::LETTER_3 || format == WordFormat::LETTER_4) {
         Corpus::writeToFile(fileName, format);
     }

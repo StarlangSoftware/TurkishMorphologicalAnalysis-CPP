@@ -56,7 +56,7 @@ MorphologicalParse::MorphologicalParse(const string& parse) {
     iGs.emplace_back(st);
     if (iGs.at(0) == "++Punc") {
         root = new Word("+");
-        inflectionalGroups.emplace_back(InflectionalGroup("Punc"));
+        inflectionalGroups.emplace_back("Punc");
     } else {
         updateRootAndInflectionalGroups(iGs);
     }
@@ -90,10 +90,10 @@ void MorphologicalParse::updateRootAndInflectionalGroups(const vector<string>& _
     int i;
     if (_inflectionalGroups.at(0).find('+') != string::npos) {
         root = new Word(_inflectionalGroups.at(0).substr(0, _inflectionalGroups.at(0).find('+')));
-        this->inflectionalGroups.emplace_back(InflectionalGroup(_inflectionalGroups.at(0).substr(_inflectionalGroups.at(0).find('+') + 1, _inflectionalGroups.at(0).size())));
+        this->inflectionalGroups.emplace_back(_inflectionalGroups.at(0).substr(_inflectionalGroups.at(0).find('+') + 1, _inflectionalGroups.at(0).size()));
     }
     for (i = 1; i < _inflectionalGroups.size(); i++) {
-        this->inflectionalGroups.emplace_back(InflectionalGroup(_inflectionalGroups.at(i)));
+        this->inflectionalGroups.emplace_back(_inflectionalGroups.at(i));
     }
 }
 

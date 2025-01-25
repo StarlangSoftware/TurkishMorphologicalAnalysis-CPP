@@ -4,8 +4,10 @@
 
 #include "FsmParseList.h"
 
+#include <StringUtils.h>
+
 struct fsmParseComparator{
-    bool operator() (const FsmParse& fsmParseA, const FsmParse& fsmParseB){
+    bool operator() (const FsmParse& fsmParseA, const FsmParse& fsmParseB) const {
         return fsmParseA.transitionlist() < fsmParseB.transitionlist();
     }
 };
@@ -168,15 +170,15 @@ bool FsmParseList::isLongestRootException(const FsmParse& fsmParse) const{
     string root = fsmParse.getWord()->getName();
 
     for (const string& longestRootException : longestRootExceptions) {
-        vector<string> exceptionItems = Word::split(longestRootException);
-        string surfaceFormEnding = exceptionItems[0];
-        string longestRootEnding = exceptionItems[1];
-        string longestRootPos = exceptionItems[2];
-        string possibleRootPos = exceptionItems[3];
+        vector<string> exceptionItems = StringUtils::split(longestRootException);
+        const string& surfaceFormEnding = exceptionItems[0];
+        const string& longestRootEnding = exceptionItems[1];
+        const string& longestRootPos = exceptionItems[2];
+        const string& possibleRootPos = exceptionItems[3];
         string possibleRoot = surfaceForm;
-        possibleRoot = Word::replaceAll(possibleRoot, surfaceFormEnding, "");
+        possibleRoot = StringUtils::replaceAll(possibleRoot, surfaceFormEnding, "");
 
-        if (Word::endsWith(surfaceForm, surfaceFormEnding) && Word::endsWith(root, longestRootEnding) && fsmParse.getRootPos() == longestRootPos) {
+        if (StringUtils::endsWith(surfaceForm, surfaceFormEnding) && StringUtils::endsWith(root, longestRootEnding) && fsmParse.getRootPos() == longestRootPos) {
             for (const FsmParse& currentParse : fsmParses) {
                 if (currentParse.getWord()->getName() == possibleRoot && currentParse.getRootPos() == possibleRootPos) {
                     return true;
@@ -223,14 +225,14 @@ vector<FsmParseList> FsmParseList::constructParseListForDifferentRootWithPos() c
         if (i == 0) {
             vector<FsmParse> initial;
             initial.emplace_back(fsmParses.at(i));
-            result.emplace_back(FsmParseList(initial));
+            result.emplace_back(initial);
         } else {
             if (*(fsmParses.at(i).getWordWithPos()) == *(fsmParses.at(i - 1).getWordWithPos())) {
                 result.at(result.size() - 1).fsmParses.emplace_back(fsmParses.at(i));
             } else {
                 vector<FsmParse> initial;
                 initial.emplace_back(fsmParses.at(i));
-                result.emplace_back(FsmParseList(initial));
+                result.emplace_back(initial);
             }
         }
         i++;
