@@ -640,6 +640,14 @@ string MorphologicalParse::getReflex() const{
  * of the parse is plural (contains A1PL, A2PL, A3PL).
  */
 string MorphologicalParse::getNumber() const{
+    if (lastIGContainsTag(MorphologicalTag::A1SG) || lastIGContainsTag(MorphologicalTag::A2SG) || lastIGContainsTag(MorphologicalTag::A3SG)
+        || lastIGContainsTag(MorphologicalTag::P1SG) || lastIGContainsTag(MorphologicalTag::P2SG) || lastIGContainsTag(MorphologicalTag::P3SG)){
+        return "Sing";
+        }
+    if (lastIGContainsTag(MorphologicalTag::A1PL) || lastIGContainsTag(MorphologicalTag::A2PL) || lastIGContainsTag(MorphologicalTag::A3PL)
+        || lastIGContainsTag(MorphologicalTag::P1PL) || lastIGContainsTag(MorphologicalTag::P2PL) || lastIGContainsTag(MorphologicalTag::P3PL)){
+        return "Plur";
+        }
     if (containsTag(MorphologicalTag::A1SG) || containsTag(MorphologicalTag::A2SG) || containsTag(MorphologicalTag::A3SG)
         || containsTag(MorphologicalTag::P1SG) || containsTag(MorphologicalTag::P2SG) || containsTag(MorphologicalTag::P3SG)){
         return "Sing";
@@ -657,6 +665,12 @@ string MorphologicalParse::getNumber() const{
  * possessive agreement of the parse is plural (contains P1PL, P2PL, P3PL).
  */
 string MorphologicalParse::getPossessiveNumber() const{
+    if (lastIGContainsTag(MorphologicalTag::P1SG) || lastIGContainsTag(MorphologicalTag::P2SG) || lastIGContainsTag(MorphologicalTag::P3SG)){
+        return "Sing";
+    }
+    if (lastIGContainsTag(MorphologicalTag::P1PL) || lastIGContainsTag(MorphologicalTag::P2PL) || lastIGContainsTag(MorphologicalTag::P3PL)){
+        return "Plur";
+    }
     if (containsTag(MorphologicalTag::P1SG) || containsTag(MorphologicalTag::P2SG) || containsTag(MorphologicalTag::P3SG)){
         return "Sing";
     }
@@ -756,6 +770,18 @@ string MorphologicalParse::getPolarity() const{
  * @return "1" for first person; "2" for second person; "3" for third person.
  */
 string MorphologicalParse::getPerson() const{
+    if (lastIGContainsTag(MorphologicalTag::A1SG) || lastIGContainsTag(MorphologicalTag::A1PL)
+        || lastIGContainsTag(MorphologicalTag::P1SG) || lastIGContainsTag(MorphologicalTag::P1PL)){
+        return "1";
+        }
+    if (lastIGContainsTag(MorphologicalTag::A2SG) || lastIGContainsTag(MorphologicalTag::A2PL)
+        || lastIGContainsTag(MorphologicalTag::P2SG) || lastIGContainsTag(MorphologicalTag::P2PL)){
+        return "2";
+        }
+    if (lastIGContainsTag(MorphologicalTag::A3SG) || lastIGContainsTag(MorphologicalTag::A3PL)
+        || lastIGContainsTag(MorphologicalTag::P3SG) || lastIGContainsTag(MorphologicalTag::P3PL)){
+        return "3";
+        }
     if (containsTag(MorphologicalTag::A1SG) || containsTag(MorphologicalTag::A1PL)
         || containsTag(MorphologicalTag::P1SG) || containsTag(MorphologicalTag::P1PL)){
         return "1";
@@ -776,6 +802,15 @@ string MorphologicalParse::getPerson() const{
  * @return "1" for first person; "2" for second person; "3" for third person.
  */
 string MorphologicalParse::getPossessivePerson() const{
+    if (lastIGContainsTag(MorphologicalTag::P1SG) || lastIGContainsTag(MorphologicalTag::P1PL)){
+        return "1";
+    }
+    if (lastIGContainsTag(MorphologicalTag::P2SG) || lastIGContainsTag(MorphologicalTag::P2PL)){
+        return "2";
+    }
+    if (lastIGContainsTag(MorphologicalTag::P3SG) || lastIGContainsTag(MorphologicalTag::P3PL)){
+        return "3";
+    }
     if (containsTag(MorphologicalTag::P1SG) || containsTag(MorphologicalTag::P1PL)){
         return "1";
     }
