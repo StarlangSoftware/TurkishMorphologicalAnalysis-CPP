@@ -49,7 +49,7 @@ TEST_CASE("FiniteStateMachineTest") {
         for (const State &state: stateList) {
             transitionCount += fsm.getTransitions(state).size();
         }
-        REQUIRE(779 == transitionCount);
+        REQUIRE(783 == transitionCount);
     }
 
     SECTION("testTransitionWith") {

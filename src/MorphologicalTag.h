@@ -10,520 +10,528 @@ enum class MorphologicalTag {
     /**
      * Noun : Alengir
      */
-            NOUN,
+    NOUN,
     /**
      * Adverb : Alelacele
      */
-            ADVERB,
+    ADVERB,
     /**
      * Adjective : Alengirli
      */
-            ADJECTIVE,
+    ADJECTIVE,
     /**
      * Verb : Alıkoy
      */
-            VERB,
+    VERB,
     /**
      * 1st person singular agreement : Ben gelirim
      */
-            A1SG,
+    A1SG,
     /**
      * 2nd person singular agreement : Sen gelirsin
      */
-            A2SG,
+    A2SG,
     /**
      * 3rd person singular agreement : O gelir
      */
-            A3SG,
+    A3SG,
     /**
      * 1st person plural agreement : Biz geliriz
      */
-            A1PL,
+    A1PL,
     /**
      * 2nd person plural agreement : Siz gelirsiniz
      */
-            A2PL,
+    A2PL,
     /**
      * 3rd person plural agreement : Onlar gelirler
      */
-            A3PL,
+    A3PL,
     /**
      * 1st person singular possessive : Benim
      */
-            P1SG,
+    P1SG,
     /**
      * 2nd person singular possessive :Senin
      */
-            P2SG,
+    P2SG,
     /**
      * 3rd person singular possessive : Onun
      */
-            P3SG,
+    P3SG,
     /**
      * 1st person plural possessive :  Bizim
      */
-            P1PL,
+    P1PL,
     /**
      * 2nd person plural possessive : Sizin
      */
-            P2PL,
+    P2PL,
     /**
      * 3rd person plural possessive : Onların
      */
-            P3PL,
+    P3PL,
     /**
      * Proper noun : John
      */
-            PROPERNOUN,
+    PROPERNOUN,
     /**
      * None possessive : Ev
      */
-            PNON,
+    PNON,
     /**
      * Nominative Case : Kedi uyuyor.
      */
-            NOMINATIVE,
+    NOMINATIVE,
     /**
      * With : Kalemle
      */
-            WITH,
+    WITH,
     /**
      * Without : Dikişsiz
      */
-            WITHOUT,
+    WITHOUT,
     /**
      * Accusatıve : Beni
      */
-            ACCUSATIVE,
+    ACCUSATIVE,
     /**
      * Dative case : Bana
      */
-            DATIVE,
+    DATIVE,
     /**
      * Genitive : Benim
      */
-            GENITIVE,
+    GENITIVE,
     /**
      * Ablative : Okuldan
      */
-            ABLATIVE,
+    ABLATIVE,
     /**
      * Perosnal pronoun : O
      */
-            PERSONALPRONOUN,
+    PERSONALPRONOUN,
     /**
      * Zero Derivation : Kırmızıydı
      */
-            ZERO,
+    ZERO,
     /**
      * Ability, possibility : Olabilir
      */
-            ABLE,
+    ABLE,
     /**
      * Negative : Yapama
      */
-            NEGATIVE,
+    NEGATIVE,
     /**
      * Past tense : Gitti
      */
-            PASTTENSE,
+    PASTTENSE,
     /**
      * Conjunction or disjunction : Ama, ise
      */
-            CONJUNCTION,
+    CONJUNCTION,
     /**
      * Determiner : Birtakım
      */
-            DETERMINER,
+    DETERMINER,
     /**
      * Duplication : Çıtır çıtır
      */
-            DUPLICATION,
+    DUPLICATION,
     /**
      * Interjection : Agucuk
      */
-            INTERJECTION,
+    INTERJECTION,
     /**
      * Number : bir
      */
-            NUMBER,
+    NUMBER,
     /**
      * Post posıtıon : Atfen
      */
-            POSTPOSITION,
+    POSTPOSITION,
     /**
      * Punctuation : +
      */
-            PUNCTUATION,
+    PUNCTUATION,
     /**
      * Question : Mı
      */
-            QUESTION,
+    QUESTION,
     /**
      * Agent : Toplayıcı
      */
-            AGENT,
+    AGENT,
     /**
      * By doing so : Zıplayarak
      */
-            BYDOINGSO,
+    BYDOINGSO,
     /**
      * Cardinal : yüz, bin
      */
-            CARDINAL,
+    CARDINAL,
     /**
      * Causative Form : Pişirmek
      */
-            CAUSATIVE,
+    CAUSATIVE,
     /**
      * Demonstrative pronoun : Bu, şu
      */
-            DEMONSTRATIVEPRONOUN,
+    DEMONSTRATIVEPRONOUN,
     /**
      * Distributive : altışar
      */
-            DISTRIBUTIVE,
+    DISTRIBUTIVE,
     /**
      * Fit for : Ahmetlik
      */
-            FITFOR,
+    FITFOR,
     /**
      * Future participle : Gülecek
      */
-            FUTUREPARTICIPLE,
+    FUTUREPARTICIPLE,
     /**
      * Infinitive : Biri
      */
-            INFINITIVE,
+    INFINITIVE,
     /**
      * Ness : Ağırbaşlılık
      */
-            NESS,
+    NESS,
     /**
      * Ordinal Number : Altıncı
      */
-            ORDINAL,
+    ORDINAL,
     /**
      * Passive : Açıldı
      */
-            PASSIVE,
+    PASSIVE,
     /**
      * Past participle : Kırılmış
      */
-            PASTPARTICIPLE,
+    PASTPARTICIPLE,
     /**
      * Present partıcıple : Sarılan
      */
-            PRESENTPARTICIPLE,
+    PRESENTPARTICIPLE,
     /**
      * Question pronoun : Kim
      */
-            QUESTIONPRONOUN,
+    QUESTIONPRONOUN,
     /**
      * Quantitative pronoun : Each
      */
-            QUANTITATIVEPRONOUN,
+    QUANTITATIVEPRONOUN,
     /**
      * Range : 1 - 3
      */
-            RANGE,
+    RANGE,
     /**
      * Ratio : 1/2
      */
-            RATIO,
+    RATIO,
     /**
      * Real : 1.0
      */
-            REAL,
+    REAL,
     /**
      * Reciprocal verb : Görüşmek
      */
-            RECIPROCAL,
+    RECIPROCAL,
     /**
      * Reflexive : Kendi
      */
-            REFLEXIVE,
+    REFLEXIVE,
     /**
      * Reflexive pronoun : Kendim
      */
-            REFLEXIVEPRONOUN,
+    REFLEXIVEPRONOUN,
     /**
      * Time : 14:28
      */
-            TIME,
+    TIME,
     /**
      * When : Okuyunca
      */
-            WHEN,
+    WHEN,
     /**
      * While : Gelirken
      */
-            WHILE,
+    WHILE,
     /**
      * Without having done so : Çaktırmadan
      */
-            WITHOUTHAVINGDONESO,
+    WITHOUTHAVINGDONESO,
     /**
      * PC ablative : Başka
      */
-            PCABLATIVE,
+    PCABLATIVE,
     /***
      * PC accusative : Takiben
      */
-            PCACCUSATIVE,
+    PCACCUSATIVE,
     /**
      * PC dative : İlişkin
      */
-            PCDATIVE,
+    PCDATIVE,
     /**
      * PC genitive : Yanısıra
      */
-            PCGENITIVE,
+    PCGENITIVE,
     /**
      * PC instrumental : Birlikte
      */
-            PCINSTRUMENTAL,
+    PCINSTRUMENTAL,
     /**
      * PC nominative
      */
-            PCNOMINATIVE,
+    PCNOMINATIVE,
     /**
      * Acquire : Kazanılan
      */
-            ACQUIRE,
+    ACQUIRE,
     /**
      * Act of : Aldatmaca
      */
-            ACTOF,
+    ACTOF,
     /**
      * After doing so : Yapıp
      */
-            AFTERDOINGSO,
+    AFTERDOINGSO,
     /**
      * Almost : Dikensi
      */
-            ALMOST,
+    ALMOST,
     /**
      * As : gibi
      */
-            AS,
+    AS,
     /**
      * As if : Yaşarmışcasına
      */
-            ASIF,
+    ASIF,
     /**
      * Become : Abideleş
      */
-            BECOME,
+    BECOME,
     /**
      * Ever since : Çıkagel
      */
-            EVERSINCE,
+    EVERSINCE,
     /**
      * Projection : Öpülesi
      */
-            FEELLIKE,
+    FEELLIKE,
     /**
      * Hastility : Yapıver
      */
-            HASTILY,
+    HASTILY,
     /**
      * In between : Arasında
      */
-            INBETWEEN,
+    INBETWEEN,
     /**
      * Just like : Destansı
      */
-            JUSTLIKE,
+    JUSTLIKE,
     /**
      * -LY : Akıllıca
      */
-            LY,
+    LY,
     /**
      * Related to : Davranışsal
      */
-            RELATED,
+    RELATED,
     /**
      * Continuous : Yapadur
      */
-            REPEAT,
+    REPEAT,
     /**
      * Since doing so : Amasyalı
      */
-            SINCE,
+    SINCE,
     /**
      * Since doing so : Amasyalı
      */
-            SINCEDOINGSO,
+    SINCEDOINGSO,
     /**
      * Start : Alıkoy
      */
-            START,
+    START,
     /**
      * Stay : Bakakal
      */
-            STAY,
+    STAY,
     /**
      * Equative : Öylece
      */
-            EQUATIVE,
+    EQUATIVE,
     /**
      * Instrumental : Kışın, arabayla
      */
-            INSTRUMENTAL,
+    INSTRUMENTAL,
     /**
      * Aorist Tense : Her hafta sonunda futbol oynarlar.
      */
-            AORIST,
+    AORIST,
     /**
      * Desire/Past Auxiliary : Çıkarsa
      */
-            DESIRE,
+    DESIRE,
     /**
      * Future : Yağacak
      */
-            FUTURE,
+    FUTURE,
     /**
      * Imperative : Otur!
      */
-            IMPERATIVE,
+    IMPERATIVE,
     /**
      * Narrative Past Tense : Oluşmuş
      */
-            NARRATIVE,
+    NARRATIVE,
     /**
      * Necessity : Yapmalı
      */
-            NECESSITY,
+    NECESSITY,
     /**
      * Optative : Doğanaya
      */
-            OPTATIVE,
+    OPTATIVE,
     /**
      * Past tense : Gitti
      */
-            PAST,
+    PAST,
     /**
      * Present partıcıple : Sarılan
      */
-            PRESENT,
+    PRESENT,
     /**
      * Progressive : Görüyorum
      */
-            PROGRESSIVE1,
+    PROGRESSIVE1,
     /**
      * Progressive : Görmekteyim
      */
-            PROGRESSIVE2,
+    PROGRESSIVE2,
     /**
      * Conditional : Gelirse
      */
-            CONDITIONAL,
+    CONDITIONAL,
     /**
      * Copula : Mavidir
      */
-            COPULA,
+    COPULA,
     /**
      * Positive : Gittim
      */
-            POSITIVE,
+    POSITIVE,
     /**
      * Pronoun : Ben
      */
-            PRONOUN,
+    PRONOUN,
     /**
      * Locative : Aşağıda
      */
-            LOCATIVE,
+    LOCATIVE,
     /**
      * Relative : Gelenin
      */
-            RELATIVE,
+    RELATIVE,
     /**
      * Demonstrative : Bu
      */
-            DEMONSTRATIVE,
+    DEMONSTRATIVE,
     /**
      * Infinitive2 : Gitme
      */
-            INFINITIVE2,
+    INFINITIVE2,
     /**
      * Infinitive3 : Gidiş
      */
-            INFINITIVE3,
+    INFINITIVE3,
     /**
      * Sentence beginning header
      */
-            BEGINNINGOFSENTENCE,
+    BEGINNINGOFSENTENCE,
     /**
      * Sentence ending header
      */
-            ENDOFSENTENCE,
+    ENDOFSENTENCE,
     /**
      * Title beginning header
      */
-            BEGINNINGOFTITLE,
+    BEGINNINGOFTITLE,
     /**
      * Title ending header
      */
-            ENDOFTITLE,
+    ENDOFTITLE,
     /**
      * Document beginning header
      */
-            BEGINNINGOFDOCUMENT,
+    BEGINNINGOFDOCUMENT,
     /**
      * Document ending header
      */
-            ENDOFDOCUMENT,
+    ENDOFDOCUMENT,
     /**
      * As long as : Yaşadıkça
      */
-            ASLONGAS,
+    ASLONGAS,
     /**
      * Adamantly
      */
-            ADAMANTLY,
+    ADAMANTLY,
     /**
      * Percent : 15%
      */
-            PERCENT,
+    PERCENT,
     /**
      * Without being able to have done so: kararlamadan
      */
-            WITHOUTBEINGABLETOHAVEDONESO,
+    WITHOUTBEINGABLETOHAVEDONESO,
     /**
      * Dimension : Küçücük
      */
-            DIMENSION,
+    DIMENSION,
     /**
      * Notable state : Anlaşılmazlık
      */
-            NOTABLESTATE,
+    NOTABLESTATE,
     /**
      * Fraction : 1/2
      */
-            FRACTION,
+    FRACTION,
     /**
      * Hash tag : #
      */
-            HASHTAG,
+    HASHTAG,
     /**
      * E-mail : @
      */
-            EMAIL,
+    EMAIL,
     /**
      * Date : 11/06/2018
      */
-            DATE,
+    DATE,
     /**
     * Code : i7-9700K
     */
-            CODE,
+    CODE,
     /**
      * Metric : 6cmx7cmx8cm
      */
-            METRIC,
-            NOTAG
+    METRIC,
+    /**
+    * Polite: yapınız, gidiniz
+    */
+    POLITE,
+    /**
+    * Urge: Baksana, yapsana
+    */
+    URGE,
+    NOTAG
 };
 
 

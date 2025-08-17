@@ -23,7 +23,7 @@ public:
     bool containsPlural() const;
     bool containsTag(MorphologicalTag tag) const;
     bool containsPossessive() const;
-    static const int TAG_SIZE = 131;
+    static const int TAG_SIZE = 133;
     static const MorphologicalTag morphoTags[TAG_SIZE];
 private:
     vector<MorphologicalTag> IG;
