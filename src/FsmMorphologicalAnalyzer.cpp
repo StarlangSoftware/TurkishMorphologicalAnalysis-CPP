@@ -698,7 +698,7 @@ vector<FsmParse> FsmMorphologicalAnalyzer::parseWord(vector<FsmParse> fsmParse, 
         currentState = currentFsmParse.getFinalSuffix();
         currentSurfaceForm = currentFsmParse.getSurfaceForm();
         if (currentState.isEndState() && Word::size(currentSurfaceForm) <= maxLength) {
-            currentTransitionList = currentFsmParse.getSurfaceForm() + " " + currentFsmParse.transitionlist();
+            currentTransitionList = currentSurfaceForm + " " + currentFsmParse.transitionlist();
             if (find(resultTransitionList.begin(), resultTransitionList.end(), currentTransitionList) == resultTransitionList.end()) {
                 currentFsmParse.constructInflectionalGroups();
                 result.push_back(currentFsmParse);
