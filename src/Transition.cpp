@@ -227,11 +227,11 @@ bool Transition::startWithVowelorConsonantDrops() const{
  * @param root TxtWord input.
  * @return true if there is softening during suffixation of the given root, false otherwise.
  */
-bool Transition::softenDuringSuffixation(TxtWord* root) const{
-    if ((root->isNominal() || root->isAdjective()) && root->nounSoftenDuringSuffixation() && (with == "Hm" || with == "nDAn" || with == "ncA" || with == "nDA" || with == "yA" || with == "yHm" || with == "yHz" || with == "yH" || with == "nH" || with == "nA" || with == "nHn" || with == "H" || with == "sH" || with == "Hn" || with == "HnHz" || with == "HmHz")) {
+bool Transition::softenDuringSuffixation(TxtWord* root, const State& startState) const{
+    if (!StringUtils::startsWith(startState.getName(), "VerbalRoot") && (root->isNominal() || root->isAdjective()) && root->nounSoftenDuringSuffixation() && (with == "Hm" || with == "nDAn" || with == "ncA" || with == "nDA" || with == "yA" || with == "yHm" || with == "yHz" || with == "yH" || with == "nH" || with == "nA" || with == "nHn" || with == "H" || with == "sH" || with == "Hn" || with == "HnHz" || with == "HmHz")) {
         return true;
     }
-    if (root->isVerb() && root->verbSoftenDuringSuffixation() && (StringUtils::startsWith(with, "Hyor") || with == "yHs" || with == "yAn" || with == "yA" || StringUtils::startsWith(with, "yAcAk") || with == "yAsH" || with == "yHncA" || with == "yHp" || with == "yAlH" || with == "yArAk" || with == "yAdur" || with == "yHver" || with == "yAgel" || with == "yAgor" || with == "yAbil" || with == "yAyaz" || with == "yAkal" || with == "yAkoy" || with == "yAmA" || with == "yHcH" || with == "HCH" || StringUtils::startsWith(with, "Hr") || with == "Hs" || with == "Hn" || with == "yHn" || with == "yHnHz" || StringUtils::startsWith(with, "Ar") || with == "Hl")) {
+    if (StringUtils::startsWith(startState.getName(), "VerbalRoot") && root->isVerb() && root->verbSoftenDuringSuffixation() && (StringUtils::startsWith(with, "Hyor") || with == "yHs" || with == "yAn" || with == "yA" || StringUtils::startsWith(with, "yAcAk") || with == "yAsH" || with == "yHncA" || with == "yHp" || with == "yAlH" || with == "yArAk" || with == "yAdur" || with == "yHver" || with == "yAgel" || with == "yAgor" || with == "yAbil" || with == "yAyaz" || with == "yAkal" || with == "yAkoy" || with == "yAmA" || with == "yHcH" || with == "HCH" || StringUtils::startsWith(with, "Hr") || with == "Hs" || with == "Hn" || with == "yHn" || with == "yHnHz" || StringUtils::startsWith(with, "Ar") || with == "Hl")) {
         return true;
     }
     return false;
@@ -312,7 +312,7 @@ string Transition::makeTransition(TxtWord *root, const string& stem, const State
             } else {
                 if (rootWord && root->duplicatesDuringSuffixation() && !StringUtils::startsWith(startState.getName(), "VerbalRoot") && TurkishLanguage::isConsonantDrop(Word::charAt(with, 0))) {
                     //---duplicatesDuringSuffixation---
-                    if (softenDuringSuffixation(root)) {
+                    if (softenDuringSuffixation(root, startState)) {
                         //--extra softenDuringSuffixation
                         if (Word::lastPhoneme(stem) == "p"){
                             //tıp->tıbbı
@@ -332,7 +332,7 @@ string Transition::makeTransition(TxtWord *root, const string& stem, const State
                 } else {
                     if (rootWord && root->lastIdropsDuringSuffixation() && !StringUtils::startsWith(startState.getName(), "VerbalRoot") && !StringUtils::startsWith(startState.getName(), "ProperRoot") && startWithVowelorConsonantDrops()) {
                         //---lastIdropsDuringSuffixation---
-                        if (softenDuringSuffixation(root)) {
+                        if (softenDuringSuffixation(root, startState)) {
                             //---softenDuringSuffixation---
                             if (Word::lastPhoneme(stem) == "p"){
                                 //hizip->hizbi, kayıp->kaybı, kayıt->kaydı, kutup->kutbu
@@ -358,26 +358,26 @@ string Transition::makeTransition(TxtWord *root, const string& stem, const State
                         //---nounSoftenDuringSuffixation or verbSoftenDuringSuffixation
                         if (Word::lastPhoneme(stem) == "p"){
                             //adap->adabı, amip->amibi, azap->azabı, gazap->gazabı
-                            if (startWithVowelorConsonantDrops() && rootWord && softenDuringSuffixation(root)) {
+                            if (startWithVowelorConsonantDrops() && rootWord && softenDuringSuffixation(root, startState)) {
                                 formation = Word::substringExceptLastChar(stem) + 'b';
                             }
                         } else {
                             if (Word::lastPhoneme(stem) == "t"){
                                 //abat->abadı, adet->adedi, akort->akordu, armut->armudu
                                 //affet->affedi, yoket->yokedi, sabret->sabredi, rakset->raksedi
-                                if (startWithVowelorConsonantDrops() && rootWord && softenDuringSuffixation(root)) {
+                                if (startWithVowelorConsonantDrops() && rootWord && softenDuringSuffixation(root, startState)) {
                                     formation = Word::substringExceptLastChar(stem) + 'd';
                                 }
                             } else {
                                 if (Word::lastPhoneme(stem) == "ç"){
                                     //ağaç->ağacı, almaç->almacı, akaç->akacı, avuç->avucu
-                                    if (startWithVowelorConsonantDrops() && rootWord && softenDuringSuffixation(root)) {
+                                    if (startWithVowelorConsonantDrops() && rootWord && softenDuringSuffixation(root, startState)) {
                                         formation = Word::substringExceptLastChar(stem) + 'c';
                                     }
                                 } else {
                                     if (Word::lastPhoneme(stem) == "g"){
                                         //arkeolog->arkeoloğu, filolog->filoloğu, minerolog->mineroloğu
-                                        if (startWithVowelorConsonantDrops() && rootWord && softenDuringSuffixation(root)) {
+                                        if (startWithVowelorConsonantDrops() && rootWord && softenDuringSuffixation(root, startState)) {
                                             formation = Word::substringExceptLastChar(stem) + "ğ";
                                         }
                                     } else {
@@ -387,7 +387,7 @@ string Transition::makeTransition(TxtWord *root, const string& stem, const State
                                                 formation = Word::substringExceptLastChar(stem) + 'g';
                                             } else {
                                                 //ablak->ablağı, küllük->küllüğü, kitaplık->kitaplığı, evcilik->evciliği
-                                                if (startWithVowelorConsonantDrops() && (!rootWord || (softenDuringSuffixation(root) && (!root->isProperNoun() || startState.to_String() != "ProperRoot")))) {
+                                                if (startWithVowelorConsonantDrops() && (!rootWord || (softenDuringSuffixation(root, startState) && (!root->isProperNoun() || startState.to_String() != "ProperRoot")))) {
                                                     formation = Word::substringExceptLastChar(stem) + "ğ";
                                                 }
                                             }

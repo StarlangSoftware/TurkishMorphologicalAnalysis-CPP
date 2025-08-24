@@ -111,7 +111,8 @@ TEST_CASE("TransitionTest") {
     }
 
     SECTION("testExceptions") {
-        REQUIRE_FALSE(fsm.morphologicalAnalysis("yaparmışçasına").size() == 0);
+        REQUIRE_FALSE(fsm.morphologicalAnalysis("uça").size() == 0);
+        REQUIRE_FALSE(fsm.morphologicalAnalysis("yaparmışcasına").size() == 0);
         REQUIRE_FALSE(fsm.morphologicalAnalysis("yiyip").size() == 0);
         REQUIRE_FALSE(fsm.morphologicalAnalysis("sana").size() == 0);
         REQUIRE_FALSE(fsm.morphologicalAnalysis("bununla").size() == 0);

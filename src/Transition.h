@@ -25,7 +25,7 @@ public:
     bool transitionPossible(const string& currentSurfaceForm, const string& realSurfaceForm) const;
     bool transitionPossible(const FsmParse& currentFsmParse) const;
     bool transitionPossible(TxtWord* root, const State& fromState) const;
-    bool softenDuringSuffixation(TxtWord* root) const;
+    bool softenDuringSuffixation(TxtWord* root, const State& startState) const;
     string makeTransition(TxtWord* root, const string& stem) const;
     string makeTransition(TxtWord* root, const string& stem, const State& startState) const;
     string to_String() const;
