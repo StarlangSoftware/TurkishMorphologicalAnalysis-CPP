@@ -4,6 +4,7 @@
 
 #include "FsmParseList.h"
 
+#include <algorithm>
 #include <StringUtils.h>
 
 struct fsmParseComparator{

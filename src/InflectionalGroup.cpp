@@ -4,6 +4,8 @@
 
 #include "InflectionalGroup.h"
 
+#include <algorithm>
+
 const string InflectionalGroup::tags[TAG_SIZE] = {"Noun", "Adv", "Adj", "Verb", "A1sg",
                                                   "A2sg", "A3sg", "A1Pl", "A2pl", "A3pl",
                                                   "P1sg", "P2sg", "P3sg", "P1Pl", "P2pl",

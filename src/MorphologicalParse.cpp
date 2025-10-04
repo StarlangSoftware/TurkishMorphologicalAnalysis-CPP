@@ -3,6 +3,9 @@
 //
 
 #include "MorphologicalParse.h"
+
+#include <algorithm>
+
 #include "Language/TurkishLanguage.h"
 
 /**
