@@ -199,7 +199,7 @@ FsmMorphologicalAnalyzer::getPossibleWords(const MorphologicalParse& morphologic
  * @param root        the root of the long string.
  * @return true if given substring is the actual substring of the longString, false otherwise.
  */
-bool FsmMorphologicalAnalyzer::isPossibleSubstring(const string& shortString, const string& longString, TxtWord *root) const{
+bool FsmMorphologicalAnalyzer::isPossibleSubstring(const string& shortString, const string& longString, const TxtWord *root) const{
     bool rootWord = (shortString == root->getName() || longString == root->getName());
     int distance = 0, j, last = 1;
     for (j = 0; j < Word::size(shortString); j++) {
@@ -699,7 +699,7 @@ vector<FsmParse> FsmMorphologicalAnalyzer::parseWord(vector<FsmParse> fsmParse, 
         currentSurfaceForm = currentFsmParse.getSurfaceForm();
         if (currentState.isEndState() && Word::size(currentSurfaceForm) <= maxLength) {
             currentTransitionList = currentSurfaceForm + " " + currentFsmParse.transitionlist();
-            if (find(resultTransitionList.begin(), resultTransitionList.end(), currentTransitionList) == resultTransitionList.end()) {
+            if (ranges::find(resultTransitionList, currentTransitionList) == resultTransitionList.end()) {
                 currentFsmParse.constructInflectionalGroups();
                 result.push_back(currentFsmParse);
                 resultTransitionList.push_back(currentTransitionList);
@@ -735,7 +735,7 @@ vector<FsmParse> FsmMorphologicalAnalyzer::parseWord(vector<FsmParse> fsmParse, 
         currentSurfaceForm = currentFsmParse.getSurfaceForm();
         if (currentState.isEndState() && currentSurfaceForm == surfaceForm) {
             currentTransitionList = currentFsmParse.transitionlist();
-            if (find(resultTransitionList.begin(), resultTransitionList.end(), currentTransitionList) == resultTransitionList.end()) {
+            if (ranges::find(resultTransitionList, currentTransitionList) == resultTransitionList.end()) {
                 currentFsmParse.constructInflectionalGroups();
                 result.push_back(currentFsmParse);
                 resultTransitionList.push_back(currentTransitionList);
@@ -1115,7 +1115,7 @@ FsmParseList FsmMorphologicalAnalyzer::robustMorphologicalAnalysis(const string&
  * @param sentence  to get word from.
  * @return FsmParseList type result.
  */
-FsmParseList *FsmMorphologicalAnalyzer::morphologicalAnalysis(Sentence& sentence) {
+FsmParseList *FsmMorphologicalAnalyzer::morphologicalAnalysis(const Sentence& sentence) {
     FsmParseList wordFsmParseList;
     auto* result = new FsmParseList[sentence.wordCount()];
     for (int i = 0; i < sentence.wordCount(); i++) {
@@ -1137,7 +1137,7 @@ FsmParseList *FsmMorphologicalAnalyzer::morphologicalAnalysis(Sentence& sentence
  * @param sentence Sentence type input used to get surfaceForm.
  * @return FsmParseList array which holds the result of the analysis.
  */
-FsmParseList *FsmMorphologicalAnalyzer::robustMorphologicalAnalysis(Sentence& sentence) {
+FsmParseList *FsmMorphologicalAnalyzer::robustMorphologicalAnalysis(const Sentence& sentence) {
     FsmParseList fsmParseList;
     auto* result = new FsmParseList[sentence.wordCount()];
     for (int i = 0; i < sentence.wordCount(); i++) {
@@ -1294,7 +1294,7 @@ FsmParseList FsmMorphologicalAnalyzer::morphologicalAnalysis(const string& surfa
     string lowerCased = Word::toLowerCase(surfaceForm);
     string possibleRootLowerCased, pronunciation;
     bool isRootReplaced = false;
-    if (!parsedSurfaceForms.empty() && parsedSurfaceForms.find(lowerCased) != parsedSurfaceForms.end() && !isInteger(surfaceForm) && !isDouble(surfaceForm) && !isPercent(surfaceForm) && !isTime(surfaceForm) && !isRange(surfaceForm) && !isDate(surfaceForm)){
+    if (!parsedSurfaceForms.empty() && parsedSurfaceForms.contains(lowerCased) && !isInteger(surfaceForm) && !isDouble(surfaceForm) && !isPercent(surfaceForm) && !isTime(surfaceForm) && !isRange(surfaceForm) && !isDate(surfaceForm)){
         parses.emplace_back(FsmParse(new Word(parsedSurfaceForms.find(lowerCased)->second)));
         return FsmParseList(parses);
     }

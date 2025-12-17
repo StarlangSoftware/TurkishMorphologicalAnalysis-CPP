@@ -18,8 +18,8 @@ private:
     string initialPos;
     string pos;
     string form;
-    string verbAgreement = "";
-    string possesiveAgreement = "";
+    string verbAgreement;
+    string possesiveAgreement;
 public:
     explicit FsmParse(Word* root);
     FsmParse() = default;
@@ -28,26 +28,26 @@ public:
     FsmParse(const string& punctuation, const State& startState);
     FsmParse(TxtWord* root, const State& startState);
     void constructInflectionalGroups();
-    string getVerbAgreement() const;
-    string getPossesiveAgreement() const;
+    [[nodiscard]] string getVerbAgreement() const;
+    [[nodiscard]] string getPossesiveAgreement() const;
     void setAgreement(const string& transitionName);
-    string getLastLemmaWithTag(const string& pos) const;
-    string getLastLemma() const;
+    [[nodiscard]] string getLastLemmaWithTag(const string& pos) const;
+    [[nodiscard]] string getLastLemma() const;
     void addSuffix(const State& suffix, const string& _form, const string& transition, const string& with, const string& toPos);
-    string getSurfaceForm() const;
-    State getStartState() const;
-    string getFinalPos() const;
-    string getInitialPos() const;
+    [[nodiscard]] string getSurfaceForm() const;
+    [[nodiscard]] State getStartState() const;
+    [[nodiscard]] string getFinalPos() const;
+    [[nodiscard]] string getInitialPos() const;
     void setForm(const string& name);
-    State getFinalSuffix() const;
-    FsmParse clone() const;
-    string headerTransition() const;
-    string pronounTransition() const;
-    string transitionlist() const;
-    string getSuffixList() const;
-    string getWithList() const;
+    [[nodiscard]] State getFinalSuffix() const;
+    [[nodiscard]] FsmParse clone() const;
+    [[nodiscard]] string headerTransition() const;
+    [[nodiscard]] string pronounTransition() const;
+    [[nodiscard]] string transitionlist() const;
+    [[nodiscard]] string getSuffixList() const;
+    [[nodiscard]] string getWithList() const;
     string replaceRootWord(TxtWord* newRoot) const;
-    string to_String() const;
+    [[nodiscard]] string to_String() const;
     void restoreOriginalForm(const string &original, const string &pronunciation);
 /**
  * The overridden compareTo metgod takes an {@link Object} as an input and if it is an instance of the {@link FsmParse}
@@ -57,10 +57,10 @@ public:
  * @return comparison of the items of transitionList with input {@link Object}, and returns 0 if input is not an
  * instance of {@link FsmParse} class.
  */
-    bool operator==(FsmParse &fsmParse){
+    bool operator==(const FsmParse &fsmParse) const {
         return (to_String() == fsmParse.to_String());
     }
-    bool operator<(FsmParse &fsmParse){
+    bool operator<(const FsmParse &fsmParse) const {
         return (to_String() < fsmParse.to_String());
     }
 };

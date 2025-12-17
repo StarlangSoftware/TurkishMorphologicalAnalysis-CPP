@@ -140,7 +140,7 @@ bool Transition::transitionPossible(const FsmParse& currentFsmParse) const{
  * @param fromState From which state we arrived to this state.
  * @return true if transition is possible false otherwise
  */
-bool Transition::transitionPossible(TxtWord* root, const State& fromState) const{
+bool Transition::transitionPossible(const TxtWord* root, const State& fromState) const{
     if (root->isAdjective() && ((root->isNominal() && !root->isExceptional()) || root->isPronoun()) && toState.getName() == "NominalRoot(ADJ)" && with == "0") {
         return false;
     }
@@ -219,7 +219,7 @@ bool Transition::startWithVowelorConsonantDrops() const{
  * @param root TxtWord input.
  * @return true if there is softening during suffixation of the given root, false otherwise.
  */
-bool Transition::softenDuringSuffixation(TxtWord* root, const State& startState) const{
+bool Transition::softenDuringSuffixation(const TxtWord* root, const State& startState) const{
     if (!StringUtils::startsWith(startState.getName(), "VerbalRoot") && (root->isNominal() || root->isAdjective()) && root->nounSoftenDuringSuffixation() && (with == "Hm" || with == "nDAn" || with == "ncA" || with == "nDA" || with == "yA" || with == "yHm" || with == "yHz" || with == "yH" || with == "nH" || with == "nA" || with == "nHn" || with == "H" || with == "sH" || with == "Hn" || with == "HnHz" || with == "HmHz")) {
         return true;
     }

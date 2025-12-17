@@ -1086,7 +1086,7 @@ vector<string> MorphologicalParse::getUniversalDependencyFeatures(const string& 
             featureList.emplace_back("Evident=" + evident);
         }
     }
-    sort(featureList.begin(), featureList.end());
+    ranges::sort(featureList);
     return featureList;
 }
 

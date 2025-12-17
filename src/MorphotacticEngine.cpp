@@ -20,7 +20,7 @@
  *                         state machine except the apostrophe at the end if it exists.
  * @return Formation with added 'd' or 't' character.
  */
-string MorphotacticEngine::resolveD(TxtWord* root, const string& formation, const string& formationToCheck) {
+string MorphotacticEngine::resolveD(const TxtWord* root, const string& formation, const string& formationToCheck) {
     if (root->isAbbreviation()) {
         return formation + 'd';
     }
@@ -69,7 +69,7 @@ string MorphotacticEngine::resolveD(TxtWord* root, const string& formation, cons
  *                         state machine except the apostrophe at the end if it exists.
  * @return Formation with added 'a' or 'e' character.
  */
-string MorphotacticEngine::resolveA(TxtWord *root, const string& formation, bool rootWord, const string& formationToCheck) {
+string MorphotacticEngine::resolveA(const TxtWord *root, const string& formation, bool rootWord, const string& formationToCheck) {
     if (root->isAbbreviation()) {
         return formation + 'e';
     }
@@ -150,7 +150,7 @@ string MorphotacticEngine::resolveA(TxtWord *root, const string& formation, bool
  *                         state machine except the apostrophe at the end if it exists.
  * @return Formation with possibly last character dropped and 'ı', 'i', 'u' or 'ü' character added.
  */
-string MorphotacticEngine::resolveH(TxtWord *root, const string& formation, bool beginningOfSuffix, bool specialCaseTenseSuffix,
+string MorphotacticEngine::resolveH(const TxtWord *root, const string& formation, bool beginningOfSuffix, bool specialCaseTenseSuffix,
                             bool rootWord, const string& formationToCheck) {
     if (root->isAbbreviation())
         return formation + 'i';

@@ -24,13 +24,13 @@ public:
     MetamorphicParse();
     static vector<MorphologicalTag> getMetaMorphemeTag(const string& tag);
     static vector<MorphologicalTag> getMetaMorphemeTag(const MorphologicalParse& parse, const string& tag);
-    Word getWord() const;
+    [[nodiscard]] Word getWord() const;
     explicit MetamorphicParse(const string& parse);
-    int size() const;
+    [[nodiscard]] int size() const;
     void addMetaMorphemeList(const string& newTacticSet);
     void removeMetaMorphemeFromIndex(int index);
-    string getMetaMorpheme(int index) const;
-    string to_string() const;
+    [[nodiscard]] string getMetaMorpheme(int index) const;
+    [[nodiscard]] string to_string() const;
 };
 
 #endif //MORPHOLOGICALANALYSIS_METAMORPHICPARSE_H

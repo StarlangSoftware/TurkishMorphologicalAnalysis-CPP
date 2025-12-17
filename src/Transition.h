@@ -14,22 +14,22 @@ private:
     string with;
     string withName;
     string toPos;
-    string withFirstChar() const;
-    bool startWithVowelorConsonantDrops() const;
+    [[nodiscard]] string withFirstChar() const;
+    [[nodiscard]] bool startWithVowelorConsonantDrops() const;
 public:
     Transition(const State& toState, const string& with, const string& withName);
     Transition(const State& toState, const string& with, const string& withName, const string& toPos);
     explicit Transition(const string& with);
-    State getToState() const;
-    string getToPos() const;
-    bool transitionPossible(const string& currentSurfaceForm, const string& realSurfaceForm) const;
-    bool transitionPossible(const FsmParse& currentFsmParse) const;
-    bool transitionPossible(TxtWord* root, const State& fromState) const;
-    bool softenDuringSuffixation(TxtWord* root, const State& startState) const;
+    [[nodiscard]] State getToState() const;
+    [[nodiscard]] string getToPos() const;
+    [[nodiscard]] bool transitionPossible(const string& currentSurfaceForm, const string& realSurfaceForm) const;
+    [[nodiscard]] bool transitionPossible(const FsmParse& currentFsmParse) const;
+    bool transitionPossible(const TxtWord* root, const State& fromState) const;
+    bool softenDuringSuffixation(const TxtWord* root, const State& startState) const;
     string makeTransition(TxtWord* root, const string& stem) const;
     string makeTransition(TxtWord* root, const string& stem, const State& startState) const;
-    string to_String() const;
-    string getWith() const;
+    [[nodiscard]] string to_String() const;
+    [[nodiscard]] string getWith() const;
 };
 
 

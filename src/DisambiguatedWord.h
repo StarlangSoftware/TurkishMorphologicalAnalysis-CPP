@@ -13,7 +13,7 @@ private:
     MorphologicalParse parse;
 public:
     DisambiguatedWord(const string& name, const MorphologicalParse& parse);
-    MorphologicalParse getParse() const;
+    [[nodiscard]] MorphologicalParse getParse() const;
 };
 
 

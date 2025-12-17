@@ -16,13 +16,13 @@ public:
     static MorphologicalTag getMorphologicalTag(const string& tag);
     static string getTag(MorphologicalTag tag);
     explicit InflectionalGroup(const string& IG);
-    MorphologicalTag getTag(int index) const;
-    int size() const;
-    string to_String() const;
-    MorphologicalTag containsCase() const;
-    bool containsPlural() const;
-    bool containsTag(MorphologicalTag tag) const;
-    bool containsPossessive() const;
+    [[nodiscard]] MorphologicalTag getTag(int index) const;
+    [[nodiscard]] int size() const;
+    [[nodiscard]] string to_String() const;
+    [[nodiscard]] MorphologicalTag containsCase() const;
+    [[nodiscard]] bool containsPlural() const;
+    [[nodiscard]] bool containsTag(MorphologicalTag tag) const;
+    [[nodiscard]] bool containsPossessive() const;
     static const int TAG_SIZE = 133;
     static const MorphologicalTag morphoTags[TAG_SIZE];
 private:
