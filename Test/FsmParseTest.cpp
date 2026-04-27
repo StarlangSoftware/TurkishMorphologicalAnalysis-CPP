@@ -39,7 +39,7 @@ TEST_CASE("FsmParseTest") {
         parse1 = fsm.morphologicalAnalysis("açılır").getFsmParse(0);
         parse2 = fsm.morphologicalAnalysis("koparılarak").getFsmParse(0);
         parse3 = fsm.morphologicalAnalysis("toplama").getFsmParse(0);
-        parse4 = fsm.morphologicalAnalysis("değerlendirmede").getFsmParse(0);
+        parse4 = fsm.morphologicalAnalysis("değerlendirmede").getFsmParse(1);
         parse5 = fsm.morphologicalAnalysis("soruşturmasının").getFsmParse(0);
         parse6 = fsm.morphologicalAnalysis("karşılaştırmalı").getFsmParse(0);
         parse7 = fsm.morphologicalAnalysis("esaslarını").getFsmParse(0);
@@ -83,7 +83,7 @@ TEST_CASE("FsmParseTest") {
         parse1 = fsm.morphologicalAnalysis("açılır").getFsmParse(0);
         parse2 = fsm.morphologicalAnalysis("koparılarak").getFsmParse(0);
         parse3 = fsm.morphologicalAnalysis("toplama").getFsmParse(0);
-        parse4 = fsm.morphologicalAnalysis("değerlendirmede").getFsmParse(0);
+        parse4 = fsm.morphologicalAnalysis("değerlendirmede").getFsmParse(1);
         parse5 = fsm.morphologicalAnalysis("soruşturmasının").getFsmParse(0);
         parse6 = fsm.morphologicalAnalysis("karşılaştırmalı").getFsmParse(0);
         parse7 = fsm.morphologicalAnalysis("esaslarını").getFsmParse(0);

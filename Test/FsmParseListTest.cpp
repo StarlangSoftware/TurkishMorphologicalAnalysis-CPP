@@ -25,7 +25,7 @@ TEST_CASE("FsmParseListTest") {
         REQUIRE(2 == parse1.size());
         REQUIRE(2 == parse2.size());
         REQUIRE(6 == parse3.size());
-        REQUIRE(4 == parse4.size());
+        REQUIRE(5 == parse4.size());
         REQUIRE(5 == parse5.size());
         REQUIRE(12 == parse6.size());
         REQUIRE(8 == parse7.size());
@@ -119,7 +119,7 @@ TEST_CASE("FsmParseListTest") {
         REQUIRE(1 == parse1.constructParseListForDifferentRootWithPos().size());
         REQUIRE(2 == parse2.constructParseListForDifferentRootWithPos().size());
         REQUIRE(5 == parse3.constructParseListForDifferentRootWithPos().size());
-        REQUIRE(4 == parse4.constructParseListForDifferentRootWithPos().size());
+        REQUIRE(5 == parse4.constructParseListForDifferentRootWithPos().size());
         REQUIRE(5 == parse5.constructParseListForDifferentRootWithPos().size());
         REQUIRE(7 == parse6.constructParseListForDifferentRootWithPos().size());
         REQUIRE(2 == parse7.constructParseListForDifferentRootWithPos().size());
@@ -134,7 +134,7 @@ TEST_CASE("FsmParseListTest") {
         parse13 = fsm.morphologicalAnalysis("arabası");
         REQUIRE("P3SG+NOM$PNON+ACC" == parse10.parsesWithoutPrefixAndSuffix());
         REQUIRE("A3PL+P3PL+NOM$A3PL+P3SG+NOM$A3PL+PNON+ACC$A3SG+P3PL+NOM" == parse11.parsesWithoutPrefixAndSuffix());
-        REQUIRE("DET$PRON+DEMONSP+A3SG+PNON+NOM$PRON+PERS+A3SG+PNON+NOM" == parse12.parsesWithoutPrefixAndSuffix());
+        REQUIRE("ADJ$DET$PRON+DEMONSP+A3SG+PNON+NOM$PRON+PERS+A3SG+PNON+NOM" == parse12.parsesWithoutPrefixAndSuffix());
         REQUIRE("NOUN+A3SG+P3SG+NOM$NOUN^DB+ADJ+ALMOST" == parse13.parsesWithoutPrefixAndSuffix());
     }
 }
